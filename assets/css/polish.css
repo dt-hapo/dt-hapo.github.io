@@ -103,3 +103,8 @@
   margin-top: 1rem;
   padding-left: 0.9rem;
 }
+
+/* Device flow cells need their labels inset from the first vertical rule. */
+.device-step {
+  padding-left: 0.75rem;
+}
