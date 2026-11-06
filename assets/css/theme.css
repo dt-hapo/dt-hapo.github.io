@@ -816,3 +816,110 @@ html[lang="en"] .hero-title {
   color: var(--signal-bright);
   font-weight: 400;
 }
+
+/* Quick install: one primary prompt, a compact manual fallback, and clear requirements. */
+.quick-install {
+  border-radius: 24px;
+  border-top: 3px solid var(--signal);
+  box-shadow: 0 24px 60px rgba(0, 8, 28, 0.32);
+}
+
+.quick-install__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 1.05rem 1.1rem 0.85rem;
+  border-bottom: 0;
+}
+
+.quick-install__intro {
+  min-width: 0;
+}
+
+.quick-install__head h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.1;
+}
+
+.quick-install__sub {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.quick-install__head .copy-btn {
+  flex: 0 0 auto;
+  min-height: 34px;
+}
+
+.quick-install__prompt {
+  margin: 0 0.9rem 0.75rem;
+  padding: 1rem;
+  border: 1px solid #343434;
+  border-radius: 14px;
+  background: #1e1e1e;
+}
+
+.quick-install__prompt .agent-prompt {
+  padding: 0;
+  color: #d4d4d4;
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.quick-install__manual {
+  margin: 0 0.9rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
+}
+
+.quick-install__manual summary {
+  padding: 0.75rem 0;
+  color: var(--ink);
+  font-size: 0.8rem;
+}
+
+.quick-install__manual-head {
+  padding: 0 0 0.5rem;
+}
+
+.quick-install__manual pre {
+  margin-bottom: 0.8rem;
+  border-radius: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.quick-install__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 1rem 1.1rem 1.1rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.quick-install__req {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.quick-install__req > span {
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f7faff;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.quick-install__foot .link-arrow {
+  align-self: flex-end;
+}

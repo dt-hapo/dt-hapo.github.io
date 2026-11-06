@@ -94,13 +94,13 @@
 
           <aside class="quick-install" aria-labelledby="quick-install-title">
             <div class="quick-install__head">
-              <h2 id="quick-install-title"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></h2>
+              <div class="quick-install__intro">
+                <h2 id="quick-install-title"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></h2>
+                <p class="quick-install__sub"><span class="lang-zh" lang="zh-CN">把这段发给 coding agent</span><span class="lang-en" lang="en">Send this to your coding agent</span></p>
+              </div>
+              <button class="copy-btn" type="button" data-copy="#agent-install-prompt"><span class="copy-default"><span class="lang-zh" lang="zh-CN">复制提示词</span><span class="lang-en" lang="en">Copy prompt</span></span><span class="copy-done"><span class="lang-zh" lang="zh-CN">已复制</span><span class="lang-en" lang="en">Copied</span></span></button>
             </div>
             <div class="quick-install__prompt">
-              <div class="quick-install__prompt-head">
-                <p class="quick-install__label"><span class="lang-zh" lang="zh-CN">把这段发给 coding agent</span><span class="lang-en" lang="en">Send this to your coding agent</span></p>
-                <button class="copy-btn" type="button" data-copy="#agent-install-prompt"><span class="copy-default"><span class="lang-zh" lang="zh-CN">复制提示词</span><span class="lang-en" lang="en">Copy prompt</span></span><span class="copy-done"><span class="lang-zh" lang="zh-CN">已复制</span><span class="lang-en" lang="en">Copied</span></span></button>
-              </div>
               <p class="agent-prompt" id="agent-install-prompt">Install DitingAgent and connect it to this coding agent using <code>npx diting-agents@latest setup</code>. Run <code>npx diting-agents@latest setup --detect</code> first, then set it up for this host. Show me the plan before writing, then run <code>npx diting-agents@latest doctor</code> and verify the installation.</p>
             </div>
             <details class="quick-install__manual">
@@ -113,7 +113,11 @@ npx diting-agents@latest setup --client dsh
 npx diting-agents@latest doctor</code></pre>
             </details>
             <div class="quick-install__foot">
-              <span><span class="lang-zh" lang="zh-CN">需要 Node.js 18+、Python 3.12+ 和宿主 Agent</span><span class="lang-en" lang="en">Requires Node.js 18+, Python 3.12+, and a host agent</span></span>
+              <div class="quick-install__req">
+                <span>Node.js 18+</span>
+                <span>Python 3.12+</span>
+                <span><span class="lang-zh" lang="zh-CN">宿主 Agent</span><span class="lang-en" lang="en">Host agent</span></span>
+              </div>
               <a class="link-arrow" href="install.html"><span><span class="lang-zh" lang="zh-CN">完整安装说明</span><span class="lang-en" lang="en">Full setup guide</span></span><span aria-hidden="true">→</span></a>
             </div>
           </aside>
