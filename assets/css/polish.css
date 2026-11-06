@@ -280,3 +280,7 @@ body[data-page="analysis"] .section--loop .section-intro {
     min-height: 0;
   }
 }
+
+.loop-step code {
+  font-size: 0.75rem;
+}
