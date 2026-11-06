@@ -36,3 +36,83 @@ body .page-hero__aside {
 .auto-signal span:nth-child(4)::after {
   background: rgba(255, 255, 255, 0.18);
 }
+
+/* Neutralize remaining blue-tinted hairlines in the dark chrome. */
+.hero::before,
+body[data-page="analysis"] .page-hero::before,
+body[data-page="tools"] .page-hero::before,
+body[data-page="install"] .page-hero::before {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+}
+
+body[data-page="analysis"] .page-hero__aside,
+body[data-page="tools"] .page-hero__aside,
+body[data-page="install"] .page-hero__aside {
+  border-left-color: rgba(255, 255, 255, 0.22);
+}
+
+.utility-bar {
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+.site-footer {
+  border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+body[data-page="tools"] .section[aria-label="Tool counts"] {
+  border-block-color: rgba(255, 255, 255, 0.14);
+}
+
+body[data-page="tools"] .cap-summary {
+  border-top-color: rgba(255, 255, 255, 0.24);
+}
+
+body[data-page="tools"] .cap-summary__item {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.auto-signal span {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.auto-task-foot {
+  border-top-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Neutral separators for the pale section bands. */
+body[data-page="tools"] #trace,
+body[data-page="tools"] #device,
+body[data-page="tools"] #mcp-sessions,
+body[data-page="tools"] #mcp-boundaries,
+body[data-page="tools"] #mcp,
+body[data-page="analysis"] #device,
+body[data-page="analysis"] #scenarios,
+body[data-page="analysis"] #division,
+body[data-page="install"] main > .section {
+  border-block-color: #e9edf3;
+}
+
+/* Restore a useful large step index on the install page. */
+body[data-page="install"] .install-content {
+  counter-reset: install-step;
+}
+
+body[data-page="install"] .install-section {
+  counter-increment: install-step;
+}
+
+body[data-page="install"] .install-section > h2::before {
+  content: counter(install-step, decimal-leading-zero) !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 0 0.55rem !important;
+  background: none !important;
+  color: var(--signal);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1;
+}
