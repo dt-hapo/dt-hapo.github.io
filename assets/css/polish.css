@@ -964,3 +964,14 @@ body[data-page="analysis"] .section--run {
   flex-direction: row;
   align-items: center;
 }
+
+/* Tighten the logo-to-wordmark lockup. */
+.brand {
+  gap: 0.3rem;
+}
+
+@media (max-width: 720px) {
+  .brand {
+    gap: 0.25rem;
+  }
+}
