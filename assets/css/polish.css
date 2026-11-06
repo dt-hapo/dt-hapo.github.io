@@ -930,3 +930,37 @@ body[data-page="analysis"] .section--run {
     display: none;
   }
 }
+
+/* Brand lockup: mark + wordmark. */
+.brand {
+  gap: 0.65rem;
+}
+
+.brand-logo {
+  display: block;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+}
+
+.site-footer .brand-logo {
+  width: 28px;
+  height: 28px;
+}
+
+@media (max-width: 720px) {
+  .brand {
+    gap: 0.5rem;
+  }
+
+  .brand-logo,
+  .site-footer .brand-logo {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.brand {
+  flex-direction: row;
+  align-items: center;
+}
