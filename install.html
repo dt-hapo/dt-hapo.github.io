@@ -76,8 +76,8 @@
           </h1>
           <div class="page-hero__aside">
             <p>
-              <span class="lang-zh" lang="zh-CN">DitingAgent 不内置模型。通过 npx 运行入口，注册到宿主，重载 MCP 后即可使用。首次执行会准备 Python 环境；需要设备工具时再配置 hdc 和 Command Line Tools。</span>
-              <span class="lang-en" lang="en">DitingAgent has no embedded model. Run the npx entry, register it with a host, and reload MCP. The first run prepares a Python environment. Configure hdc and Command Line Tools only if you need device tools.</span>
+              <span class="lang-zh" lang="zh-CN">通过 npx 运行入口，注册到宿主，重载 MCP 后即可使用。首次执行会准备 Python 环境；需要设备工具时再配置 hdc 和 Command Line Tools。</span>
+              <span class="lang-en" lang="en">Run the npx entry, register it with a host, and reload MCP. The first run prepares a Python environment. Configure hdc and Command Line Tools only if you need device tools.</span>
             </p>
           </div>
         </div>
@@ -115,16 +115,8 @@
                   <p><span class="lang-zh" lang="zh-CN">DeepSeek Harness、Claude Code、Codex 或其他 MCP 客户端；模型由宿主提供。</span><span class="lang-en" lang="en">DeepSeek Harness, Claude Code, Codex, or another MCP client. The host provides the model.</span></p>
                 </div>
                 <div class="requirement">
-                  <strong>hdc</strong>
-                  <p><span class="lang-zh" lang="zh-CN">只有设备工具需要，可来自 DevEco Command Line Tools。</span><span class="lang-en" lang="en">Only needed for device tools; can come from DevEco Command Line Tools.</span></p>
-                </div>
-                <div class="requirement">
-                  <strong>HarmonyOS device</strong>
-                  <p><span class="lang-zh" lang="zh-CN">设备抓取、截图和 UI 操作需要一台可连接的设备或模拟器。</span><span class="lang-en" lang="en">A reachable device or emulator for capture, screenshots, and UI actions.</span></p>
-                </div>
-                <div class="requirement">
-                  <strong>API key</strong>
-                  <p><span class="lang-zh" lang="zh-CN">不需要。DitingAgent 不调用模型，也不保存模型凭证。</span><span class="lang-en" lang="en">None required. DitingAgent calls no model and stores no model credentials.</span></p>
+                  <strong>HarmonyOS device + hdc</strong>
+                  <p><span class="lang-zh" lang="zh-CN">设备抓取、截图和 UI 操作需要可连接设备或模拟器；hdc 可来自 DevEco Command Line Tools。</span><span class="lang-en" lang="en">Capture, screenshots, and UI actions need a reachable device or emulator; hdc can come from DevEco Command Line Tools.</span></p>
                 </div>
               </div>
               <p class="device-note"><span class="lang-zh" lang="zh-CN">Windows、macOS 和 Linux 都使用同一条 npx 命令；不需要全局安装。</span><span class="lang-en" lang="en">Windows, macOS, and Linux use the same npx entry; no global install is needed.</span></p>
@@ -133,8 +125,8 @@
             <section class="install-section" id="install" aria-labelledby="install-title">
               <h2 id="install-title"><span class="lang-zh" lang="zh-CN">运行 npx 入口</span><span class="lang-en" lang="en">Run the npx entry</span></h2>
               <p>
-                <span class="lang-zh" lang="zh-CN"><code>npx diting-agents@latest --version</code> 首次会创建 Python 环境并安装 MCP server 依赖；不需要克隆仓库，也不会写入模型配置。</span>
-                <span class="lang-en" lang="en"><code>npx diting-agents@latest --version</code> creates a Python environment and installs the MCP server dependencies on first use. No repository clone or model configuration is required.</span>
+                <span class="lang-zh" lang="zh-CN"><code>npx diting-agents@latest --version</code> 首次会创建 Python 环境并安装 MCP server 依赖；不需要克隆仓库。</span>
+                <span class="lang-en" lang="en"><code>npx diting-agents@latest --version</code> creates a Python environment and installs the MCP server dependencies on first use. No repository clone is required.</span>
               </p>
               <div class="code-box">
                 <div class="code-top">
