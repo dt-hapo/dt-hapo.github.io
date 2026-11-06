@@ -1,0 +1,266 @@
+/* --------------------------------------------------------------------------
+   Chrome redesign: two-tier header and a dark, link-rich closing footer.
+   -------------------------------------------------------------------------- */
+
+.utility-bar {
+  background: #050a14;
+  color: #a9b8cc;
+  border-bottom: 1px solid rgba(148, 184, 255, 0.14);
+}
+
+.utility-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 34px;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.utility-bar__label {
+  letter-spacing: 0.015em;
+}
+
+.utility-bar__links {
+  display: flex;
+  align-items: center;
+  gap: 1.35rem;
+}
+
+.utility-bar__links a {
+  color: #d7e2f0;
+  text-decoration: none;
+  transition: color 160ms var(--ease);
+}
+
+.utility-bar__links a:hover {
+  color: #fff;
+}
+
+/* Desktop header gains a direct install action; the nav keeps three links. */
+.header-install {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 40px;
+  padding: 0 1rem;
+  border: 1px solid var(--signal);
+  border-radius: 999px;
+  background: var(--signal);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 620;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 160ms var(--ease), border-color 160ms var(--ease),
+    color 160ms var(--ease);
+}
+
+.header-install:hover {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fff;
+}
+
+.header-install[aria-current="page"] {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.nav-link--mobile-install {
+  display: none;
+}
+
+@media (min-width: 961px) {
+  .header-actions {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 960px) {
+  .header-install {
+    display: none;
+  }
+
+  .site-nav .nav-link--mobile-install {
+    display: flex;
+  }
+}
+
+@media (max-width: 720px) {
+  .utility-bar {
+    display: none;
+  }
+}
+
+/* Dark closing frame with a rounded CTA panel. */
+.site-footer {
+  padding: 0 0 1.4rem;
+  background: #07101f;
+  background-image: none;
+  color: #f3f7fd;
+  border-top: 1px solid rgba(148, 184, 255, 0.16);
+}
+
+.site-footer::before {
+  top: -1px;
+  background: var(--signal);
+  height: 2px;
+}
+
+.footer-cta {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding: clamp(1.6rem, 3.5vw, 2.8rem);
+  border: 1px solid rgba(126, 176, 255, 0.2);
+  border-radius: 26px;
+  background: #0c1a2d;
+  align-items: end;
+}
+
+.footer-cta h2 {
+  color: #f6f9ff;
+  font-size: clamp(2.15rem, 3.2vw, 3.2rem);
+  line-height: 1.05;
+}
+
+.footer-cta__copy p {
+  color: #a7b8cc;
+}
+
+.footer-cta .btn {
+  background: #f6f9ff;
+  border-color: #f6f9ff;
+  color: #07101f;
+}
+
+.footer-cta .btn:hover {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: #fff;
+}
+
+.footer-cta .link-arrow {
+  color: #f6f9ff;
+  border-bottom-color: rgba(246, 249, 255, 0.28);
+}
+
+.footer-cta .link-arrow:hover {
+  color: var(--signal-bright);
+  border-bottom-color: var(--signal-bright);
+}
+
+.site-footer .footer-grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.9fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-top: clamp(2.2rem, 4vw, 3.2rem);
+}
+
+.site-footer .brand-text {
+  color: #f6f9ff;
+}
+
+.site-footer .footer-desc {
+  max-width: 42ch;
+  color: #9bacc1;
+}
+
+.footer-links {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: none;
+}
+
+.site-footer .footer-col h3 {
+  color: #7f93ac;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.site-footer .footer-col a {
+  color: #dbe6f5;
+  font-size: 0.9rem;
+}
+
+.site-footer .footer-col a:hover {
+  color: var(--signal-bright);
+}
+
+.site-footer .footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
+  border-top-color: rgba(148, 184, 255, 0.16);
+  color: #7f93ac;
+  font-size: 0.8rem;
+}
+
+.footer-meta__note {
+  color: #9bacc1;
+}
+
+.footer-meta__links {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.site-footer .footer-meta a {
+  color: #dbe6f5;
+}
+
+.site-footer .footer-meta a:hover {
+  color: var(--signal-bright);
+}
+
+@media (max-width: 960px) {
+  .footer-cta {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .footer-cta__actions {
+    justify-content: flex-start;
+  }
+
+  .site-footer .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-cta {
+    padding: 1.35rem;
+    border-radius: 20px;
+  }
+
+  .footer-cta h2 {
+    font-size: clamp(1.9rem, 8.5vw, 2.3rem);
+  }
+
+  .footer-cta__actions {
+    gap: 0.8rem 1.1rem;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .site-footer .footer-meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .footer-meta__links {
+    margin-top: 0.25rem;
+  }
+}
