@@ -93,7 +93,7 @@
               <li><a href="#install"><span>02</span><span><span class="lang-zh" lang="zh-CN">安装依赖</span><span class="lang-en" lang="en">Install</span></span></a></li>
               <li><a href="#host"><span>03</span><span><span class="lang-zh" lang="zh-CN">注册宿主</span><span class="lang-en" lang="en">Host setup</span></span></a></li>
               <li><a href="#verify"><span>04</span><span><span class="lang-zh" lang="zh-CN">健康检查</span><span class="lang-en" lang="en">Verify</span></span></a></li>
-              <li><a href="#server"><span>05</span><span><span class="lang-zh" lang="zh-CN">启动 server</span><span class="lang-en" lang="en">Start server</span></span></a></li>
+              <li><a href="#server"><span>05</span><span><span class="lang-zh" lang="zh-CN">调试（可选）</span><span class="lang-en" lang="en">Debug (optional)</span></span></a></li>
               <li><a href="#device"><span>06</span><span><span class="lang-zh" lang="zh-CN">设备工具</span><span class="lang-en" lang="en">Device tools</span></span></a></li>
             </ol>
           </aside>
@@ -177,10 +177,10 @@ npx diting-agents@latest doctor --hdc /path/to/hdc</code></pre>
             </section>
 
             <section class="install-section" id="server" aria-labelledby="server-title">
-              <h2 id="server-title"><span class="lang-zh" lang="zh-CN">手动启动 MCP server</span><span class="lang-en" lang="en">Start the MCP server manually</span></h2>
+              <h2 id="server-title"><span class="lang-zh" lang="zh-CN">调试启动（可选）</span><span class="lang-en" lang="en">Debug start (optional)</span></h2>
               <p>
-                <span class="lang-zh" lang="zh-CN">通常由宿主根据注册配置启动。调试连接时也可以手动运行 stdio server；指定 workspace 和可读取的 Trace 根目录。</span>
-                <span class="lang-en" lang="en">The host normally starts the server from the registered config. For connection debugging, run the stdio server manually with a workspace and readable trace roots.</span>
+                <span class="lang-zh" lang="zh-CN">日常分析由宿主自动启动 MCP server。只有在调试连接或自定义客户端时，才需要手动运行 stdio server；指定 workspace 和可读取的 Trace 根目录。</span>
+                <span class="lang-en" lang="en">The host starts the MCP server automatically for normal analysis. Use a manual stdio server only for connection debugging or a custom client; specify a workspace and readable trace roots.</span>
               </p>
               <div class="code-box">
                 <div class="code-top"><span>terminal / bash</span><span>stdio</span></div>

@@ -77,8 +77,8 @@
               <span class="lang-en" lang="en">End-to-end<br>HarmonyOS app<br>performance analysis</span>
             </h1>
             <p class="hero-lede">
-              <span class="lang-zh" lang="zh-CN">DitingAgent 作为 MCP server 提供 Trace 转换、有界取证工具、确定性校验和 HTML 报告。模型、推理循环和工具选择由宿主 Agent 提供；在有设备授权时，也可以查看屏幕、操作控件并抓取 HTrace。</span>
-              <span class="lang-en" lang="en">DitingAgent is an MCP server for trace conversion, bounded inspection tools, deterministic validation, and HTML reports. The host agent owns the model, reasoning loop, and tool selection; with device authorisation, it can also inspect the screen, operate controls, and capture an HTrace.</span>
+              <span class="lang-zh" lang="zh-CN">宿主 Agent 理解问题并决定下一步；Diting 通过 MCP 在设备上执行操作、抓取 HTrace，完成有界取证、确定性校验和 HTML 报告。</span>
+              <span class="lang-en" lang="en">The host agent understands the problem and decides what to do next. Over MCP, Diting operates the device, captures an HTrace, gathers bounded evidence, validates it, and renders an HTML report.</span>
             </p>
             <div class="actions">
               <a class="btn btn--primary" href="install.html">
@@ -321,45 +321,55 @@ begin_analysis(
       </div>
     </section>
 
-    <section class="section" aria-labelledby="run-title">
+    <section class="section auto-section" aria-labelledby="auto-title">
       <div class="container">
         <div class="section-head section-head--wide">
-          <h2 class="section-title" id="run-title"><span class="lang-zh" lang="zh-CN">接入宿主与手动启动</span><span class="lang-en" lang="en">Host registration and manual start</span></h2>
+          <h2 class="section-title" id="auto-title"><span class="lang-zh" lang="zh-CN">Agent + Diting，自动完成一次分析。</span><span class="lang-en" lang="en">Agent + Diting: one automated analysis.</span></h2>
           <p class="section-intro">
-            <span class="lang-zh" lang="zh-CN">宿主 Agent 通过 MCP stdio 调用 DitingAgent。可以用 setup 写入宿主配置，也可以手动启动 server 进行连接和调试。</span>
-            <span class="lang-en" lang="en">The host agent calls DitingAgent over MCP stdio. Use setup to register it with a host, or start the server manually for connection and debugging.</span>
+            <span class="lang-zh" lang="zh-CN">描述问题，Agent 负责判断和决策；Diting 在设备上执行操作、抓取 HTrace、返回取证结果并生成报告。</span>
+            <span class="lang-en" lang="en">Describe the problem. The agent decides what to do; Diting acts on the device, captures the trace, returns evidence, and renders the report.</span>
           </p>
         </div>
 
-        <div class="run-grid">
-          <div class="run-card">
-            <h3><span class="lang-zh" lang="zh-CN">注册到宿主</span><span class="lang-en" lang="en">Register with a host</span></h3>
-            <p><span class="lang-zh" lang="zh-CN">支持 DeepSeek Harness、Claude Code、Codex 等 MCP 宿主。</span><span class="lang-en" lang="en">Works with MCP hosts such as DeepSeek Harness, Claude Code, and Codex.</span></p>
-            <div class="code-box">
-              <div class="code-top"><span>terminal / bash</span><span>setup</span></div>
-              <pre><code>npx diting-agents@latest setup --client dsh \
-  --yes --allow-root ~/traces
-
-# generic JSON for another host
-npx diting-agents@latest setup --client generic</code></pre>
+        <div class="auto-grid">
+          <div class="auto-card auto-card--task">
+            <p class="auto-label"><span class="lang-zh" lang="zh-CN">对 Agent 说</span><span class="lang-en" lang="en">Say to the agent</span></p>
+            <p class="auto-prompt">
+              <span class="lang-zh" lang="zh-CN">分析这个应用冷启动慢的问题。连接设备复现，抓取 HTrace，定位启动关键路径，并生成带证据的报告。</span>
+              <span class="lang-en" lang="en">Analyze why this app is slow to cold start. Reproduce it on the device, capture an HTrace, trace the startup critical path, and produce an evidence-backed report.</span>
+            </p>
+            <div class="auto-signal" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+            <div class="auto-task-foot">
+              <span class="auto-route">Agent <b>→</b> Diting</span>
+              <span>MCP / device / trace</span>
             </div>
-            <a class="link-arrow" href="install.html#host"><span><span class="lang-zh" lang="zh-CN">宿主注册步骤</span><span class="lang-en" lang="en">Host registration steps</span></span><span aria-hidden="true">→</span></a>
           </div>
 
-          <div class="run-card">
-            <h3><span class="lang-zh" lang="zh-CN">手动启动 server</span><span class="lang-en" lang="en">Start the server manually</span></h3>
-            <p><span class="lang-zh" lang="zh-CN">用于连接调试或自定义客户端。设备工具可用时，可继续执行屏幕操作和抓取。</span><span class="lang-en" lang="en">For connection testing or custom clients. Device tools can be enabled for screen actions and capture.</span></p>
-            <div class="code-box">
-              <div class="code-top"><span>terminal / bash</span><span>stdio</span></div>
-              <pre><code>npx diting-agents@latest mcp \
-  --workspace .diting/sessions \
-  --allow-root ~/traces</code></pre>
-            </div>
-            <a class="link-arrow" href="tools.html#mcp"><span><span class="lang-zh" lang="zh-CN">MCP 工具面与接入</span><span class="lang-en" lang="en">MCP tools and integration</span></span><span aria-hidden="true">→</span></a>
+          <div class="auto-card auto-card--flow">
+            <p class="auto-label"><span class="lang-zh" lang="zh-CN">执行链</span><span class="lang-en" lang="en">Execution</span></p>
+            <ol class="auto-steps">
+              <li class="auto-step">
+                <span class="auto-step__num">01</span>
+                <div><strong><span class="lang-zh" lang="zh-CN">Agent 复现问题</span><span class="lang-en" lang="en">Agent reproduces it</span></strong><p><span class="lang-zh" lang="zh-CN">连接设备，执行必要操作，确认目标场景。</span><span class="lang-en" lang="en">Connect the device, act, and confirm the target scenario.</span></p></div>
+              </li>
+              <li class="auto-step">
+                <span class="auto-step__num">02</span>
+                <div><strong><span class="lang-zh" lang="zh-CN">Diting 抓取 Trace</span><span class="lang-en" lang="en">Diting captures the trace</span></strong><p><span class="lang-zh" lang="zh-CN">抓取 HTrace，或打开已有 Trace。</span><span class="lang-en" lang="en">Capture an HTrace, or open an existing trace.</span></p></div>
+              </li>
+              <li class="auto-step">
+                <span class="auto-step__num">03</span>
+                <div><strong><span class="lang-zh" lang="zh-CN">Agent 选择工具，Diting 取证</span><span class="lang-en" lang="en">Agent selects tools; Diting gathers evidence</span></strong><p><span class="lang-zh" lang="zh-CN">按场景调用有界工具，返回 Evidence 和摘要。</span><span class="lang-en" lang="en">Call bounded tools by scenario and return evidence with summaries.</span></p></div>
+              </li>
+              <li class="auto-step">
+                <span class="auto-step__num">04</span>
+                <div><strong><span class="lang-zh" lang="zh-CN">校验并生成报告</span><span class="lang-en" lang="en">Validate and render</span></strong><p><span class="lang-zh" lang="zh-CN">确定性校验后输出 HTML 报告和完整证据。</span><span class="lang-en" lang="en">Run deterministic validation, then render the HTML report and evidence.</span></p></div>
+              </li>
+            </ol>
+            <a class="link-arrow" href="method.html"><span><span class="lang-zh" lang="zh-CN">查看完整分析流程</span><span class="lang-en" lang="en">See the full analysis flow</span></span><span aria-hidden="true">→</span></a>
           </div>
         </div>
 
-        <div class="section-foot"><a class="btn" href="install.html"><span><span class="lang-zh" lang="zh-CN">完整安装与设备接入</span><span class="lang-en" lang="en">Full installation and device setup</span></span><span class="btn__arrow" aria-hidden="true">→</span></a></div>
+        <div class="section-foot"><a class="link-arrow" href="install.html"><span><span class="lang-zh" lang="zh-CN">安装并接入宿主</span><span class="lang-en" lang="en">Install and connect a host</span></span><span aria-hidden="true">→</span></a></div>
       </div>
     </section>
   </main>
