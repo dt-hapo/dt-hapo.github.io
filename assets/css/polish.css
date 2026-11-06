@@ -369,3 +369,107 @@ body[data-page="analysis"] .section--loop .section-intro {
 #mcp-budget .terminal-top {
   font-size: 0.75rem;
 }
+
+/* Workflow as an explicit owner-by-owner process list. */
+.loop-flow {
+  display: block;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.loop-step {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1.55fr) minmax(9rem, 0.55fr);
+  gap: 1rem;
+  align-items: start;
+  min-height: 0;
+  padding: 1.05rem 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  background: transparent;
+}
+
+.loop-step:first-child {
+  border-top: 0;
+}
+
+.loop-step__num {
+  padding-top: 0.1rem;
+}
+
+.loop-step__body {
+  min-width: 0;
+}
+
+.loop-step__body strong {
+  display: block;
+  margin: 0 0 0.25rem;
+  color: #f6f9ff;
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.loop-step__desc {
+  margin: 0;
+  color: #b9c8dd;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.loop-step__meta {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+}
+
+.loop-step__owner {
+  display: inline-flex;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  color: #dce8f8;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.loop-step__meta code {
+  margin: 0;
+  padding: 0;
+  color: #a9c9f5;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 720px) {
+  .loop-step {
+    grid-template-columns: 1.7rem minmax(0, 1fr);
+    column-gap: 0.8rem;
+    row-gap: 0;
+    padding: 0.95rem 0;
+  }
+
+  .loop-step__body,
+  .loop-step__meta {
+    grid-column: 2;
+  }
+
+  .loop-step__meta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.45rem;
+    margin-top: 0.55rem;
+  }
+
+  .loop-step__meta code {
+    text-align: left;
+  }
+}

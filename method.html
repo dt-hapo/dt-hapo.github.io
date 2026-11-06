@@ -19,13 +19,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261106-21">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-21">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-21">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-21">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-21">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-21">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-21">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261106-23">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-23">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-23">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-23">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-23">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-23">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-23">
 </head>
 <body data-page="analysis" data-title-zh="分析 — Diting" data-title-en="Analysis — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -98,54 +98,89 @@
     <section class="section section--loop" id="loop" aria-labelledby="loop-title">
       <div class="container">
         <div class="section-head section-head--wide">
-          <h2 class="section-title" id="loop-title"><span class="lang-zh" lang="zh-CN">七个阶段，一条闭环。</span><span class="lang-en" lang="en">Seven stages, one loop.</span></h2>
-          <p class="section-intro"><span class="lang-zh" lang="zh-CN">不是一串独立工具：上一阶段的产物直接成为下一阶段的输入，报告结果又回到宿主 Agent，驱动下一次改动。</span><span class="lang-en" lang="en">This is not a row of separate tools: each stage feeds the next, and the report returns to the host agent to drive the next change.</span></p>
+          <h2 class="section-title" id="loop-title"><span class="lang-zh" lang="zh-CN">七个步骤，每一步都有执行者。</span><span class="lang-en" lang="en">Seven steps, each with an owner.</span></h2>
+          <p class="section-intro"><span class="lang-zh" lang="zh-CN">宿主 Agent 负责理解问题、改代码、选择场景与工具；Diting 负责构建、签名、安装、抓取、有界取证、确定性校验和报告。</span><span class="lang-en" lang="en">The host agent understands the problem, edits code, and chooses the scenario and tools. Diting builds, signs, installs, captures, gathers bounded evidence, validates deterministically, and renders the report.</span></p>
         </div>
         <ol class="loop-flow">
           <li class="loop-step">
             <span class="loop-step__num">01</span>
-            <strong><span class="lang-zh" lang="zh-CN">改代码</span><span class="lang-en" lang="en">Edit code</span></strong>
-            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">宿主 Agent</span><span class="lang-en" lang="en">Host agent</span></span>
-            <code>project</code>
+            <div class="loop-step__body">
+              <strong><span class="lang-zh" lang="zh-CN">理解问题并改代码</span><span class="lang-en" lang="en">Understand and edit code</span></strong>
+              <p class="loop-step__desc"><span class="lang-zh" lang="zh-CN">宿主 Agent 读取代码和现象，修改工程，确定本轮要验证的场景。</span><span class="lang-en" lang="en">The host agent reads the code and symptom, edits the project, and chooses the scenario to verify.</span></p>
+            </div>
+            <div class="loop-step__meta">
+              <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">宿主 Agent</span><span class="lang-en" lang="en">Host agent</span></span>
+              <code>project</code>
+            </div>
           </li>
           <li class="loop-step">
             <span class="loop-step__num">02</span>
-            <strong><span class="lang-zh" lang="zh-CN">构建</span><span class="lang-en" lang="en">Build</span></strong>
-            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
-            <code>build_app</code>
+            <div class="loop-step__body">
+              <strong><span class="lang-zh" lang="zh-CN">构建</span><span class="lang-en" lang="en">Build</span></strong>
+              <p class="loop-step__desc"><span class="lang-zh" lang="zh-CN">Diting 用 hvigorw 生成 HAP；需要 App Pack 时用 package_app。</span><span class="lang-en" lang="en">Diting builds a HAP with hvigorw; use package_app when an App Pack is needed.</span></p>
+            </div>
+            <div class="loop-step__meta">
+              <span class="loop-step__owner">Diting</span>
+              <code>build_app</code>
+            </div>
           </li>
           <li class="loop-step">
             <span class="loop-step__num">03</span>
-            <strong><span class="lang-zh" lang="zh-CN">签名</span><span class="lang-en" lang="en">Sign</span></strong>
-            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
-            <code>sign_app</code>
+            <div class="loop-step__body">
+              <strong><span class="lang-zh" lang="zh-CN">签名</span><span class="lang-en" lang="en">Sign</span></strong>
+              <p class="loop-step__desc"><span class="lang-zh" lang="zh-CN">Diting 用 hap-sign-tool 签名并验证；签名材料由用户提供。</span><span class="lang-en" lang="en">Diting signs and verifies with hap-sign-tool; the user supplies signing assets.</span></p>
+            </div>
+            <div class="loop-step__meta">
+              <span class="loop-step__owner">Diting</span>
+              <code>sign_app</code>
+            </div>
           </li>
           <li class="loop-step">
             <span class="loop-step__num">04</span>
-            <strong><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></strong>
-            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
-            <code>install_app</code>
+            <div class="loop-step__body">
+              <strong><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></strong>
+              <p class="loop-step__desc"><span class="lang-zh" lang="zh-CN">Diting 通过 hdc 安装到目标设备，不绕过设备权限。</span><span class="lang-en" lang="en">Diting installs on the target device over hdc without bypassing device permissions.</span></p>
+            </div>
+            <div class="loop-step__meta">
+              <span class="loop-step__owner">Diting</span>
+              <code>install_app</code>
+            </div>
           </li>
           <li class="loop-step">
             <span class="loop-step__num">05</span>
-            <strong><span class="lang-zh" lang="zh-CN">启动</span><span class="lang-en" lang="en">Launch</span></strong>
-            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Agent / Diting</span><span class="lang-en" lang="en">Agent / Diting</span></span>
-            <code>act · launch_app</code>
+            <div class="loop-step__body">
+              <strong><span class="lang-zh" lang="zh-CN">启动并复现</span><span class="lang-en" lang="en">Launch and reproduce</span></strong>
+              <p class="loop-step__desc"><span class="lang-zh" lang="zh-CN">Diting 通过 act · launch_app 或 capture_trace 的 steps 启动目标应用，复现问题。</span><span class="lang-en" lang="en">Diting launches the target through act · launch_app or capture_trace steps and reproduces the issue.</span></p>
+            </div>
+            <div class="loop-step__meta">
+              <span class="loop-step__owner">Diting</span>
+              <code>act · launch_app</code>
+            </div>
           </li>
           <li class="loop-step">
             <span class="loop-step__num">06</span>
-            <strong><span class="lang-zh" lang="zh-CN">抓 Trace</span><span class="lang-en" lang="en">Capture</span></strong>
-            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
-            <code>capture_trace</code>
+            <div class="loop-step__body">
+              <strong><span class="lang-zh" lang="zh-CN">抓 Trace</span><span class="lang-en" lang="en">Capture trace</span></strong>
+              <p class="loop-step__desc"><span class="lang-zh" lang="zh-CN">Diting 按 ui / startup / memory / io / network / full / perf preset 抓取；可在抓取期间执行 UI steps。</span><span class="lang-en" lang="en">Diting captures with a ui / startup / memory / io / network / full / perf preset; UI steps can run during capture.</span></p>
+            </div>
+            <div class="loop-step__meta">
+              <span class="loop-step__owner">Diting</span>
+              <code>capture_trace</code>
+            </div>
           </li>
           <li class="loop-step">
             <span class="loop-step__num">07</span>
-            <strong><span class="lang-zh" lang="zh-CN">分析并报告</span><span class="lang-en" lang="en">Analyze + report</span></strong>
-            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Agent / Diting</span><span class="lang-en" lang="en">Agent / Diting</span></span>
-            <code>open_trace → render_report</code>
+            <div class="loop-step__body">
+              <strong><span class="lang-zh" lang="zh-CN">分析并报告</span><span class="lang-en" lang="en">Analyze and report</span></strong>
+              <p class="loop-step__desc"><span class="lang-zh" lang="zh-CN">宿主 Agent 选择场景、边界和工具；Diting 执行有界取证、确定性校验并渲染 HTML 报告。结果回到 Agent，决定下一次改动。</span><span class="lang-en" lang="en">The host agent chooses the scenario, boundary, and tools. Diting gathers bounded evidence, validates deterministically, and renders the HTML report. The result returns to the agent for the next edit.</span></p>
+            </div>
+            <div class="loop-step__meta">
+              <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">宿主 Agent + Diting</span><span class="lang-en" lang="en">Host agent + Diting</span></span>
+              <code>open_trace → render_report</code>
+            </div>
           </li>
         </ol>
-        <p class="loop-return"><span class="loop-return__icon" aria-hidden="true">↺</span><span><span class="lang-zh" lang="zh-CN">报告结果回到宿主 Agent，决定下一次代码改动。</span><span class="lang-en" lang="en">The report returns to the host agent and drives the next code change.</span></span></p>
+        <p class="loop-return"><span class="loop-return__icon" aria-hidden="true">↺</span><span><span class="lang-zh" lang="zh-CN">报告结果回到宿主 Agent，进入下一轮改代码。</span><span class="lang-en" lang="en">The report returns to the host agent for the next code change.</span></span></p>
       </div>
     </section>
 
