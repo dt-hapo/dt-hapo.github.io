@@ -1,0 +1,38 @@
+/* Remove decorative blue rule segments across the site. */
+.section-title::before,
+.install-section > h2::before,
+.scenario-head h2::before,
+body .page-hero h1::before,
+.scenario-item::before,
+.site-footer::before,
+.site-header .nav-link[aria-current="page"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Keep interactive blue, but remove blue line accents from cards and chrome. */
+.quick-install {
+  border-top: 1px solid var(--line);
+}
+
+body .page-hero__aside {
+  border-left-color: var(--line);
+}
+
+.scroll-progress {
+  background: var(--ink);
+}
+
+.site-header .nav-link[aria-current="page"] {
+  font-weight: 620;
+}
+
+/* The trace texture stays as a neutral technical pattern, not blue segments. */
+.auto-signal span::after {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.auto-signal span:nth-child(2)::after,
+.auto-signal span:nth-child(4)::after {
+  background: rgba(255, 255, 255, 0.18);
+}
