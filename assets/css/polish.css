@@ -56,3 +56,9 @@
     min-height: 44px;
   }
 }
+
+/* Rows use a soft hover wash only; no blue vertical hover rule. */
+.tool-cap-row:hover,
+.tool-detail__row:hover {
+  box-shadow: none;
+}
