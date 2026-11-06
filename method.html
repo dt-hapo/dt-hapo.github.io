@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Analysis — Diting</title>
-  <meta name="description" content="DitingAgent analysis flow: device connection, UI actions, and performance evidence collection, covering all four scenarios with boundaries, inspection, validation, and HTML reporting.">
+  <meta name="description" content="DitingAgent 0.1.5 workflow: edit, build, sign, install, launch, trace capture, and evidence-backed analysis across all four scenarios, plus an existing-trace entry point.">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -19,13 +19,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-16">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-17">
 </head>
 <body data-page="analysis" data-title-zh="分析 — Diting" data-title-en="Analysis — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -73,13 +73,13 @@
       <div class="container">
         <div class="page-hero__body">
           <h1 id="page-title">
-            <span class="lang-zh" lang="zh-CN">设备操作、性能取证<br>与四类场景分析。</span>
-            <span class="lang-en" lang="en">Device actions, performance evidence,<br>and four-scenario analysis.</span>
+            <span class="lang-zh" lang="zh-CN">从改代码到性能取证，<br>覆盖四类场景。</span>
+            <span class="lang-en" lang="en">From code change to performance evidence,<br>across four scenarios.</span>
           </h1>
           <div class="page-hero__aside">
             <p>
-              <span class="lang-zh" lang="zh-CN">DitingAgent 的 HarmonyOS 工作流有两条入口：现场设备，或已经存在的 HTrace。两者最终都进入同一套转换、边界、取证、校验和报告流程。</span>
-              <span class="lang-en" lang="en">DitingAgent’s HarmonyOS workflow has two entry points: a live device or an existing HTrace. Both lead into the same conversion, boundary, inspection, validation, and reporting pipeline.</span>
+              <span class="lang-zh" lang="zh-CN">DitingAgent 0.1.5 的工作流覆盖改代码、构建、签名、安装、启动、抓 Trace 和分析；也可以从已有 HTrace 开始。两条路径最终进入同一套转换、边界、取证、校验和报告流程。</span>
+              <span class="lang-en" lang="en">DitingAgent 0.1.5 covers edit, build, sign, install, launch, trace capture, and analysis. An existing HTrace can enter the same conversion, boundary, inspection, validation, and reporting pipeline.</span>
             </p>
           </div>
         </div>
@@ -97,27 +97,28 @@
     <section class="section" id="entry" aria-labelledby="entry-title">
       <div class="container">
         <div class="section-head section-head--wide">
-          <h2 class="section-title" id="entry-title"><span class="lang-zh" lang="zh-CN">两种入口</span><span class="lang-en" lang="en">Two entry points</span></h2>
+          <h2 class="section-title" id="entry-title"><span class="lang-zh" lang="zh-CN">两种起点</span><span class="lang-en" lang="en">Two starting points</span></h2>
           <p class="section-intro">
-            <span class="lang-zh" lang="zh-CN">如果问题只在真机上出现，就让 Agent 连接设备、操作界面并抓取；如果已经有 HTrace，跳过设备步骤直接分析。</span>
-            <span class="lang-en" lang="en">If the problem only appears on a real device, let the agent connect, operate the UI, and capture it. If you already have an HTrace, skip straight to analysis.</span>
+            <span class="lang-zh" lang="zh-CN">从一次代码改动开始时，Agent 可以构建、签名、安装并启动应用，再抓 Trace；如果已有 HTrace，直接进入分析。</span>
+            <span class="lang-en" lang="en">When starting from a code change, the agent can build, sign, install, and launch the app before capturing a trace. With an existing HTrace, start directly at analysis.</span>
           </p>
         </div>
 
         <div class="two-paths">
           <div class="path-card">
-            <h3><span class="lang-zh" lang="zh-CN">设备工具 + hiprofiler</span><span class="lang-en" lang="en">Device tools + hiprofiler</span></h3>
+            <h3><span class="lang-zh" lang="zh-CN">改代码 → 构建、签名与安装</span><span class="lang-en" lang="en">Code change → build, sign, install</span></h3>
             <p>
-              <span class="lang-zh" lang="zh-CN">需要 <code>--enable-device</code>。Agent 可以先看屏幕、读控件树、执行操作，再在指定动作期间抓 Trace。</span>
-              <span class="lang-en" lang="en">Requires <code>--enable-device</code>. The agent can inspect the screen, read the control tree, perform actions, and capture a trace around a chosen interaction.</span>
+              <span class="lang-zh" lang="zh-CN">需要 <code>--enable-device</code>。Agent 可以修改工程，用 <code>build_app</code>、<code>sign_app</code> 和 <code>install_app</code> 完成构建、签名与安装；<code>package_app</code> 可生成 App Pack。随后启动应用并在目标交互期间抓 Trace。</span>
+              <span class="lang-en" lang="en">Requires <code>--enable-device</code>. The agent edits the project, uses <code>build_app</code>, <code>sign_app</code>, and <code>install_app</code> to build, sign, and install it, can use <code>package_app</code> for an App Pack, then launches the app and captures a trace around the target interaction.</span>
             </p>
             <div class="device-flow">
-              <div class="device-step"><span class="device-step__num">01</span><strong>inspect</strong><code>inspect_device</code></div>
-              <div class="device-step"><span class="device-step__num">02</span><strong>screen</strong><code>inspect_screen</code></div>
-              <div class="device-step"><span class="device-step__num">03</span><strong>act</strong><code>act</code></div>
+              <div class="device-step"><span class="device-step__num">01</span><strong>build</strong><code>build_app</code></div>
+              <div class="device-step"><span class="device-step__num">02</span><strong>sign</strong><code>sign_app</code></div>
+              <div class="device-step"><span class="device-step__num">03</span><strong>install</strong><code>install_app</code></div>
               <div class="device-step"><span class="device-step__num">04</span><strong>capture</strong><code>capture_trace</code></div>
             </div>
-            <a class="link-arrow" href="#device"><span><span class="lang-zh" lang="zh-CN">设备路径细节</span><span class="lang-en" lang="en">Device path in detail</span></span><span aria-hidden="true">↓</span></a>
+            <p class="device-note"><span class="lang-zh" lang="zh-CN">构建、签名和安装需要 HarmonyOS 工程、hvigor 与签名材料；这些工具默认关闭。</span><span class="lang-en" lang="en">Build, signing, and install need a HarmonyOS project, hvigor, and signing assets; these tools are opt-in.</span></p>
+            <a class="link-arrow" href="tools.html#device"><span><span class="lang-zh" lang="zh-CN">构建与设备工具</span><span class="lang-en" lang="en">Build and device tools</span></span><span aria-hidden="true">→</span></a>
           </div>
 
           <div class="path-card">
@@ -540,8 +541,8 @@ begin_analysis(
             <span class="brand-text">Diting</span>
           </a>
           <p class="footer-desc">
-            <span class="lang-zh" lang="zh-CN">HarmonyOS 应用性能分析服务。连接设备、采集证据，输出可追溯的报告。</span>
-            <span class="lang-en" lang="en">HarmonyOS app performance analysis. Connect a device, gather evidence, and get an evidence-backed report.</span>
+            <span class="lang-zh" lang="zh-CN">HarmonyOS 应用性能分析。从改代码、构建、签名、安装到 Trace 取证，输出可追溯的报告。</span>
+            <span class="lang-en" lang="en">HarmonyOS app performance analysis. From code change, build, sign, and install to trace evidence and a traceable report.</span>
           </p>
         </div>
         <div class="footer-links">
@@ -564,7 +565,7 @@ begin_analysis(
             <a href="https://www.npmjs.com/package/diting-agents" target="_blank" rel="noopener noreferrer">npm ↗</a>
             <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
             <a href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">GitCode ↗</a>
-            <a href="install.html#device"><span class="lang-zh" lang="zh-CN">设备工具</span><span class="lang-en" lang="en">Device tools</span></a>
+            <a href="install.html#device"><span class="lang-zh" lang="zh-CN">设备与构建</span><span class="lang-en" lang="en">Device &amp; build</span></a>
           </div>
         </div>
       </div>

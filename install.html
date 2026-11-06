@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Install and host setup — Diting</title>
-  <meta name="description" content="Install DitingAgent with npx: Node.js 18+, Python 3.12+, host registration, health checks, and optional HarmonyOS device tools.">
+  <meta name="description" content="Install DitingAgent 0.1.5 with npx: Node.js 18+, Python 3.12+, host registration, health checks, and 18 optional HarmonyOS device and build tools.">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -19,13 +19,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-16">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-17">
 </head>
 <body data-page="install" data-title-zh="安装与宿主接入 — Diting" data-title-en="Install and host setup — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -78,8 +78,8 @@
           </h1>
           <div class="page-hero__aside">
             <p>
-              <span class="lang-zh" lang="zh-CN">通过 npx 运行入口，注册到宿主，重载宿主后即可使用。首次执行会准备 Python 环境；需要设备工具时再配置 hdc 和 Command Line Tools。</span>
-              <span class="lang-en" lang="en">Run the npx entry, register it with a host, and reload the host. The first run prepares a Python environment. Configure hdc and Command Line Tools only if you need device tools.</span>
+              <span class="lang-zh" lang="zh-CN">通过 npx 运行入口，注册到宿主，重载宿主后即可使用。首次执行会准备 Python 环境；需要设备与构建工具时再配置 hdc、Command Line Tools、HarmonyOS 工程和签名材料。</span>
+              <span class="lang-en" lang="en">Run the npx entry, register it with a host, and reload the host. The first run prepares a Python environment. Configure hdc, Command Line Tools, a HarmonyOS project, and signing assets only if you need device and build tools.</span>
             </p>
           </div>
         </div>
@@ -96,7 +96,7 @@
               <li><a href="#host"><span>03</span><span><span class="lang-zh" lang="zh-CN">注册宿主</span><span class="lang-en" lang="en">Host setup</span></span></a></li>
               <li><a href="#verify"><span>04</span><span><span class="lang-zh" lang="zh-CN">健康检查</span><span class="lang-en" lang="en">Verify</span></span></a></li>
               <li><a href="#server"><span>05</span><span><span class="lang-zh" lang="zh-CN">调试（可选）</span><span class="lang-en" lang="en">Debug (optional)</span></span></a></li>
-              <li><a href="#device"><span>06</span><span><span class="lang-zh" lang="zh-CN">设备工具</span><span class="lang-en" lang="en">Device tools</span></span></a></li>
+              <li><a href="#device"><span>06</span><span><span class="lang-zh" lang="zh-CN">设备与构建</span><span class="lang-en" lang="en">Device &amp; build</span></span></a></li>
             </ol>
           </aside>
 
@@ -117,8 +117,8 @@
                   <p><span class="lang-zh" lang="zh-CN">DeepSeek Harness、Claude Code、Codex 或其他宿主 Agent；模型由宿主提供。</span><span class="lang-en" lang="en">DeepSeek Harness, Claude Code, Codex, or another host agent. The host provides the model.</span></p>
                 </div>
                 <div class="requirement">
-                  <strong>HarmonyOS device + hdc</strong>
-                  <p><span class="lang-zh" lang="zh-CN">设备抓取、截图和 UI 操作需要可连接设备或模拟器；hdc 可来自 DevEco <a href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>。</span><span class="lang-en" lang="en">Capture, screenshots, and UI actions need a reachable device or emulator; hdc can come from DevEco <a href="https://developer.huawei.com/consumer/en/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>.</span></p>
+                  <strong>HarmonyOS device + SDK</strong>
+                  <p><span class="lang-zh" lang="zh-CN">设备抓取、构建、签名、安装和 UI 操作需要设备、hdc、HarmonyOS 工程与签名材料；hdc 与 hvigor 可来自 DevEco <a href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>。</span><span class="lang-en" lang="en">Capture, build, sign, install, and UI actions need a device, hdc, a HarmonyOS project, and signing assets; hdc and hvigor can come from DevEco <a href="https://developer.huawei.com/consumer/en/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>.</span></p>
                 </div>
               </div>
               <p class="device-note"><span class="lang-zh" lang="zh-CN">Windows、macOS 和 Linux 都使用同一条 npx 命令；不需要全局安装。</span><span class="lang-en" lang="en">Windows, macOS, and Linux use the same npx entry; no global install is needed.</span></p>
@@ -194,10 +194,10 @@ npx diting-agents@latest doctor --hdc /path/to/hdc</code></pre>
             </section>
 
             <section class="install-section" id="device" aria-labelledby="device-title">
-              <h2 id="device-title"><span class="lang-zh" lang="zh-CN">设备工具</span><span class="lang-en" lang="en">Device tools</span></h2>
+              <h2 id="device-title"><span class="lang-zh" lang="zh-CN">设备与构建工具</span><span class="lang-en" lang="en">Device and build tools</span></h2>
               <p>
-                <span class="lang-zh" lang="zh-CN">设备工具默认关闭，需要 <code>--enable-device</code>；共 11 个工具。先检查或安装 <a href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>，再注册带 hdc 的设备配置。开启后 <code>act</code> 会真实点击和滑动，<code>capture_trace</code> 会调用 hiprofiler。</span>
-                <span class="lang-en" lang="en">Device tools are off by default and require <code>--enable-device</code>. Check or install <a href="https://developer.huawei.com/consumer/en/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>, then register a device-enabled config. Once enabled, <code>act</code> really taps and swipes, and <code>capture_trace</code> invokes hiprofiler.</span>
+                <span class="lang-zh" lang="zh-CN">设备与构建工具默认关闭，需要 <code>--enable-device</code>；共 18 个工具。先检查或安装 <a href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>，再注册带 hdc 的设备配置。开启后 Agent 可以构建、签名、安装并启动应用，再抓 Trace；<code>act</code> 和 <code>install_app</code> 会真实修改设备。</span>
+                <span class="lang-en" lang="en">Device and build tools are off by default and require <code>--enable-device</code>. Check or install <a href="https://developer.huawei.com/consumer/en/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>, then register a device-enabled config. Once enabled, the agent can build, sign, install, and launch the app before capturing a trace; <code>act</code> and <code>install_app</code> really change the device.</span>
               </p>
               <div class="code-box">
                 <div class="code-top">
@@ -229,12 +229,19 @@ npx diting-agents@latest mcp \
               <div class="tool-table__row"><code>pull_app_library</code><span><span class="lang-zh" lang="zh-CN">从应用 libs 或可读 HAP 拉取 .so</span><span class="lang-en" lang="en">Pull .so files from app libs or a readable HAP</span></span></div>
               <div class="tool-table__row"><code>extract_native_libraries</code><span><span class="lang-zh" lang="zh-CN">从本地 HAP/HSP/ZIP 提取 .so</span><span class="lang-en" lang="en">Extract .so files from a local HAP/HSP/ZIP</span></span></div>
               <div class="tool-table__row"><code>inspect_native_library</code><span><span class="lang-zh" lang="zh-CN">解析 ELF 架构、依赖、build-id 与符号</span><span class="lang-en" lang="en">Inspect ELF architecture, dependencies, build-id, and symbols</span></span></div>
+              <div class="tool-table__row"><code>inspect_abilities</code><span><span class="lang-zh" lang="zh-CN">读取工程或设备上的 Ability 与 launcher</span><span class="lang-en" lang="en">Read abilities and launcher information from a project or device</span></span></div>
+              <div class="tool-table__row"><code>clear_app_data</code><span><span class="lang-zh" lang="zh-CN">清除应用 data/cache</span><span class="lang-en" lang="en">Clear app data and cache</span></span></div>
+              <div class="tool-table__row"><code>build_app</code><span><span class="lang-zh" lang="zh-CN">用 hvigorw 构建 HAP</span><span class="lang-en" lang="en">Build a HAP with hvigorw</span></span></div>
+              <div class="tool-table__row"><code>package_app</code><span><span class="lang-zh" lang="zh-CN">用 hvigorw 打包 App Pack</span><span class="lang-en" lang="en">Package an App Pack with hvigorw</span></span></div>
+              <div class="tool-table__row"><code>sign_app</code><span><span class="lang-zh" lang="zh-CN">用 hap-sign-tool 签名并验证</span><span class="lang-en" lang="en">Sign and verify with hap-sign-tool</span></span></div>
+              <div class="tool-table__row"><code>install_app</code><span><span class="lang-zh" lang="zh-CN">通过 hdc 安装 HAP/HSP/App Pack</span><span class="lang-en" lang="en">Install a HAP/HSP/App Pack over hdc</span></span></div>
+              <div class="tool-table__row"><code>uninstall_app</code><span><span class="lang-zh" lang="zh-CN">通过 hdc 卸载，可保留数据</span><span class="lang-en" lang="en">Uninstall over hdc, optionally keeping data</span></span></div>
               </div>
-              <p class="device-note"><span class="lang-zh" lang="zh-CN"><code>install_environment</code> 的 URL 安装必须提供 SHA-256；设备动作会修改设备状态。详细约束见 <a href="tools.html#device">工具页</a> 和 <a href="tools.html#mcp-boundaries">权限边界</a>。</span><span class="lang-en" lang="en"><code>install_environment</code> URL installs require a SHA-256; device actions change device state. See the <a href="tools.html#device">tools page</a> and <a href="tools.html#mcp-boundaries">integration boundaries</a> for details.</span></p>
+              <p class="device-note"><span class="lang-zh" lang="zh-CN"><code>build_app</code>/<code>package_app</code> 需要 hvigorw 与 Java；<code>sign_app</code> 需要 keystore、证书和 profile；<code>install_environment</code> 的 URL 安装必须提供 SHA-256。设备动作会修改设备状态。详细约束见 <a href="tools.html#device">工具页</a> 和 <a href="tools.html#mcp-boundaries">权限边界</a>。</span><span class="lang-en" lang="en"><code>build_app</code>/<code>package_app</code> need hvigorw and Java; <code>sign_app</code> needs a keystore, certificate, and profile; <code>install_environment</code> URL installs require a SHA-256. Device actions change device state. See the <a href="tools.html#device">tools page</a> and <a href="tools.html#mcp-boundaries">integration boundaries</a> for details.</span></p>
             </section>
 
             <div class="install-finish">
-              <p><span class="lang-zh" lang="zh-CN">下一步：在宿主中打开一份 Trace 并开始分析。</span><span class="lang-en" lang="en">Next: open a trace from the host and start an analysis.</span></p>
+              <p><span class="lang-zh" lang="zh-CN">下一步：在宿主中从代码或 Trace 开始一次完整闭环。</span><span class="lang-en" lang="en">Next: start a complete loop from code or a trace in the host.</span></p>
               <a class="btn btn--primary" href="tools.html#session"><span><span class="lang-zh" lang="zh-CN">查看工具流程</span><span class="lang-en" lang="en">See the tool workflow</span></span><span class="btn__arrow" aria-hidden="true">→</span></a>
             </div>
           </div>
@@ -251,8 +258,8 @@ npx diting-agents@latest mcp \
             <span class="brand-text">Diting</span>
           </a>
           <p class="footer-desc">
-            <span class="lang-zh" lang="zh-CN">HarmonyOS 应用性能分析服务。连接设备、采集证据，输出可追溯的报告。</span>
-            <span class="lang-en" lang="en">HarmonyOS app performance analysis. Connect a device, gather evidence, and get an evidence-backed report.</span>
+            <span class="lang-zh" lang="zh-CN">HarmonyOS 应用性能分析。从改代码、构建、签名、安装到 Trace 取证，输出可追溯的报告。</span>
+            <span class="lang-en" lang="en">HarmonyOS app performance analysis. From code change, build, sign, and install to trace evidence and a traceable report.</span>
           </p>
         </div>
         <div class="footer-links">
@@ -275,7 +282,7 @@ npx diting-agents@latest mcp \
             <a href="https://www.npmjs.com/package/diting-agents" target="_blank" rel="noopener noreferrer">npm ↗</a>
             <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
             <a href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">GitCode ↗</a>
-            <a href="install.html#device"><span class="lang-zh" lang="zh-CN">设备工具</span><span class="lang-en" lang="en">Device tools</span></a>
+            <a href="install.html#device"><span class="lang-zh" lang="zh-CN">设备与构建</span><span class="lang-en" lang="en">Device &amp; build</span></a>
           </div>
         </div>
       </div>

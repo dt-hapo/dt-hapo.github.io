@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Diting — End-to-end HarmonyOS app performance analysis</title>
-  <meta name="description" content="DitingAgent provides end-to-end HarmonyOS app performance analysis: device actions, HTrace and Perf evidence, deterministic validation, and HTML reports, driven by the host agent.">
+  <meta name="description" content="DitingAgent 0.1.5 closes the loop from code change and build through sign, install, launch, trace capture, and evidence-backed HarmonyOS performance analysis, driven by the host agent.">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -19,12 +19,12 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-16">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-17">
 </head>
 <body data-page="index" data-title-zh="Diting — 端到端鸿蒙应用性能分析" data-title-en="Diting — End-to-end HarmonyOS app performance analysis">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -130,31 +130,31 @@ npx diting-agents@latest doctor</code></pre>
     <section class="section" aria-labelledby="paths-title">
       <div class="container">
         <div class="section-head section-head--wide">
-          <h2 class="section-title" id="paths-title"><span class="lang-zh" lang="zh-CN">两种入口：设备或 Trace。</span><span class="lang-en" lang="en">Two entry points: a device or a trace.</span></h2>
+          <h2 class="section-title" id="paths-title"><span class="lang-zh" lang="zh-CN">从代码或 Trace 开始。</span><span class="lang-en" lang="en">Start from code or a trace.</span></h2>
           <p class="section-intro">
-            <span class="lang-zh" lang="zh-CN">可以从设备现场开始，也可以从已有 HTrace 开始。两种入口进入同一套分析、校验和报告流程。</span>
-            <span class="lang-en" lang="en">Start from a live device, or from an HTrace you already have. Both paths lead into the same analysis, validation, and reporting pipeline.</span>
+            <span class="lang-zh" lang="zh-CN">可以从一次代码改动开始：Agent 修改工程，Diting 构建、签名、安装并启动应用，再抓取 Trace；也可以直接分析已有 HTrace。两条路径进入同一套分析、校验和报告流程。</span>
+            <span class="lang-en" lang="en">Start from a code change: the agent edits the project, then Diting builds, signs, installs, and launches the app before capturing a trace. Or bring an existing HTrace. Both paths lead into the same analysis, validation, and reporting pipeline.</span>
           </p>
         </div>
 
         <div class="two-paths">
           <div class="path-card">
-            <h3><span class="lang-zh" lang="zh-CN">连接设备、操作界面并抓取 Trace。</span><span class="lang-en" lang="en">Connect a device, operate the UI, and capture a trace.</span></h3>
+            <h3><span class="lang-zh" lang="zh-CN">从代码改动到 Trace。</span><span class="lang-en" lang="en">From code change to trace.</span></h3>
             <p>
-              <span class="lang-zh" lang="zh-CN">设备工具可以读取当前屏幕和控件树，执行 tap、swipe、key、text，再调用 hiprofiler 抓取带 ftrace 和可选 hiperf 的 Trace。抓取期间也能继续执行 UI 步骤。</span>
-              <span class="lang-en" lang="en">Device tools read the current screen and control tree, perform tap, swipe, key, and text actions, then call hiprofiler to capture ftrace and optional hiperf data. UI steps can run during capture.</span>
+              <span class="lang-zh" lang="zh-CN">需要 <code>--enable-device</code>。Agent 可以修改工程，调用 <code>build_app</code>、<code>sign_app</code> 和 <code>install_app</code> 完成构建、签名与安装；<code>package_app</code> 可生成 App Pack。随后启动应用并在目标交互期间抓 Trace。</span>
+              <span class="lang-en" lang="en">Requires <code>--enable-device</code>. The agent edits the project, uses <code>build_app</code>, <code>sign_app</code>, and <code>install_app</code> to build, sign, and install it, and can use <code>package_app</code> for an App Pack before launching the app and capturing a trace around the target interaction.</span>
             </p>
             <div class="device-flow">
-              <div class="device-step"><span class="device-step__num">01</span><strong><span class="lang-zh" lang="zh-CN">识设备</span><span class="lang-en" lang="en">Detect</span></strong><code>inspect_device</code></div>
-              <div class="device-step"><span class="device-step__num">02</span><strong><span class="lang-zh" lang="zh-CN">看屏幕</span><span class="lang-en" lang="en">Inspect</span></strong><code>inspect_screen</code></div>
-              <div class="device-step"><span class="device-step__num">03</span><strong><span class="lang-zh" lang="zh-CN">操作</span><span class="lang-en" lang="en">Act</span></strong><code>act</code></div>
+              <div class="device-step"><span class="device-step__num">01</span><strong><span class="lang-zh" lang="zh-CN">构建</span><span class="lang-en" lang="en">Build</span></strong><code>build_app</code></div>
+              <div class="device-step"><span class="device-step__num">02</span><strong><span class="lang-zh" lang="zh-CN">签名</span><span class="lang-en" lang="en">Sign</span></strong><code>sign_app</code></div>
+              <div class="device-step"><span class="device-step__num">03</span><strong><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></strong><code>install_app</code></div>
               <div class="device-step"><span class="device-step__num">04</span><strong><span class="lang-zh" lang="zh-CN">抓 Trace</span><span class="lang-en" lang="en">Capture</span></strong><code>capture_trace</code></div>
             </div>
             <p class="device-note">
-              <span class="lang-zh" lang="zh-CN">设备工具默认关闭，需要在启动时加 <code>--enable-device</code>；<code>act</code> 会真实操作设备。</span>
-              <span class="lang-en" lang="en">Device tools are opt-in via <code>--enable-device</code>. <code>act</code> really operates the device.</span>
+              <span class="lang-zh" lang="zh-CN">这些工具默认关闭，需要在启动时加 <code>--enable-device</code>；<code>install_app</code> 和 <code>act</code> 会真实修改设备。</span>
+              <span class="lang-en" lang="en">These tools are opt-in via <code>--enable-device</code>. <code>install_app</code> and <code>act</code> really change the device.</span>
             </p>
-            <a class="link-arrow" href="method.html#device"><span><span class="lang-zh" lang="zh-CN">查看设备工作流</span><span class="lang-en" lang="en">Device workflow</span></span><span aria-hidden="true">→</span></a>
+            <a class="link-arrow" href="tools.html#device"><span><span class="lang-zh" lang="zh-CN">查看构建与设备工具</span><span class="lang-en" lang="en">Build and device tools</span></span><span aria-hidden="true">→</span></a>
           </div>
 
           <div class="path-card">
@@ -235,8 +235,8 @@ begin_analysis(
         <div class="section-head section-head--wide">
           <h2 class="section-title" id="tools-title"><span class="lang-zh" lang="zh-CN">工具能力</span><span class="lang-en" lang="en">Tool capabilities</span></h2>
           <p class="section-intro">
-            <span class="lang-zh" lang="zh-CN">默认 34 个 工具，开启设备工具后 45 个。这里按主要任务分组。</span>
-            <span class="lang-en" lang="en">34 tools by default, 45 with device tools enabled. They are grouped by task.</span>
+            <span class="lang-zh" lang="zh-CN">默认 37 个工具，开启设备与构建工具后 55 个。这里按主要任务分组。</span>
+            <span class="lang-en" lang="en">37 tools by default, 55 with device and build tools enabled. They are grouped by task.</span>
           </p>
         </div>
 
@@ -252,11 +252,21 @@ begin_analysis(
           </a>
 
           <a class="tool-cap-row" href="tools.html#device">
-            <span class="tool-cap-row__count">11</span>
+            <span class="tool-cap-row__count">18</span>
             <div class="tool-cap-row__body">
-              <h3><span class="lang-zh" lang="zh-CN">设备与环境</span><span class="lang-en" lang="en">Device &amp; environment</span></h3>
-              <p><span class="lang-zh" lang="zh-CN">查看设备和屏幕、执行 UI 操作、抓取 Trace、检查应用包与 native 库、拉取文件、检查和安装运行环境。需显式开启。</span><span class="lang-en" lang="en">Inspect devices and screens, operate the UI, capture traces, inspect app packages and native libraries, pull files, and check or install the environment. Explicitly opt-in.</span></p>
-              <code>inspect_screen · act · capture_trace · install_environment</code>
+              <h3><span class="lang-zh" lang="zh-CN">设备、构建与环境</span><span class="lang-en" lang="en">Device, build &amp; environment</span></h3>
+              <p><span class="lang-zh" lang="zh-CN">构建、打包、签名、安装与卸载应用；查看设备和屏幕、执行 UI 操作、抓取 Trace、检查应用包与 native 库、拉取文件、检查和安装运行环境。需显式开启。</span><span class="lang-en" lang="en">Build, package, sign, install, and uninstall apps; inspect devices and screens, operate the UI, capture traces, inspect app packages and native libraries, pull files, and check or install the environment. Explicitly opt-in.</span></p>
+              <code>build_app · sign_app · install_app · capture_trace</code>
+            </div>
+            <span class="tool-cap-row__arrow" aria-hidden="true">→</span>
+          </a>
+
+          <a class="tool-cap-row" href="tools.html#operations">
+            <span class="tool-cap-row__count">03</span>
+            <div class="tool-cap-row__body">
+              <h3><span class="lang-zh" lang="zh-CN">长操作</span><span class="lang-en" lang="en">Long operations</span></h3>
+              <p><span class="lang-zh" lang="zh-CN">构建、抓取和安装可能超出普通调用时限；在后台保留任务状态和 Evidence，可查询、取消并读取结果。</span><span class="lang-en" lang="en">Build, capture, and install can outlive a normal call; keep task state and evidence in the background, then inspect, cancel, or read results.</span></p>
+              <code>list_operations · cancel_operation · get_operation_evidence</code>
             </div>
             <span class="tool-cap-row__arrow" aria-hidden="true">→</span>
           </a>
@@ -291,7 +301,7 @@ begin_analysis(
           </a>
         </div>
 
-        <div class="section-foot"><a class="link-arrow" href="tools.html"><span><span class="lang-zh" lang="zh-CN">查看全部 45 个工具</span><span class="lang-en" lang="en">See all 45 tools</span></span><span aria-hidden="true">→</span></a></div>
+        <div class="section-foot"><a class="link-arrow" href="tools.html"><span><span class="lang-zh" lang="zh-CN">查看全部 55 个工具</span><span class="lang-en" lang="en">See all 55 tools</span></span><span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
@@ -329,10 +339,10 @@ begin_analysis(
     <section class="section auto-section" aria-labelledby="auto-title">
       <div class="container">
         <div class="section-head section-head--wide">
-          <h2 class="section-title" id="auto-title"><span class="lang-zh" lang="zh-CN">Agent + Diting，自动完成一次分析。</span><span class="lang-en" lang="en">Agent + Diting: one automated analysis.</span></h2>
+          <h2 class="section-title" id="auto-title"><span class="lang-zh" lang="zh-CN">Agent + Diting，闭环完成一次分析。</span><span class="lang-en" lang="en">Agent + Diting: one closed loop.</span></h2>
           <p class="section-intro">
-            <span class="lang-zh" lang="zh-CN">描述问题，Agent 负责判断和决策；Diting 在设备上执行操作、抓取 HTrace、返回取证结果并生成报告。</span>
-            <span class="lang-en" lang="en">Describe the problem. The agent decides what to do; Diting acts on the device, captures the trace, returns evidence, and renders the report.</span>
+            <span class="lang-zh" lang="zh-CN">描述问题，Agent 负责改代码、判断和决策；Diting 负责构建、签名、安装、启动、抓 Trace 和取证，最后生成报告。</span>
+            <span class="lang-en" lang="en">Describe the problem. The agent edits code and decides what to do; Diting builds, signs, installs, launches, captures the trace, and gathers evidence before rendering the report.</span>
           </p>
         </div>
 
@@ -340,13 +350,13 @@ begin_analysis(
           <div class="auto-card auto-card--task">
             <p class="auto-label"><span class="lang-zh" lang="zh-CN">对 Agent 说</span><span class="lang-en" lang="en">Say to the agent</span></p>
             <p class="auto-prompt">
-              <span class="lang-zh" lang="zh-CN">分析这个应用冷启动慢的问题。连接设备复现，抓取 HTrace，定位启动关键路径，并生成带证据的报告。</span>
-              <span class="lang-en" lang="en">Analyze why this app is slow to cold start. Reproduce it on the device, capture an HTrace, trace the startup critical path, and produce an evidence-backed report.</span>
+              <span class="lang-zh" lang="zh-CN">分析这个应用冷启动慢的问题。先修改代码，构建、签名并安装到设备，然后启动应用、抓取 HTrace，定位启动关键路径，并生成带证据的报告。</span>
+              <span class="lang-en" lang="en">Analyze why this app is slow to cold start. Edit the code, build, sign, and install it on the device, launch the app, capture an HTrace, trace the startup critical path, and produce an evidence-backed report.</span>
             </p>
             <div class="auto-signal" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
             <div class="auto-task-foot">
               <span class="auto-route">Agent <b>→</b> Diting</span>
-              <span>Agent / device / trace</span>
+              <span>Agent / build / trace</span>
             </div>
           </div>
 
@@ -355,15 +365,15 @@ begin_analysis(
             <ol class="auto-steps">
               <li class="auto-step">
                 <span class="auto-step__num">01</span>
-                <div><strong><span class="lang-zh" lang="zh-CN">Agent 复现问题</span><span class="lang-en" lang="en">Agent reproduces it</span></strong><p><span class="lang-zh" lang="zh-CN">连接设备，执行必要操作，确认目标场景。</span><span class="lang-en" lang="en">Connect the device, act, and confirm the target scenario.</span></p></div>
+                <div><strong><span class="lang-zh" lang="zh-CN">Agent 修改并复现问题</span><span class="lang-en" lang="en">Agent edits and reproduces it</span></strong><p><span class="lang-zh" lang="zh-CN">修改代码，确认目标场景。</span><span class="lang-en" lang="en">Edit the code and confirm the target scenario.</span></p></div>
               </li>
               <li class="auto-step">
                 <span class="auto-step__num">02</span>
-                <div><strong><span class="lang-zh" lang="zh-CN">Diting 抓取 Trace</span><span class="lang-en" lang="en">Diting captures the trace</span></strong><p><span class="lang-zh" lang="zh-CN">抓取 HTrace，或打开已有 Trace。</span><span class="lang-en" lang="en">Capture an HTrace, or open an existing trace.</span></p></div>
+                <div><strong><span class="lang-zh" lang="zh-CN">Diting 构建、签名、安装</span><span class="lang-en" lang="en">Diting builds, signs, installs</span></strong><p><span class="lang-zh" lang="zh-CN">build_app → sign_app → install_app，必要时 package_app；然后启动应用。</span><span class="lang-en" lang="en">build_app → sign_app → install_app, package_app when needed, then launch.</span></p></div>
               </li>
               <li class="auto-step">
                 <span class="auto-step__num">03</span>
-                <div><strong><span class="lang-zh" lang="zh-CN">Agent 选择工具，Diting 取证</span><span class="lang-en" lang="en">Agent selects tools; Diting gathers evidence</span></strong><p><span class="lang-zh" lang="zh-CN">按场景调用有界工具，返回 Evidence 和摘要。</span><span class="lang-en" lang="en">Call bounded tools by scenario and return evidence with summaries.</span></p></div>
+                <div><strong><span class="lang-zh" lang="zh-CN">Diting 抓 Trace，Agent 取证</span><span class="lang-en" lang="en">Diting captures; Agent gathers evidence</span></strong><p><span class="lang-zh" lang="zh-CN">抓取 HTrace，按场景调用有界工具并返回 Evidence。</span><span class="lang-en" lang="en">Capture the HTrace and call bounded tools by scenario.</span></p></div>
               </li>
               <li class="auto-step">
                 <span class="auto-step__num">04</span>
@@ -387,8 +397,8 @@ begin_analysis(
             <span class="brand-text">Diting</span>
           </a>
           <p class="footer-desc">
-            <span class="lang-zh" lang="zh-CN">HarmonyOS 应用性能分析服务。连接设备、采集证据，输出可追溯的报告。</span>
-            <span class="lang-en" lang="en">HarmonyOS app performance analysis. Connect a device, gather evidence, and get an evidence-backed report.</span>
+            <span class="lang-zh" lang="zh-CN">HarmonyOS 应用性能分析。从改代码、构建、签名、安装到 Trace 取证，输出可追溯的报告。</span>
+            <span class="lang-en" lang="en">HarmonyOS app performance analysis. From code change, build, sign, and install to trace evidence and a traceable report.</span>
           </p>
         </div>
         <div class="footer-links">
@@ -411,7 +421,7 @@ begin_analysis(
             <a href="https://www.npmjs.com/package/diting-agents" target="_blank" rel="noopener noreferrer">npm ↗</a>
             <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
             <a href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">GitCode ↗</a>
-            <a href="install.html#device"><span class="lang-zh" lang="zh-CN">设备工具</span><span class="lang-en" lang="en">Device tools</span></a>
+            <a href="install.html#device"><span class="lang-zh" lang="zh-CN">设备与构建</span><span class="lang-en" lang="en">Device &amp; build</span></a>
           </div>
         </div>
       </div>

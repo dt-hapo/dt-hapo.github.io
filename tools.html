@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tool capabilities — Diting</title>
-  <meta name="description" content="DitingAgent tool reference and host integration: 34 default tools, evidence and bundles, unknowns, handoff, device tools, host setup, budgets, and permission boundaries.">
+  <meta name="description" content="DitingAgent 0.1.5 tool reference: 37 default and 55 device-enabled tools, long operations, build/sign/install, trace evidence, host setup, budgets, and permission boundaries.">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -19,13 +19,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-16">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-16">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-17">
 </head>
 <body data-page="tools" data-title-zh="工具能力 — Diting" data-title-en="Tool capabilities — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -78,8 +78,8 @@
           </h1>
           <div class="page-hero__aside">
             <p>
-              <span class="lang-zh" lang="zh-CN">默认 34 个工具，开启设备工具后 45 个。DitingAgent 向宿主提供这些工具。前半部分是每个工具能做什么，后半部分是宿主接入、预算与权限。</span>
-              <span class="lang-en" lang="en">34 tools by default, 45 with device tools enabled. DitingAgent exposes these tools to the host. The first half covers each tool; the second covers host setup, budgets, and permissions.</span>
+              <span class="lang-zh" lang="zh-CN">默认 37 个工具，开启设备与构建工具后 55 个。DitingAgent 向宿主提供这些工具。前半部分是每个工具能做什么，后半部分是宿主接入、预算与权限。</span>
+              <span class="lang-en" lang="en">37 tools by default, 55 with device and build tools enabled. DitingAgent exposes these tools to the host. The first half covers each tool; the second covers host setup, budgets, and permissions.</span>
             </p>
           </div>
         </div>
@@ -88,6 +88,7 @@
 
     <nav class="container page-jump" aria-label="On this page">
       <a href="#session"><span class="lang-zh" lang="zh-CN">会话</span><span class="lang-en" lang="en">Session</span></a>
+      <a href="#operations"><span class="lang-zh" lang="zh-CN">长操作</span><span class="lang-en" lang="en">Operations</span></a>
       <a href="#trace">Trace</a>
       <a href="#evidence"><span class="lang-zh" lang="zh-CN">证据</span><span class="lang-en" lang="en">Evidence</span></a>
       <a href="#device"><span class="lang-zh" lang="zh-CN">设备</span><span class="lang-en" lang="en">Device</span></a>
@@ -112,6 +113,20 @@
           <div class="tool-detail__row"><div class="tool-detail__name">begin_analysis</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">声明场景、现象和边界，创建分析上下文；返回预载证据、Skill、预算状态和场景预分析错误。</span><span class="lang-en" lang="en">Declare the scenario, symptom, and boundaries; create an analysis context and return preloaded evidence, skills, budget state, and preflight errors.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">submit_analysis_result</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">提交语义 Draft；应用层执行证据约束、归一化和确定性校验，失败会返回可修正错误。</span><span class="lang-en" lang="en">Submit the semantic draft. The application enforces evidence constraints, normalisation, and deterministic validation; failures return fixable errors.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">render_report</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">写出 findings、evidence、unknowns、validation 与 run 元数据，并渲染自包含 HTML 报告。</span><span class="lang-en" lang="en">Write findings, evidence, unknowns, validation, and run metadata, then render a self-contained HTML report.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="operations" aria-labelledby="operations-title">
+      <div class="container">
+        <div class="section-head section-head--wide">
+          <h2 class="section-title" id="operations-title"><span class="lang-zh" lang="zh-CN">长操作</span><span class="lang-en" lang="en">Long operations</span></h2>
+          <p class="section-intro"><span class="lang-zh" lang="zh-CN">3 个工具管理构建、抓取和安装长任务。任务在后台保留状态和 Evidence，不阻塞 Agent 主循环；可以查询、请求取消并读取产物。</span><span class="lang-en" lang="en">Three tools manage long build, capture, and install jobs. Jobs keep state and evidence in the background without blocking the agent loop, and can be inspected, cancelled, or read afterwards.</span></p>
+        </div>
+        <div class="tool-detail">
+          <div class="tool-detail__row"><div class="tool-detail__name">list_operations</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">列出当前进程中的 build / capture / install 长操作及其状态、进度和结果。</span><span class="lang-en" lang="en">List build / capture / install operations in the process with their state, progress, and results.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">cancel_operation</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">请求取消一个长操作；构建会尽量终止 hvigorw 进程。</span><span class="lang-en" lang="en">Request cancellation of an operation; builds try to terminate the hvigorw process.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">get_operation_evidence</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">读取 build / capture / install 长操作生成的 Evidence，用于后续校验和报告。</span><span class="lang-en" lang="en">Read evidence produced by an operation for later validation and reporting.</span></div></div>
         </div>
       </div>
     </section>
@@ -182,8 +197,8 @@
     <section class="section" id="device" aria-labelledby="device-title">
       <div class="container">
         <div class="section-head section-head--wide">
-          <h2 class="section-title" id="device-title"><span class="lang-zh" lang="zh-CN">设备与环境<br>工具（opt-in）</span><span class="lang-en" lang="en">Device and environment<br>tools (opt-in)</span></h2>
-          <p class="section-intro"><span class="lang-zh" lang="zh-CN">这 11 个工具只在启动 server 时带 <code>--enable-device</code> 才会出现。设备、抓取和环境工具会真实操作设备；应用包与 native 库工具读取本地文件。它们不在 Trace evidence 预算内。</span><span class="lang-en" lang="en">These eleven tools appear only when the server starts with <code>--enable-device</code>. Device, capture, and environment tools operate the device; app-package and native-library tools read local files. They sit outside the trace-evidence budget.</span></p>
+          <h2 class="section-title" id="device-title"><span class="lang-zh" lang="zh-CN">设备、构建<br>与环境（opt-in）</span><span class="lang-en" lang="en">Device, build<br>and environment (opt-in)</span></h2>
+          <p class="section-intro"><span class="lang-zh" lang="zh-CN">这 18 个工具只在启动 server 时带 <code>--enable-device</code> 才会出现。构建、签名和安装工具完成代码到设备的闭环；设备与抓取工具会真实操作设备；应用包与 native 库工具读取本地文件。它们不在 Trace evidence 预算内。</span><span class="lang-en" lang="en">These eighteen tools appear only when the server starts with <code>--enable-device</code>. Build, signing, and install tools close the loop from code to device; device and capture tools operate the device; app-package and native-library tools read local files. They sit outside the trace-evidence budget.</span></p>
         </div>
         <div class="tool-detail">
           <div class="tool-detail__row"><div class="tool-detail__name">inspect_device</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">读取 HarmonyOS 设备、系统版本、API、ABI、已安装 Bundle 和可用 hitrace 类别。</span><span class="lang-en" lang="en">Read the HarmonyOS device, system version, API, ABI, installed bundles, and available hitrace categories.</span></div></div>
@@ -197,9 +212,16 @@
           <div class="tool-detail__row"><div class="tool-detail__name">pull_app_library</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">尝试从应用 libs 或可读 HAP 中拉取 .so 到本地；权限不足返回 <code>APP_PATH_DENIED</code>。</span><span class="lang-en" lang="en">Try to pull a .so from app libs or a readable HAP; insufficient access returns <code>APP_PATH_DENIED</code>.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">extract_native_libraries</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">从本地 HAP/HSP/ZIP 提取 <code>libs/**/*.so</code>，返回本地路径和 SHA-256。</span><span class="lang-en" lang="en">Extract <code>libs/**/*.so</code> from a local HAP/HSP/ZIP, returning local paths and SHA-256.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">inspect_native_library</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">解析 ELF .so 的架构、依赖、build-id 和符号；完整反编译和调用图交给 REA。</span><span class="lang-en" lang="en">Inspect ELF .so architecture, dependencies, build-id, and symbols; full decompilation and call graphs go to REA.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">inspect_abilities</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">从本地 <code>module.json5</code>/<code>app.json5</code> 或设备 <code>bm dump</code> 读取 Bundle、module、Ability 和 launcher ability。</span><span class="lang-en" lang="en">Read bundle, module, abilities, and the launcher ability from local <code>module.json5</code>/<code>app.json5</code> or device <code>bm dump</code>.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">clear_app_data</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">通过 <code>aa force-stop</code> + <code>bm clean</code> 清除应用 data/cache，可分别控制。</span><span class="lang-en" lang="en">Clear app data/cache through <code>aa force-stop</code> + <code>bm clean</code>, with separate controls.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">sign_app</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">用 <code>hap-sign-tool</code> 对 HAP/HSP 做 localSign，可选 verify-app；密码不回显。</span><span class="lang-en" lang="en">Use <code>hap-sign-tool</code> to localSign a HAP/HSP with optional verify-app; passwords are never echoed.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">build_app</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">用 <code>hvigorw assembleHap</code> 构建 HarmonyOS 工程并返回 HAP 产物。</span><span class="lang-en" lang="en">Build a HarmonyOS project with <code>hvigorw assembleHap</code> and return the HAP artifact.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">package_app</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">用 <code>hvigorw assembleApp</code> 打包 App Pack 并返回 <code>.app</code> 产物。</span><span class="lang-en" lang="en">Package an App Pack with <code>hvigorw assembleApp</code> and return the <code>.app</code> artifact.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">install_app</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">通过 <code>hdc install</code> 安装本地 <code>.hap</code>/<code>.hsp</code>/<code>.app</code>。</span><span class="lang-en" lang="en">Install a local <code>.hap</code>/<code>.hsp</code>/<code>.app</code> through <code>hdc install</code>.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">uninstall_app</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">通过 <code>hdc uninstall</code> 卸载应用，可选择保留数据。</span><span class="lang-en" lang="en">Uninstall an app through <code>hdc uninstall</code>, optionally keeping its data.</span></div></div>
         </div>
         <div class="callout">
-          <p><span class="lang-zh" lang="zh-CN">设备工具需要 hdc 和可用设备。开启前先看 <a href="install.html#device">安装页的设备工具步骤</a>；完整参数和错误码见 <a href="#mcp-boundaries">权限边界</a>。</span><span class="lang-en" lang="en">Device tools need hdc and a reachable device. See the <a href="install.html#device">device setup steps</a> before enabling them; See <a href="#mcp-boundaries">integration boundaries</a> for configuration and error codes.</span></p>
+          <p><span class="lang-zh" lang="zh-CN">构建与设备工具需要 hdc、Command Line Tools 和 HarmonyOS 工程；签名还需要 keystore、证书和 profile。开启前先看 <a href="install.html#device">安装页的设备与构建步骤</a>；完整参数和错误码见 <a href="#mcp-boundaries">权限边界</a>。</span><span class="lang-en" lang="en">Build and device tools need hdc, Command Line Tools, and a HarmonyOS project; signing also needs a keystore, certificate, and profile. See the <a href="install.html#device">device and build setup steps</a> before enabling them; see <a href="#mcp-boundaries">integration boundaries</a> for configuration and error codes.</span></p>
         </div>
       </div>
     </section>
@@ -388,12 +410,12 @@ npx diting-agents@latest mcp \
         <div class="split">
           <div class="sticky-head">
             <h2 id="security-title">
-              <span class="lang-zh" lang="zh-CN">设备工具与权限边界</span>
-              <span class="lang-en" lang="en">Device tools and permissions</span>
+              <span class="lang-zh" lang="zh-CN">设备、构建与权限边界</span>
+              <span class="lang-en" lang="en">Device, build, and permissions</span>
             </h2>
             <p>
-              <span class="lang-zh" lang="zh-CN">DitingAgent 继承启动用户的文件权限，没有额外沙箱。设备工具默认关闭；一旦开启，它们会真实操作设备。</span>
-              <span class="lang-en" lang="en">DitingAgent inherits the launching user’s file permissions and has no extra sandbox. Device tools are off by default; once enabled, they really operate the device.</span>
+              <span class="lang-zh" lang="zh-CN">DitingAgent 继承启动用户的文件权限，没有额外沙箱。设备与构建工具默认关闭；一旦开启，它们会真实操作设备、构建工程或写入签名产物。</span>
+              <span class="lang-en" lang="en">DitingAgent inherits the launching user’s file permissions and has no extra sandbox. Device and build tools are off by default; once enabled, they really operate the device, build projects, or write signing artifacts.</span>
             </p>
           </div>
           <div class="stack">
@@ -422,8 +444,8 @@ npx diting-agents@latest mcp \
 
         <div class="callout" style="margin-top:2.5rem;">
           <p>
-            <span class="lang-zh" lang="zh-CN">宿主拥有 Agent 循环、模型选择和用户审批；DitingAgent 拥有 Trace 转换、取证、Evidence、校验和报告。设备工具始终需要显式开启。</span>
-            <span class="lang-en" lang="en">The host owns the agent loop, model choice, and user approvals. DitingAgent owns trace conversion, inspection, evidence, validation, and reporting. Device tools always require an explicit opt-in.</span>
+            <span class="lang-zh" lang="zh-CN">宿主拥有 Agent 循环、模型选择和用户审批；DitingAgent 拥有 Trace 转换、取证、Evidence、校验和报告。设备与构建工具始终需要显式开启。</span>
+            <span class="lang-en" lang="en">The host owns the agent loop, model choice, and user approvals. DitingAgent owns build/sign/install execution, trace conversion, inspection, evidence, validation, and reporting. Device and build tools always require an explicit opt-in.</span>
           </p>
         </div>
       </div>
@@ -438,8 +460,8 @@ npx diting-agents@latest mcp \
             <span class="brand-text">Diting</span>
           </a>
           <p class="footer-desc">
-            <span class="lang-zh" lang="zh-CN">HarmonyOS 应用性能分析服务。连接设备、采集证据，输出可追溯的报告。</span>
-            <span class="lang-en" lang="en">HarmonyOS app performance analysis. Connect a device, gather evidence, and get an evidence-backed report.</span>
+            <span class="lang-zh" lang="zh-CN">HarmonyOS 应用性能分析。从改代码、构建、签名、安装到 Trace 取证，输出可追溯的报告。</span>
+            <span class="lang-en" lang="en">HarmonyOS app performance analysis. From code change, build, sign, and install to trace evidence and a traceable report.</span>
           </p>
         </div>
         <div class="footer-links">
@@ -462,7 +484,7 @@ npx diting-agents@latest mcp \
             <a href="https://www.npmjs.com/package/diting-agents" target="_blank" rel="noopener noreferrer">npm ↗</a>
             <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
             <a href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">GitCode ↗</a>
-            <a href="install.html#device"><span class="lang-zh" lang="zh-CN">设备工具</span><span class="lang-en" lang="en">Device tools</span></a>
+            <a href="install.html#device"><span class="lang-zh" lang="zh-CN">设备与构建</span><span class="lang-en" lang="en">Device &amp; build</span></a>
           </div>
         </div>
       </div>
