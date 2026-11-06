@@ -205,3 +205,26 @@ body[data-page="install"] .install-section:last-child {
     padding-block: 2rem;
   }
 }
+
+/* Keep the tools hero explainer beside the title, then stack it cleanly. */
+body[data-page="analysis"] .page-hero__body,
+body[data-page="tools"] .page-hero__body,
+body[data-page="install"] .page-hero__body {
+  align-items: start;
+}
+
+body[data-page="analysis"] .page-hero__aside,
+body[data-page="tools"] .page-hero__aside,
+body[data-page="install"] .page-hero__aside {
+  padding-left: 0;
+  border-left: 0;
+}
+
+@media (max-width: 960px) {
+  body[data-page="analysis"] .page-hero__aside,
+  body[data-page="tools"] .page-hero__aside,
+  body[data-page="install"] .page-hero__aside {
+    max-width: 42rem;
+    margin-top: 1.2rem;
+  }
+}
