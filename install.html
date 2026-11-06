@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>安装与 MCP 接入 — DitingAgent</title>
+  <meta name="description" content="通过 npx 安装 DitingAgent MCP server：Node.js 18+、Python 3.12+、宿主注册、健康检查和可选的 HarmonyOS 设备工具。">
+  <meta name="theme-color" content="#f7f6f2">
+  <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    (function () {
+      document.documentElement.classList.add("js");
+      try {
+        var queryLang = new URLSearchParams(location.search).get("lang");
+        var storedLang = localStorage.getItem("diting-lang");
+        if (queryLang === "en" || (!queryLang && storedLang === "en")) {
+          document.documentElement.lang = "en";
+        }
+      } catch (error) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/redesign.css">
+</head>
+<body data-page="install" data-title-zh="安装与 MCP 接入 — DitingAgent" data-title-en="Install and MCP setup — DitingAgent">
+  <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Diting — Home">
+        <span class="brand-text">Diting</span>
+          <span class="brand-sub">HarmonyOS App Performance Optimizer</span>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a class="nav-link" href="index.html"><span class="lang-zh" lang="zh-CN">概览</span><span class="lang-en" lang="en">Overview</span></a>
+        <a class="nav-link" href="method.html"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
+        <a class="nav-link" href="tools.html"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+        <a class="nav-link" href="install.html" aria-current="page"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
+      </nav>
+      <div class="header-actions">
+        <div class="lang-toggle" role="group" aria-label="Language / 语言">
+          <button class="lang-btn" type="button" data-set-lang="zh" aria-pressed="true">中</button>
+          <button class="lang-btn" type="button" data-set-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <a class="source-link" href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">GitCode ↗</a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-controls="site-nav" aria-expanded="false" aria-label="打开导航">
+          <span class="nav-toggle__lines" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container">
+        <div class="page-hero__body">
+          <h1 id="page-title">
+            <span class="lang-zh" lang="zh-CN">安装 DitingAgent，<br>接入 MCP 宿主。</span>
+            <span class="lang-en" lang="en">Install DitingAgent<br>and connect an MCP host.</span>
+          </h1>
+          <div class="page-hero__aside">
+            <p>
+              <span class="lang-zh" lang="zh-CN">DitingAgent 不内置模型。通过 npx 运行入口，注册到宿主，重载 MCP 后即可使用。首次执行会准备 Python 环境；需要设备工具时再配置 hdc 和 Command Line Tools。</span>
+              <span class="lang-en" lang="en">DitingAgent has no embedded model. Run the npx entry, register it with a host, and reload MCP. The first run prepares a Python environment. Configure hdc and Command Line Tools only if you need device tools.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="scenario-layout">
+          <aside class="scenario-rail" aria-label="Install steps">
+            <ol>
+              <li><a href="#requirements"><span>01</span><span><span class="lang-zh" lang="zh-CN">前置条件</span><span class="lang-en" lang="en">Requirements</span></span></a></li>
+              <li><a href="#install"><span>02</span><span><span class="lang-zh" lang="zh-CN">安装依赖</span><span class="lang-en" lang="en">Install</span></span></a></li>
+              <li><a href="#host"><span>03</span><span><span class="lang-zh" lang="zh-CN">注册宿主</span><span class="lang-en" lang="en">Host setup</span></span></a></li>
+              <li><a href="#verify"><span>04</span><span><span class="lang-zh" lang="zh-CN">健康检查</span><span class="lang-en" lang="en">Verify</span></span></a></li>
+              <li><a href="#server"><span>05</span><span><span class="lang-zh" lang="zh-CN">启动 server</span><span class="lang-en" lang="en">Start server</span></span></a></li>
+              <li><a href="#device"><span>06</span><span><span class="lang-zh" lang="zh-CN">设备工具</span><span class="lang-en" lang="en">Device tools</span></span></a></li>
+            </ol>
+          </aside>
+
+          <div class="install-content">
+            <section class="install-section" id="requirements" aria-labelledby="requirements-title">
+              <h2 id="requirements-title"><span class="lang-zh" lang="zh-CN">前置条件</span><span class="lang-en" lang="en">Requirements</span></h2>
+              <div class="requirements">
+                <div class="requirement">
+                  <strong>Node.js 18+</strong>
+                  <p><span class="lang-zh" lang="zh-CN">运行 <code>npx diting-agents</code> 入口。<a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">安装 Node.js ↗</a></span><span class="lang-en" lang="en">Runs the <code>npx diting-agents</code> entry. <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">Install Node.js ↗</a></span></p>
+                </div>
+                <div class="requirement">
+                  <strong>Python 3.12+</strong>
+                  <p><span class="lang-zh" lang="zh-CN">运行 MCP server 和数据库转换。首次运行会在缓存目录创建环境；uv 可选。</span><span class="lang-en" lang="en">Runs the MCP server and database conversion. The first run creates a cached environment; uv is optional.</span></p>
+                </div>
+                <div class="requirement">
+                  <strong>MCP host</strong>
+                  <p><span class="lang-zh" lang="zh-CN">DeepSeek Harness、Claude Code、Codex 或其他 MCP 客户端；模型由宿主提供。</span><span class="lang-en" lang="en">DeepSeek Harness, Claude Code, Codex, or another MCP client. The host provides the model.</span></p>
+                </div>
+                <div class="requirement">
+                  <strong>hdc</strong>
+                  <p><span class="lang-zh" lang="zh-CN">只有设备工具需要，可来自 DevEco Command Line Tools。</span><span class="lang-en" lang="en">Only needed for device tools; can come from DevEco Command Line Tools.</span></p>
+                </div>
+                <div class="requirement">
+                  <strong>HarmonyOS device</strong>
+                  <p><span class="lang-zh" lang="zh-CN">设备抓取、截图和 UI 操作需要一台可连接的设备或模拟器。</span><span class="lang-en" lang="en">A reachable device or emulator for capture, screenshots, and UI actions.</span></p>
+                </div>
+                <div class="requirement">
+                  <strong>API key</strong>
+                  <p><span class="lang-zh" lang="zh-CN">不需要。DitingAgent 不调用模型，也不保存模型凭证。</span><span class="lang-en" lang="en">None required. DitingAgent calls no model and stores no model credentials.</span></p>
+                </div>
+              </div>
+              <p class="device-note"><span class="lang-zh" lang="zh-CN">Windows、macOS 和 Linux 都使用同一条 npx 命令；不需要全局安装。</span><span class="lang-en" lang="en">Windows, macOS, and Linux use the same npx entry; no global install is needed.</span></p>
+            </section>
+
+            <section class="install-section" id="install" aria-labelledby="install-title">
+              <h2 id="install-title"><span class="lang-zh" lang="zh-CN">运行 npx 入口</span><span class="lang-en" lang="en">Run the npx entry</span></h2>
+              <p>
+                <span class="lang-zh" lang="zh-CN"><code>npx diting-agents@latest --version</code> 首次会创建 Python 环境并安装 MCP server 依赖；不需要克隆仓库，也不会写入模型配置。</span>
+                <span class="lang-en" lang="en"><code>npx diting-agents@latest --version</code> creates a Python environment and installs the MCP server dependencies on first use. No repository clone or model configuration is required.</span>
+              </p>
+              <div class="code-box">
+                <div class="code-top">
+                  <span>terminal / bash</span>
+                  <button class="copy-btn" type="button" data-copy="#install-code"><span class="copy-default"><span class="lang-zh" lang="zh-CN">复制</span><span class="lang-en" lang="en">Copy</span></span><span class="copy-done"><span class="lang-zh" lang="zh-CN">已复制</span><span class="lang-en" lang="en">Copied</span></span></button>
+                </div>
+                <pre><code id="install-code">npx diting-agents@latest --version</code></pre>
+              </div>
+            </section>
+
+            <section class="install-section" id="host" aria-labelledby="host-title">
+              <h2 id="host-title"><span class="lang-zh" lang="zh-CN">注册到 MCP 宿主</span><span class="lang-en" lang="en">Register with an MCP host</span></h2>
+              <p>
+                <span class="lang-zh" lang="zh-CN"><code>setup --detect</code> 先列出本机检测到的宿主，再选择对应客户端写入配置。支持 dsh、codex、claude_code、cursor、qwen_code、opencode、kimi、qoder、zcode、trae；<code>--client generic</code> 可输出 JSON。</span>
+                <span class="lang-en" lang="en"><code>setup --detect</code> lists detected hosts, then writes the matching client config. Supported clients include dsh, codex, claude_code, cursor, qwen_code, opencode, kimi, qoder, zcode, and trae; <code>--client generic</code> prints JSON.</span>
+              </p>
+              <div class="code-box">
+                <div class="code-top">
+                  <span>terminal / bash</span>
+                  <button class="copy-btn" type="button" data-copy="#host-code"><span class="copy-default"><span class="lang-zh" lang="zh-CN">复制</span><span class="lang-en" lang="en">Copy</span></span><span class="copy-done"><span class="lang-zh" lang="zh-CN">已复制</span><span class="lang-en" lang="en">Copied</span></span></button>
+                </div>
+                <pre><code id="host-code"># detect hosts, then register the matching client
+npx diting-agents@latest setup --detect
+npx diting-agents@latest setup --client dsh --yes --allow-root ~/traces
+
+# multiple hosts, or a generic JSON config
+npx diting-agents@latest setup --client dsh --client codex --yes
+npx diting-agents@latest setup --client generic</code></pre>
+              </div>
+              <p class="device-note"><span class="lang-zh" lang="zh-CN">写入后重启宿主或重载 MCP 插件。移除托管块使用 <code>setup --client dsh --uninstall --yes</code>，其他配置保持不变。</span><span class="lang-en" lang="en">Restart the host or reload the MCP plugin after writing. Remove the managed block with <code>setup --client dsh --uninstall --yes</code>; other config is left unchanged.</span></p>              <p class="device-note"><span class="lang-zh" lang="zh-CN">可选：运行 <code>npx diting-agents@latest install-skills --yes</code>，把场景方法论和 MCP 工作流 Skill 安装到共享的 <code>~/.agents/skills</code>。</span><span class="lang-en" lang="en">Optional: run <code>npx diting-agents@latest install-skills --yes</code> to install scenario methodology and MCP workflow skills into the shared <code>~/.agents/skills</code>.</span></p>
+
+            </section>
+
+            <section class="install-section" id="verify" aria-labelledby="verify-title">
+              <h2 id="verify-title"><span class="lang-zh" lang="zh-CN">健康检查</span><span class="lang-en" lang="en">Health check</span></h2>
+              <p>
+                <span class="lang-zh" lang="zh-CN"><code>doctor</code> 是只读检查，验证 Node.js/Python、MCP 依赖、启动命令、托管配置、技能安装和工作目录。需要设备时把 hdc 路径一起传入。</span>
+                <span class="lang-en" lang="en"><code>doctor</code> is read-only and checks Node.js/Python, the MCP dependency, launcher, managed config, skill installation, and workspace. Pass the hdc path when using device tools.</span>
+              </p>
+              <div class="code-box">
+                <div class="code-top"><span>terminal / bash</span><span>doctor</span></div>
+                <pre><code>npx diting-agents@latest doctor
+npx diting-agents@latest doctor --json
+
+# with a device
+npx diting-agents@latest doctor --hdc /path/to/hdc</code></pre>
+              </div>
+            </section>
+
+            <section class="install-section" id="server" aria-labelledby="server-title">
+              <h2 id="server-title"><span class="lang-zh" lang="zh-CN">手动启动 MCP server</span><span class="lang-en" lang="en">Start the MCP server manually</span></h2>
+              <p>
+                <span class="lang-zh" lang="zh-CN">通常由宿主根据注册配置启动。调试连接时也可以手动运行 stdio server；指定 workspace 和可读取的 Trace 根目录。</span>
+                <span class="lang-en" lang="en">The host normally starts the server from the registered config. For connection debugging, run the stdio server manually with a workspace and readable trace roots.</span>
+              </p>
+              <div class="code-box">
+                <div class="code-top"><span>terminal / bash</span><span>stdio</span></div>
+                <pre><code>npx diting-agents@latest mcp \
+  --workspace .diting/sessions \
+  --allow-root ~/traces</code></pre>
+              </div>
+              <p class="device-note"><span class="lang-zh" lang="zh-CN"><code>--allow-root</code> 限制 <code>open_trace</code> 可读取的目录；省略表示不限制。单次结果默认内联 64KB，超出后保留 Evidence ID。</span><span class="lang-en" lang="en"><code>--allow-root</code> limits directories that <code>open_trace</code> can read; omitting it leaves the path unrestricted. Inline results default to 64KB; larger results stay available by Evidence ID.</span></p>
+            </section>
+
+            <section class="install-section" id="device" aria-labelledby="device-title">
+              <h2 id="device-title"><span class="lang-zh" lang="zh-CN">设备工具</span><span class="lang-en" lang="en">Device tools</span></h2>
+              <p>
+                <span class="lang-zh" lang="zh-CN">设备工具默认关闭，需要 <code>--enable-device</code>；共 11 个工具。先检查或安装 Command Line Tools，再注册带 hdc 的设备配置。开启后 <code>act</code> 会真实点击和滑动，<code>capture_trace</code> 会调用 hiprofiler。</span>
+                <span class="lang-en" lang="en">Device tools are off by default and require <code>--enable-device</code>. Check or install Command Line Tools, then register a device-enabled config. Once enabled, <code>act</code> really taps and swipes, and <code>capture_trace</code> invokes hiprofiler.</span>
+              </p>
+              <div class="code-box">
+                <div class="code-top">
+                  <span>terminal / bash</span>
+                  <button class="copy-btn" type="button" data-copy="#device-code"><span class="copy-default"><span class="lang-zh" lang="zh-CN">复制</span><span class="lang-en" lang="en">Copy</span></span><span class="copy-done"><span class="lang-zh" lang="zh-CN">已复制</span><span class="lang-en" lang="en">Copied</span></span></button>
+                </div>
+                <pre><code id="device-code">npx diting-agents@latest env status
+npx diting-agents@latest env install \
+  --archive ~/Downloads/commandline-tools.zip --yes
+
+npx diting-agents@latest setup --client dsh \
+  --device --hdc /path/to/hdc --yes
+npx diting-agents@latest doctor --hdc /path/to/hdc
+
+npx diting-agents@latest mcp \
+  --workspace .diting/sessions \
+  --allow-root ~/traces \
+  --enable-device --hdc /path/to/hdc</code></pre>
+              </div>
+              <div class="tool-table">
+                <div class="tool-table__row"><code>inspect_device</code><span><span class="lang-zh" lang="zh-CN">读取设备、API、Bundle 与 hitrace 能力</span><span class="lang-en" lang="en">Read device, API, bundle, and hitrace capabilities</span></span></div>
+                <div class="tool-table__row"><code>inspect_screen</code><span><span class="lang-zh" lang="zh-CN">截图并解析当前控件树</span><span class="lang-en" lang="en">Screenshot and parse the current control tree</span></span></div>
+                <div class="tool-table__row"><code>act</code><span><span class="lang-zh" lang="zh-CN">执行 tap / swipe / key / text / wait</span><span class="lang-en" lang="en">Run tap / swipe / key / text / wait</span></span></div>
+                <div class="tool-table__row"><code>capture_trace</code><span><span class="lang-zh" lang="zh-CN">用 hiprofiler 抓 Trace，可在抓取期间执行 UI 步骤</span><span class="lang-en" lang="en">Capture with hiprofiler; UI steps can run during capture</span></span></div>
+                <div class="tool-table__row"><code>pull_artifact</code><span><span class="lang-zh" lang="zh-CN">从 /data/local/tmp/ 拉取文件</span><span class="lang-en" lang="en">Pull files from /data/local/tmp/</span></span></div>
+                <div class="tool-table__row"><code>inspect_environment</code><span><span class="lang-zh" lang="zh-CN">只读检查 hdc、Command Line Tools 和工具链</span><span class="lang-en" lang="en">Read-only check of hdc, Command Line Tools, and the toolchain</span></span></div>
+                <div class="tool-table__row"><code>install_environment</code><span><span class="lang-zh" lang="zh-CN">在 confirm=true 时安装托管 Command Line Tools</span><span class="lang-en" lang="en">Install managed Command Line Tools with confirm=true</span></span></div>
+              <div class="tool-table__row"><code>inspect_app_package</code><span><span class="lang-zh" lang="zh-CN">读取应用路径与 native 库可读性</span><span class="lang-en" lang="en">Read app paths and native-library readability</span></span></div>
+              <div class="tool-table__row"><code>pull_app_library</code><span><span class="lang-zh" lang="zh-CN">从应用 libs 或可读 HAP 拉取 .so</span><span class="lang-en" lang="en">Pull .so files from app libs or a readable HAP</span></span></div>
+              <div class="tool-table__row"><code>extract_native_libraries</code><span><span class="lang-zh" lang="zh-CN">从本地 HAP/HSP/ZIP 提取 .so</span><span class="lang-en" lang="en">Extract .so files from a local HAP/HSP/ZIP</span></span></div>
+              <div class="tool-table__row"><code>inspect_native_library</code><span><span class="lang-zh" lang="zh-CN">解析 ELF 架构、依赖、build-id 与符号</span><span class="lang-en" lang="en">Inspect ELF architecture, dependencies, build-id, and symbols</span></span></div>
+              </div>
+              <p class="device-note"><span class="lang-zh" lang="zh-CN"><code>install_environment</code> 的 URL 安装必须提供 SHA-256；设备动作会修改设备状态。详细约束见 <a href="tools.html#device">工具页</a> 和 <a href="tools.html#mcp-boundaries">MCP 边界</a>。</span><span class="lang-en" lang="en"><code>install_environment</code> URL installs require a SHA-256; device actions change device state. See the <a href="tools.html#device">tools page</a> and <a href="tools.html#mcp-boundaries">MCP boundaries</a> for details.</span></p>
+            </section>
+
+            <div class="install-finish">
+              <p><span class="lang-zh" lang="zh-CN">下一步：在宿主中打开一份 Trace 并开始分析。</span><span class="lang-en" lang="en">Next: open a trace from the host and start an analysis.</span></p>
+              <a class="btn btn--primary" href="tools.html#session"><span><span class="lang-zh" lang="zh-CN">查看工具流程</span><span class="lang-en" lang="en">See the tool workflow</span></span><span class="btn__arrow" aria-hidden="true">→</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-cta">
+        <div class="footer-cta__copy">
+          <h2><span class="lang-zh" lang="zh-CN">开始使用<br>DitingAgent</span><span class="lang-en" lang="en">Get started with<br>DitingAgent</span></h2>
+          <p><span class="lang-zh" lang="zh-CN">安装 MCP server，注册到宿主，打开第一份 Trace。</span><span class="lang-en" lang="en">Install the MCP server, connect a host, and open your first trace.</span></p>
+        </div>
+        <div class="footer-cta__actions">
+          <a class="btn btn--primary" href="install.html"><span><span class="lang-zh" lang="zh-CN">安装 DitingAgent</span><span class="lang-en" lang="en">Install DitingAgent</span></span><span class="btn__arrow" aria-hidden="true">→</span></a>
+          <a class="link-arrow" href="tools.html#mcp"><span><span class="lang-zh" lang="zh-CN">MCP 接入</span><span class="lang-en" lang="en">MCP integration</span></span><span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html" aria-label="Diting — Home">
+            <span class="brand-text">Diting</span>
+          </a>
+          <p class="footer-desc">
+            <span class="lang-zh" lang="zh-CN">HarmonyOS Trace MCP server。连接设备、抓取 Trace，输出带证据的报告。</span>
+            <span class="lang-en" lang="en">A HarmonyOS trace-analysis MCP server. Connect a device, capture a trace, and get an evidence-backed report.</span>
+          </p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h3><span class="lang-zh" lang="zh-CN">产品</span><span class="lang-en" lang="en">Product</span></h3>
+            <a href="method.html"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
+            <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+            <a href="install.html"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
+          </div>
+          <div class="footer-col">
+            <h3><span class="lang-zh" lang="zh-CN">接入</span><span class="lang-en" lang="en">Integration</span></h3>
+            <a href="tools.html#mcp">MCP</a>
+            <a href="https://www.npmjs.com/package/diting-agents" target="_blank" rel="noopener noreferrer">npm ↗</a>
+            <a href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">GitCode ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-meta">
+        <span>© 2026 DitingAgent</span>
+        <a href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">Source ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>

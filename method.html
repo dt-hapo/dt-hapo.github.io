@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>分析 — DitingAgent</title>
+  <meta name="description" content="DitingAgent 分析流程：设备连接、UI 操作与 Trace 抓取，四类性能场景的边界、取证工具、证据校验和 HTML 报告。">
+  <meta name="theme-color" content="#f7f6f2">
+  <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    (function () {
+      document.documentElement.classList.add("js");
+      try {
+        var queryLang = new URLSearchParams(location.search).get("lang");
+        var storedLang = localStorage.getItem("diting-lang");
+        if (queryLang === "en" || (!queryLang && storedLang === "en")) {
+          document.documentElement.lang = "en";
+        }
+      } catch (error) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/redesign.css">
+</head>
+<body data-page="analysis" data-title-zh="分析 — DitingAgent" data-title-en="Analysis — DitingAgent">
+  <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Diting — Home">
+        <span class="brand-text">Diting</span>
+          <span class="brand-sub">HarmonyOS App Performance Optimizer</span>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a class="nav-link" href="index.html"><span class="lang-zh" lang="zh-CN">概览</span><span class="lang-en" lang="en">Overview</span></a>
+        <a class="nav-link" href="method.html" aria-current="page"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
+        <a class="nav-link" href="tools.html"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+        <a class="nav-link" href="install.html"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
+      </nav>
+      <div class="header-actions">
+        <div class="lang-toggle" role="group" aria-label="Language / 语言">
+          <button class="lang-btn" type="button" data-set-lang="zh" aria-pressed="true">中</button>
+          <button class="lang-btn" type="button" data-set-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <a class="source-link" href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">GitCode ↗</a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-controls="site-nav" aria-expanded="false" aria-label="打开导航">
+          <span class="nav-toggle__lines" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="container">
+        <div class="page-hero__body">
+          <h1 id="page-title">
+            <span class="lang-zh" lang="zh-CN">设备操作、Trace 抓取<br>与四类场景分析。</span>
+            <span class="lang-en" lang="en">Device actions, trace capture,<br>and four-scenario analysis.</span>
+          </h1>
+          <div class="page-hero__aside">
+            <p>
+              <span class="lang-zh" lang="zh-CN">DitingAgent 的 HarmonyOS 工作流有两条入口：现场设备，或已经存在的 HTrace。两者最终都进入同一套转换、边界、取证、校验和报告流程。</span>
+              <span class="lang-en" lang="en">DitingAgent’s HarmonyOS workflow has two entry points: a live device or an existing HTrace. Both lead into the same conversion, boundary, inspection, validation, and reporting pipeline.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="container page-jump" aria-label="On this page">
+      <a href="#entry"><span class="lang-zh" lang="zh-CN">入口</span><span class="lang-en" lang="en">Entry</span></a>
+      <a href="#device"><span class="lang-zh" lang="zh-CN">设备</span><span class="lang-en" lang="en">Device</span></a>
+      <a href="#pipeline"><span class="lang-zh" lang="zh-CN">流水线</span><span class="lang-en" lang="en">Pipeline</span></a>
+      <a href="#scenarios"><span class="lang-zh" lang="zh-CN">四类场景</span><span class="lang-en" lang="en">Scenarios</span></a>
+      <a href="#division"><span class="lang-zh" lang="zh-CN">分工</span><span class="lang-en" lang="en">Division</span></a>
+    </nav>
+
+    <section class="section" id="entry" aria-labelledby="entry-title">
+      <div class="container">
+        <div class="section-head section-head--wide">
+          <h2 class="section-title" id="entry-title"><span class="lang-zh" lang="zh-CN">两种入口</span><span class="lang-en" lang="en">Two entry points</span></h2>
+          <p class="section-intro">
+            <span class="lang-zh" lang="zh-CN">如果问题只在真机上出现，就让 Agent 连接设备、操作界面并抓取；如果已经有 HTrace，跳过设备步骤直接分析。</span>
+            <span class="lang-en" lang="en">If the problem only appears on a real device, let the agent connect, operate the UI, and capture it. If you already have an HTrace, skip straight to analysis.</span>
+          </p>
+        </div>
+
+        <div class="two-paths">
+          <div class="path-card">
+            <h3><span class="lang-zh" lang="zh-CN">设备工具 + hiprofiler</span><span class="lang-en" lang="en">Device tools + hiprofiler</span></h3>
+            <p>
+              <span class="lang-zh" lang="zh-CN">需要 <code>--enable-device</code>。Agent 可以先看屏幕、读控件树、执行操作，再在指定动作期间抓 Trace。</span>
+              <span class="lang-en" lang="en">Requires <code>--enable-device</code>. The agent can inspect the screen, read the control tree, perform actions, and capture a trace around a chosen interaction.</span>
+            </p>
+            <div class="device-flow">
+              <div class="device-step"><span class="device-step__num">01</span><strong>inspect</strong><code>inspect_device</code></div>
+              <div class="device-step"><span class="device-step__num">02</span><strong>screen</strong><code>inspect_screen</code></div>
+              <div class="device-step"><span class="device-step__num">03</span><strong>act</strong><code>act</code></div>
+              <div class="device-step"><span class="device-step__num">04</span><strong>capture</strong><code>capture_trace</code></div>
+            </div>
+            <a class="link-arrow" href="#device"><span><span class="lang-zh" lang="zh-CN">设备路径细节</span><span class="lang-en" lang="en">Device path in detail</span></span><span aria-hidden="true">↓</span></a>
+          </div>
+
+          <div class="path-card">
+            <h3><span class="lang-zh" lang="zh-CN">MCP 会话分析</span><span class="lang-en" lang="en">MCP session analysis</span></h3>
+            <p>
+              <span class="lang-zh" lang="zh-CN">把 Trace 交给 MCP 会话；宿主通过 <code>open_trace</code> 打开，再用 <code>begin_analysis</code> 声明场景和边界。转换后按场景选择工具，不需要重新抓取。</span>
+              <span class="lang-en" lang="en">Hand the trace to an MCP session. The host opens it with <code>open_trace</code>, then declares the scenario and boundary with <code>begin_analysis</code>. After conversion, tools are selected by scenario; no re-capture is needed.</span>
+            </p>
+            <div class="code-box">
+              <div class="code-top"><span>MCP tool calls</span><span>host agent</span></div>
+              <pre><code>open_trace("case.htrace")
+
+begin_analysis(
+  scenario_type="frame-jank",
+  scenario="scroll list",
+  symptom="repeated dropped frames",
+  refresh_rate_hz=120
+)</code></pre>
+            </div>
+            <a class="link-arrow" href="tools.html#trace"><span><span class="lang-zh" lang="zh-CN">MCP 工具与流程</span><span class="lang-en" lang="en">MCP tools and workflow</span></span><span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="device" aria-labelledby="device-title">
+      <div class="container">
+        <div class="section-head section-head--wide">
+          <h2 class="section-title" id="device-title"><span class="lang-zh" lang="zh-CN">设备路径：屏幕、操作与抓取</span><span class="lang-en" lang="en">Device path: screen, actions, capture</span></h2>
+          <p class="section-intro">
+            <span class="lang-zh" lang="zh-CN">设备工具让 Agent 读取屏幕、按控件操作真机、复现交互，并在正确的时间窗口启动 hiprofiler。</span>
+            <span class="lang-en" lang="en">Device tools let the agent read the screen, drive the real UI by element, reproduce an interaction, and start hiprofiler in the right window.</span>
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <span class="step__num">01</span>
+            <h3 class="step__title"><span class="lang-zh" lang="zh-CN">确认设备与能力</span><span class="lang-en" lang="en">Check device and capabilities</span><code>inspect_device</code></h3>
+            <p class="step__copy"><span class="lang-zh" lang="zh-CN">读取 HarmonyOS 版本、API、ABI、Bundle 和 hitrace 类别。先确认设备在线，避免在错误目标上抓取。</span><span class="lang-en" lang="en">Read HarmonyOS version, API, ABI, bundles, and hitrace categories. Confirm the device is online before capturing on the wrong target.</span></p>
+          </div>
+          <div class="step">
+            <span class="step__num">02</span>
+            <h3 class="step__title"><span class="lang-zh" lang="zh-CN">看当前界面</span><span class="lang-en" lang="en">Inspect the current screen</span><code>inspect_screen</code></h3>
+            <p class="step__copy"><span class="lang-zh" lang="zh-CN">返回截图和 <code>uitest dumpLayout</code> 控件树，包含文本、类型、bounds 和 center。Agent 据此选择要操作的控件。</span><span class="lang-en" lang="en">Returns a screenshot and the <code>uitest dumpLayout</code> tree with text, type, bounds, and center. The agent uses it to choose a target.</span></p>
+          </div>
+          <div class="step">
+            <span class="step__num">03</span>
+            <h3 class="step__title"><span class="lang-zh" lang="zh-CN">按控件操作</span><span class="lang-en" lang="en">Act on UI elements</span><code>act</code></h3>
+            <p class="step__copy"><span class="lang-zh" lang="zh-CN">按顺序执行 tap、swipe、key、text 和 wait，支持元素选择器或坐标。它会实际执行点击、滑动和输入。</span><span class="lang-en" lang="en">Runs tap, swipe, key, text, and wait in sequence, using element selectors or coordinates. It performs tap, swipe, and text input on the device.</span></p>
+          </div>
+          <div class="step">
+            <span class="step__num">04</span>
+            <h3 class="step__title"><span class="lang-zh" lang="zh-CN">在操作期间抓 Trace</span><span class="lang-en" lang="en">Capture during the interaction</span><code>capture_trace</code></h3>
+            <p class="step__copy"><span class="lang-zh" lang="zh-CN">用 hiprofiler_cmd 抓 ftrace 和可选 hiperf samples，可在抓取期间继续执行 UI steps；默认抓完自动打开 Trace。采集时长会按 steps 自动延长。</span><span class="lang-en" lang="en">Uses hiprofiler_cmd for ftrace and optional hiperf samples; UI steps can run during capture, and the trace opens automatically by default. Capture time extends to fit the steps.</span></p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p><span class="lang-zh" lang="zh-CN">设备工具默认关闭，并且不在 Trace evidence 预算内。它们会真实操作设备；执行前应确认目标、动作和可回退路径。设备能力与命令语法随 HarmonyOS 版本变化。</span><span class="lang-en" lang="en">Device tools are off by default and sit outside the trace-evidence budget. They really operate the device; confirm the target, action, and recovery path first. Device capabilities and command syntax vary by HarmonyOS version.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pipeline" aria-labelledby="pipeline-title">
+      <div class="container">
+        <div class="section-head section-head--wide">
+          <h2 class="section-title" id="pipeline-title"><span class="lang-zh" lang="zh-CN">分析流水线</span><span class="lang-en" lang="en">Analysis pipeline</span></h2>
+          <p class="section-intro">
+            <span class="lang-zh" lang="zh-CN">转换、边界、取证、校验和报告是确定性的应用层流程。Agent 在存在业务语义分歧的地方做判断。</span>
+            <span class="lang-en" lang="en">Conversion, boundaries, inspection, validation, and reporting are deterministic application-layer steps. The agent makes the calls where business semantics are ambiguous.</span>
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <span class="step__num">01</span>
+            <h3 class="step__title"><span class="lang-zh" lang="zh-CN">转换与能力探测</span><span class="lang-en" lang="en">Convert and detect capabilities</span><code>open_trace</code></h3>
+            <p class="step__copy"><span class="lang-zh" lang="zh-CN">HTrace 经 TraceStreamer 转成 SQLite，再检查真实表结构。只有存在实际数据的能力才会开放，例如帧、调度、Marker 或 Perf。</span><span class="lang-en" lang="en">HTrace is converted to SQLite by TraceStreamer, then the actual schema is inspected. A capability opens only when real data exists — frames, scheduling, markers, or Perf.</span></p>
+          </div>
+          <div class="step">
+            <span class="step__num">02</span>
+            <h3 class="step__title"><span class="lang-zh" lang="zh-CN">固定问题边界</span><span class="lang-en" lang="en">Fix the problem boundary</span><code>begin_analysis</code></h3>
+            <p class="step__copy"><span class="lang-zh" lang="zh-CN">优先级为显式 <code>time_range</code>、唯一 Marker 对、场景语义边界，最后才是最后输入加持续时间。冷启动还会区分进程复用和稳定首页。</span><span class="lang-en" lang="en">Priority: explicit <code>time_range</code>, a unique marker pair, scenario semantics, then last input plus duration. Cold start additionally separates process reuse from a settled home page.</span></p>
+          </div>
+          <div class="step">
+            <span class="step__num">03</span>
+            <h3 class="step__title"><span class="lang-zh" lang="zh-CN">按场景取证</span><span class="lang-en" lang="en">Inspect by scenario</span><code>inspect_*</code></h3>
+            <p class="step__copy"><span class="lang-zh" lang="zh-CN">工具面包含 16 个 Trace 取证工具，按能力开放；每个结果都有预算、摘要和 Evidence ID。大结果留在会话里，用 <code>get_evidence</code> 按路径和分页读取。</span><span class="lang-en" lang="en">The surface includes 16 trace inspection tools, gated by capability. Every result has a budget, summary, and Evidence ID. Large results stay in-session and are paged with <code>get_evidence</code>.</span></p>
+          </div>
+          <div class="step">
+            <span class="step__num">04</span>
+            <h3 class="step__title"><span class="lang-zh" lang="zh-CN">提交并校验 Draft</span><span class="lang-en" lang="en">Submit and validate the draft</span><code>submit_analysis_result</code></h3>
+            <p class="step__copy"><span class="lang-zh" lang="zh-CN">应用层检查数值、证据引用、边界、限制条件和结论强度。不通过时返回可修正的错误。</span><span class="lang-en" lang="en">The application checks values, evidence references, boundaries, limitations, and claim strength. A failed draft returns a fixable error.</span></p>
+          </div>
+          <div class="step">
+            <span class="step__num">05</span>
+            <h3 class="step__title"><span class="lang-zh" lang="zh-CN">生成可带走的报告</span><span class="lang-en" lang="en">Render a portable report</span><code>render_report</code></h3>
+            <p class="step__copy"><span class="lang-zh" lang="zh-CN">输出 self-contained <code>report.html</code>，并保留 findings、evidence、validation 和 run 元数据。报告可以离线打开，也可以直接归档。</span><span class="lang-en" lang="en">Writes a self-contained <code>report.html</code> and keeps findings, evidence, validation, and run metadata. The report opens offline and can be archived directly.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="scenarios" aria-labelledby="boundary-table-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="boundary-table-title">
+              <span class="lang-zh" lang="zh-CN">场景边界与指标</span>
+              <span class="lang-en" lang="en">Scenario boundaries and metrics</span>
+            </h2>
+          </div>
+        </div>
+
+        <table class="compare">
+          <thead>
+            <tr>
+              <th scope="col"><span class="lang-zh" lang="zh-CN">场景</span><span class="lang-en" lang="en">Scenario</span></th>
+              <th scope="col"><span class="lang-zh" lang="zh-CN">开始</span><span class="lang-en" lang="en">Starts at</span></th>
+              <th scope="col"><span class="lang-zh" lang="zh-CN">结束</span><span class="lang-en" lang="en">Ends at</span></th>
+              <th scope="col"><span class="lang-zh" lang="zh-CN">常见误判</span><span class="lang-en" lang="en">Common pitfalls</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">COLD START</th>
+              <td><span class="lang-zh" lang="zh-CN">新进程创建</span><span class="lang-en" lang="en">new process creation</span></td>
+              <td><span class="lang-zh" lang="zh-CN">应用定义的启动完成 / 稳定首页帧</span><span class="lang-en" lang="en">app-defined startup end / stable home frame</span></td>
+              <td><span class="lang-zh" lang="zh-CN">进程复用、最早出现的帧</span><span class="lang-en" lang="en">process reuse, the earliest frame</span></td>
+            </tr>
+            <tr>
+              <th scope="row">RESPONSE</th>
+              <td><span class="lang-zh" lang="zh-CN">有效输入</span><span class="lang-en" lang="en">valid input</span></td>
+              <td><span class="lang-zh" lang="zh-CN">第一帧有效反馈</span><span class="lang-en" lang="en">first effective frame</span></td>
+              <td><span class="lang-zh" lang="zh-CN">完整动作、业务完成</span><span class="lang-en" lang="en">full action, business completion</span></td>
+            </tr>
+            <tr>
+              <th scope="row">COMPLETION</th>
+              <td><span class="lang-zh" lang="zh-CN">输入 / 操作 Slice 起点</span><span class="lang-en" lang="en">input / operation slice start</span></td>
+              <td><span class="lang-zh" lang="zh-CN">业务完成</span><span class="lang-en" lang="en">business completion</span></td>
+              <td><span class="lang-zh" lang="zh-CN">动画结束、帧空档、窗口末帧</span><span class="lang-en" lang="en">animation end, frame gap, last frame</span></td>
+            </tr>
+            <tr>
+              <th scope="row">FRAME JANK</th>
+              <td><span class="lang-zh" lang="zh-CN">显式窗口 / 交互区间</span><span class="lang-en" lang="en">explicit window / interaction interval</span></td>
+              <td><span class="lang-zh" lang="zh-CN">窗口结束</span><span class="lang-en" lang="en">window end</span></td>
+              <td><span class="lang-zh" lang="zh-CN">整个 RenderService 的负载</span><span class="lang-en" lang="en">all RenderService load</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <p>
+            <span class="lang-zh" lang="zh-CN">四类场景都可以分析已有 HTrace。开启设备工具后，也可以让 Agent 先用 <code>inspect_screen</code> 和 <code>act</code> 操作手机，再用 <code>capture_trace</code> 在交互期间抓取。</span>
+            <span class="lang-en" lang="en">All four scenarios work with an existing HTrace. With device tools enabled, the agent can first inspect and operate the phone, then use <code>capture_trace</code> around the interaction.</span>
+          </p>
+          <p style="margin-top:0.6rem;"><a class="link-arrow" href="#device"><span><span class="lang-zh" lang="zh-CN">查看设备路径</span><span class="lang-en" lang="en">See the device path</span></span><span aria-hidden="true">→</span></a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight" aria-label="Scenario details">
+      <div class="container">
+        <div class="scenario-layout">
+          <aside class="scenario-rail" aria-label="Scenario index">
+            <ol>
+              <li><a href="#cold-start"><span>01</span><span><span class="lang-zh" lang="zh-CN">冷启动</span><span class="lang-en" lang="en">Cold start</span></span></a></li>
+              <li><a href="#response-latency"><span>02</span><span><span class="lang-zh" lang="zh-CN">响应</span><span class="lang-en" lang="en">Response</span></span></a></li>
+              <li><a href="#completion-latency"><span>03</span><span><span class="lang-zh" lang="zh-CN">完成</span><span class="lang-en" lang="en">Completion</span></span></a></li>
+              <li><a href="#frame-jank"><span>04</span><span><span class="lang-zh" lang="zh-CN">帧卡顿</span><span class="lang-en" lang="en">Frame jank</span></span></a></li>
+            </ol>
+          </aside>
+
+          <div>
+            <article class="scenario-article" id="cold-start" aria-labelledby="cold-title">
+              <div class="scenario-head">
+                <span class="scenario-no">01</span>
+                <div>
+                  <h2 id="cold-title">
+                    <span class="lang-zh" lang="zh-CN">从进程创建，<br>到<span class="signal">稳定首页</span>。</span>
+                    <span class="lang-en" lang="en">From process creation<br>to a <span class="signal">stable home page</span>.</span>
+                  </h2>
+                </div>
+                <span class="scenario-tag">STARTUP</span>
+              </div>
+
+              <p class="scenario-intro">
+                <span class="lang-zh" lang="zh-CN">冷启动分析先确认目标进程是新建进程，并排除进程复用；随后找到应用自己的启动完成语义。最早呈现的帧、第一个 Slice 或首页出现，都不自动等于启动完成。</span>
+                <span class="lang-en" lang="en">Cold-start analysis first proves the target process is new, rules out process reuse, then finds the app’s own startup-completion semantics. The earliest presented frame, the first slice, or the home page appearing are not automatically the end.</span>
+              </p>
+
+              <div class="scenario-cols">
+                <div>
+                  <h3><span class="lang-zh" lang="zh-CN">要回答什么</span><span class="lang-en" lang="en">The question</span></h3>
+                  <p>
+                    <span class="lang-zh" lang="zh-CN">从进程创建到用户真正可以使用的首页稳定态，时间花在了哪里？主线程、启动阶段、加载器、渲染和首帧之间的关系是什么？</span>
+                    <span class="lang-en" lang="en">From process creation to a home page the user can actually use, where did the time go? How do the main thread, startup stages, loaders, rendering, and the first frame relate?</span>
+                  </p>
+                  <h3 style="margin-top:1.4rem;"><span class="lang-zh" lang="zh-CN">取证关注</span><span class="lang-en" lang="en">What gets inspected</span></h3>
+                  <ul>
+                    <li><span class="lang-zh" lang="zh-CN">进程创建、同名进程和主线程身份。</span><span class="lang-en" lang="en">Process creation, same-name processes, and main-thread identity.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">直接读取的 <code>app_startup</code> 阶段，避免按名字合成。</span><span class="lang-en" lang="en">Real <code>app_startup</code> stages read from the trace, without inventing stages from marker names.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">应用帧、首帧候选和 frame_maps 映射。</span><span class="lang-en" lang="en">App frames, first-frame candidates, and frame_maps relationships.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">包名相关的跨进程 Slice、加载器和根 Slice。</span><span class="lang-en" lang="en">Package-related cross-process slices, loaders, and root slices.</span></li>
+                  </ul>
+                </div>
+                <div>
+                  <div class="boundary-box">
+                    <div class="boundary-box__row"><span class="boundary-box__label">Start</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">新进程创建，拒绝进程复用。</span><span class="lang-en" lang="en">New process creation; reject reuse.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">End</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">应用自定义启动完成，或稳定的首页帧。</span><span class="lang-en" lang="en">App-defined startup completion, or a stable home frame.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">Guardrail</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">首帧只用于发现；确认“首页稳定”需要额外证据。</span><span class="lang-en" lang="en">The first frame is discovery only; a stable home page needs additional evidence.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">Tools</span><span class="boundary-box__value"><code>inspect_cold_start_candidates</code><br><code>inspect_cold_start_timeline</code></span></div>
+                  </div>
+                  <div class="mini-ruler" aria-hidden="true">
+                    <span>CREATE</span><span>STAGE</span><span>STABLE</span>
+                    <i></i><i></i><i></i>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="scenario-article" id="response-latency" aria-labelledby="response-title">
+              <div class="scenario-head">
+                <span class="scenario-no">02</span>
+                <div>
+                  <h2 id="response-title">
+                    <span class="lang-zh" lang="zh-CN">响应时延：输入到<br><span class="signal">第一帧反馈</span></span>
+                    <span class="lang-en" lang="en">Response latency: input to<br><span class="signal">the first frame</span></span>
+                  </h2>
+                </div>
+                <span class="scenario-tag">INPUT → FEEDBACK</span>
+              </div>
+
+              <p class="scenario-intro">
+                <span class="lang-zh" lang="zh-CN">响应时延回答“用户有没有立刻看到反应”。它从有效输入开始，在第一帧包含可见反馈时结束。页面跳转完成、动画消失或数据全部落位，属于完成时延，不属于响应时延。</span>
+                <span class="lang-en" lang="en">Response latency answers “did the user see a reaction immediately?” It starts at valid input and ends at the first frame containing visible feedback. A finished navigation, a finished animation, or fully loaded data belongs to completion — not response.</span>
+              </p>
+
+              <div class="scenario-cols">
+                <div>
+                  <h3><span class="lang-zh" lang="zh-CN">要回答什么</span><span class="lang-en" lang="en">The question</span></h3>
+                  <p>
+                    <span class="lang-zh" lang="zh-CN">输入有没有被接收？应用线程和渲染线程之间，是哪一段让用户觉得“没反应”？首个有效帧是绘制出来的，还是只产生了一个空帧？</span>
+                    <span class="lang-en" lang="en">Was the input received? Which part of the app and render pipeline makes the interface feel unresponsive? Was the first effective frame actually presented, or merely produced as an empty frame?</span>
+                  </p>
+                  <h3 style="margin-top:1.4rem;"><span class="lang-zh" lang="zh-CN">取证关注</span><span class="lang-en" lang="en">What gets inspected</span></h3>
+                  <ul>
+                    <li><span class="lang-zh" lang="zh-CN">Touch / Pointer / Click 输入打点与生效时间。</span><span class="lang-en" lang="en">Touch, pointer, or click input events and their effective timestamps.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">应用实际帧、RS 映射帧和首帧候选。</span><span class="lang-en" lang="en">Actual app frames, RS-mapped frames, and first-frame candidates.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">UI 线程在输入后的调度、长 Slice 和关键调用。</span><span class="lang-en" lang="en">UI-thread scheduling after input, long slices, and critical calls.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">输入到手势回调、布局、绘制和提交的链路。</span><span class="lang-en" lang="en">The chain from input to gesture callback, layout, draw, and submit.</span></li>
+                  </ul>
+                </div>
+                <div>
+                  <div class="boundary-box">
+                    <div class="boundary-box__row"><span class="boundary-box__label">Start</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">有效用户输入。</span><span class="lang-en" lang="en">A valid user input.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">End</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">第一帧包含有效视觉反馈。</span><span class="lang-en" lang="en">The first frame with effective visual feedback.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">Guardrail</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">响应与完成分开计算；有效反馈需要可见变化，空帧不计入。</span><span class="lang-en" lang="en">Response and completion are measured separately; effective feedback requires a visible change, so empty frames do not count.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">Tools</span><span class="boundary-box__value"><code>inspect_completion_latency_candidates</code><br><code>inspect_thread_execution</code><br><code>inspect_frame_jank</code></span></div>
+                  </div>
+                  <div class="mini-ruler" aria-hidden="true">
+                    <span>INPUT</span><span>RESPONSE</span><span>COMPLETE</span>
+                    <i></i><i></i><i></i>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="scenario-article" id="completion-latency" aria-labelledby="completion-title">
+              <div class="scenario-head">
+                <span class="scenario-no">03</span>
+                <div>
+                  <h2 id="completion-title">
+                    <span class="lang-zh" lang="zh-CN">完成时延：输入到<br><span class="signal">业务完成</span></span>
+                    <span class="lang-en" lang="en">Completion latency: input<br>to <span class="signal">business completion</span></span>
+                  </h2>
+                </div>
+                <span class="scenario-tag">INPUT → BUSINESS END</span>
+              </div>
+
+              <p class="scenario-intro">
+                <span class="lang-zh" lang="zh-CN">完成时延必须拆成输入到有效反馈、反馈后到业务完成、输入到业务完成三段。没有应用完成语义时，动画结束、帧静止和窗口最后一帧只能作为发现候选，不能单独证明 <code>completion_proven</code>。</span>
+                <span class="lang-en" lang="en">Completion latency splits into input-to-response, post-response work, and input-to-business-end. Without app completion semantics, animation end, quiet frames, and the last frame in the window are discovery candidates only — none of them alone can prove <code>completion_proven</code>.</span>
+              </p>
+
+              <div class="scenario-cols">
+                <div>
+                  <h3><span class="lang-zh" lang="zh-CN">要回答什么</span><span class="lang-en" lang="en">The question</span></h3>
+                  <p>
+                    <span class="lang-zh" lang="zh-CN">用户看到反馈之后，应用还在做什么？业务完成是由一个唯一、正 duration 的操作 Slice 定义，还是由应用显式 Marker 定义？反馈后阶段的主线程、调度、I/O 和渲染，谁在拖长尾？</span>
+                    <span class="lang-en" lang="en">After the user sees feedback, what is the app still doing? Is business completion defined by a unique positive-duration operation slice or an explicit marker? In the post-response phase, which main-thread work, scheduling, I/O, or rendering extends the tail?</span>
+                  </p>
+                  <h3 style="margin-top:1.4rem;"><span class="lang-zh" lang="zh-CN">取证关注</span><span class="lang-en" lang="en">What gets inspected</span></h3>
+                  <ul>
+                    <li><span class="lang-zh" lang="zh-CN">唯一操作 Slice 的 <code>[ts, ts+dur]</code>，以及开始/完成 Marker。</span><span class="lang-en" lang="en">The unique operation slice’s <code>[ts, ts+dur]</code>, plus start and completion markers.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">有效响应点、应用实际帧和映射呈现帧。</span><span class="lang-en" lang="en">The effective response point, actual app frames, and mapped presented frames.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">反馈后阶段的线程调度、热点 Slice 和大帧。</span><span class="lang-en" lang="en">Post-response thread scheduling, slice hotspots, and large frames.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">Perf 样本用于印证长尾工作；时间线仍是主证据。</span><span class="lang-en" lang="en">Perf samples corroborate the tail; the timeline remains the primary evidence.</span></li>
+                  </ul>
+                </div>
+                <div>
+                  <div class="boundary-box">
+                    <div class="boundary-box__row"><span class="boundary-box__label">Start</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">输入生效，或操作 Slice 起点。</span><span class="lang-en" lang="en">Effective input, or operation-slice start.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">End</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">应用声明的业务完成。</span><span class="lang-en" lang="en">App-declared business completion.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">Guardrail</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">动画结束、帧空档和窗口末帧只作为候选；完成需要应用语义或明确 Marker。</span><span class="lang-en" lang="en">Animation end, frame gaps, and the last frame are candidates; completion needs app semantics or an explicit marker.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">Tools</span><span class="boundary-box__value"><code>inspect_completion_latency_candidates</code><br><code>inspect_completion_latency_phases</code><br><code>inspect_perf_profile</code></span></div>
+                  </div>
+                  <div class="mini-ruler" aria-hidden="true">
+                    <span>INPUT</span><span>FEEDBACK</span><span>BUSINESS END</span>
+                    <i></i><i></i><i></i>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="scenario-article" id="frame-jank" aria-labelledby="jank-title">
+              <div class="scenario-head">
+                <span class="scenario-no">04</span>
+                <div>
+                  <h2 id="jank-title">
+                    <span class="lang-zh" lang="zh-CN">帧率与卡顿：<br><span class="signal">预算与慢帧</span></span>
+                    <span class="lang-en" lang="en">Frame rate and jank:<br><span class="signal">budget and slow frames</span></span>
+                  </h2>
+                </div>
+                <span class="scenario-tag">REFRESH-AWARE</span>
+              </div>
+
+              <p class="scenario-intro">
+                <span class="lang-zh" lang="zh-CN">帧预算按当前显示刷新率计算，不采用固定 60 Hz。分析会识别实际应用帧和期望帧、慢帧簇、deadline miss，以及通过 frame_maps 严格关联的 RenderService 帧；它不会把整个 RenderService 的负载直接算到目标应用头上。</span>
+                <span class="lang-en" lang="en">The frame budget comes from the actual display refresh rate. Analysis identifies actual and expected app frames, slow-frame clusters, deadline misses, and strictly mapped RenderService frames. It does not attribute all RenderService load to the app under test.</span>
+              </p>
+
+              <div class="scenario-cols">
+                <div>
+                  <h3><span class="lang-zh" lang="zh-CN">要回答什么</span><span class="lang-en" lang="en">The question</span></h3>
+                  <p>
+                    <span class="lang-zh" lang="zh-CN">窗口内的有效 FPS 是多少？哪些帧超出了预算？坏帧是孤立的还是成簇的？产帧线程、渲染管线和应用主线程之间，哪一段最接近可见卡顿？</span>
+                    <span class="lang-en" lang="en">What is the effective FPS in the window? Which frames exceed the budget? Are bad frames isolated or clustered? Which part of the producer-thread, render-pipeline, and main-thread chain is closest to the visible jank?</span>
+                  </p>
+                  <h3 style="margin-top:1.4rem;"><span class="lang-zh" lang="zh-CN">取证关注</span><span class="lang-en" lang="en">What gets inspected</span></h3>
+                  <ul>
+                    <li><span class="lang-zh" lang="zh-CN">刷新率、帧预算、actual / expected 应用帧。</span><span class="lang-en" lang="en">Refresh rate, frame budget, actual and expected app frames.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">慢帧、deadline miss、坏帧簇和有效 FPS。</span><span class="lang-en" lang="en">Slow frames, deadline misses, bad-frame clusters, and effective FPS.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">产帧线程候选、活跃渲染区间和 RS 映射帧。</span><span class="lang-en" lang="en">Frame-producer candidates, active render intervals, and RS-mapped frames.</span></li>
+                    <li><span class="lang-zh" lang="zh-CN">窗口内关键线程调度、长 Slice 与 Perf 热点。</span><span class="lang-en" lang="en">Critical-thread scheduling, long slices, and Perf hotspots within the window.</span></li>
+                  </ul>
+                </div>
+                <div>
+                  <div class="boundary-box">
+                    <div class="boundary-box__row"><span class="boundary-box__label">Window</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">显式区间，或一次有界交互。</span><span class="lang-en" lang="en">An explicit interval, or one bounded interaction.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">Budget</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">按实际刷新率推导。</span><span class="lang-en" lang="en">Derived from the actual display refresh rate.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">Guardrail</span><span class="boundary-box__value"><span class="lang-zh" lang="zh-CN">200 ms 帧空档只用于发现；应用根因需要应用线程与帧映射证据。</span><span class="lang-en" lang="en">A 200 ms frame gap is discovery only; an app root cause needs app-thread and frame-mapping evidence.</span></span></div>
+                    <div class="boundary-box__row"><span class="boundary-box__label">Tools</span><span class="boundary-box__value"><code>inspect_frame_jank</code><br><code>inspect_thread_execution</code><br><code>inspect_perf_profile</code></span></div>
+                  </div>
+                  <div class="mini-ruler" aria-hidden="true">
+                    <span>FRAME</span><span>GAP</span><span>DEADLINE</span>
+                    <i></i><i></i><i></i>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <div class="callout reveal" style="margin-top:2rem;">
+              <p>
+                <span class="lang-zh" lang="zh-CN">边界应作为分析结果记录。每一条结论都应该能回答：从什么时候开始，到什么时候结束，为什么是这里。</span>
+                <span class="lang-en" lang="en">The boundary is part of the analysis result. Every finding should answer: where did it start, where did it end, and why there?</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="division" aria-labelledby="division-title">
+      <div class="container">
+        <div class="section-head section-head--wide">
+          <h2 class="section-title" id="division-title"><span class="lang-zh" lang="zh-CN">应用层与 Agent 的职责</span><span class="lang-en" lang="en">Application and agent responsibilities</span></h2>
+        </div>
+        <div class="article-block">
+          <div>
+            <h3><span class="lang-zh" lang="zh-CN">应用层</span><span class="lang-en" lang="en">Application layer</span></h3>
+            <ul>
+              <li><span class="lang-zh" lang="zh-CN">转换 Trace、声明能力、执行有界查询与统计。</span><span class="lang-en" lang="en">Convert traces, declare capabilities, run bounded queries and statistics.</span></li>
+              <li><span class="lang-zh" lang="zh-CN">保存完整 Evidence，投影有界摘要。</span><span class="lang-en" lang="en">Persist complete evidence and project bounded summaries.</span></li>
+              <li><span class="lang-zh" lang="zh-CN">校验数值、边界、引用和最终报告。</span><span class="lang-en" lang="en">Validate values, boundaries, references, and the final report.</span></li>
+            </ul>
+          </div>
+          <div>
+            <h3><span class="lang-zh" lang="zh-CN">模型</span><span class="lang-en" lang="en">Model</span></h3>
+            <ul>
+              <li><span class="lang-zh" lang="zh-CN">在候选边界中选择符合业务语义的那个。</span><span class="lang-en" lang="en">Choose the boundary that matches business semantics.</span></li>
+              <li><span class="lang-zh" lang="zh-CN">决定下一步调用哪个取证工具。</span><span class="lang-en" lang="en">Decide which evidence tool to call next.</span></li>
+              <li><span class="lang-zh" lang="zh-CN">关联证据，写出解释、置信度和建议；提交的是 Draft。</span><span class="lang-en" lang="en">Relate evidence and write the explanation, confidence, and advice — submitted as a draft.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <p><span class="lang-zh" lang="zh-CN">宿主模型不重新计算线程分布、CPU 状态、唤醒链或 Perf Profile；这些确定性对象由应用层从 Evidence 合并。模型通过 MCP 工具读取 Trace，不能绕过工具访问原始数据库。</span><span class="lang-en" lang="en">The host model does not recompute thread profiles, CPU states, wake-up chains, or Perf profiles; the application merges those objects from evidence. The model reads the trace through MCP tools and cannot access the raw database directly.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <a class="next-link" href="install.html">
+        <div>
+          <h2><span class="lang-zh" lang="zh-CN">安装与第一次运行</span><span class="lang-en" lang="en">Installation and first run</span></h2>
+        </div>
+        <span class="next-link__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-cta">
+        <div class="footer-cta__copy">
+          <h2><span class="lang-zh" lang="zh-CN">开始使用<br>DitingAgent</span><span class="lang-en" lang="en">Get started with<br>DitingAgent</span></h2>
+          <p><span class="lang-zh" lang="zh-CN">安装 MCP server，注册到宿主，打开第一份 Trace。</span><span class="lang-en" lang="en">Install the MCP server, connect a host, and open your first trace.</span></p>
+        </div>
+        <div class="footer-cta__actions">
+          <a class="btn btn--primary" href="install.html"><span><span class="lang-zh" lang="zh-CN">安装 DitingAgent</span><span class="lang-en" lang="en">Install DitingAgent</span></span><span class="btn__arrow" aria-hidden="true">→</span></a>
+          <a class="link-arrow" href="tools.html#mcp"><span><span class="lang-zh" lang="zh-CN">MCP 接入</span><span class="lang-en" lang="en">MCP integration</span></span><span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html" aria-label="Diting — Home">
+            <span class="brand-text">Diting</span>
+          </a>
+          <p class="footer-desc">
+            <span class="lang-zh" lang="zh-CN">HarmonyOS Trace MCP server。连接设备、抓取 Trace，输出带证据的报告。</span>
+            <span class="lang-en" lang="en">A HarmonyOS trace-analysis MCP server. Connect a device, capture a trace, and get an evidence-backed report.</span>
+          </p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h3><span class="lang-zh" lang="zh-CN">产品</span><span class="lang-en" lang="en">Product</span></h3>
+            <a href="method.html"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
+            <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+            <a href="install.html"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
+          </div>
+          <div class="footer-col">
+            <h3><span class="lang-zh" lang="zh-CN">接入</span><span class="lang-en" lang="en">Integration</span></h3>
+            <a href="tools.html#mcp">MCP</a>
+            <a href="https://www.npmjs.com/package/diting-agents" target="_blank" rel="noopener noreferrer">npm ↗</a>
+            <a href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">GitCode ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-meta">
+        <span>© 2026 DitingAgent</span>
+        <a href="https://gitcode.com/diting/DitingAgent" target="_blank" rel="noopener noreferrer">Source ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>
