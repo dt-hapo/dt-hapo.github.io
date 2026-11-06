@@ -108,3 +108,47 @@
 .device-step {
   padding-left: 0.75rem;
 }
+
+/* Tool capability rows: the hover surface runs edge-to-edge, and the
+   navigation arrow is large enough to read at a glance. */
+.tool-cap-list {
+  padding: 0;
+  overflow: hidden;
+}
+
+.tool-cap-row {
+  grid-template-columns: 4rem minmax(0, 1fr) 2rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.tool-cap-row__arrow {
+  align-self: center;
+  justify-self: end;
+  padding-top: 0;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.tool-cap-row:focus-visible {
+  background: #f8fbff;
+}
+
+@media (max-width: 720px) {
+  .tool-cap-row {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .tool-cap-row {
+    grid-template-columns: 3.2rem minmax(0, 1fr) 1.8rem;
+  }
+}
+
+/* Make the right-hand navigation mark read as an icon, not small text. */
+.tool-cap-row__arrow {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 500;
+}
