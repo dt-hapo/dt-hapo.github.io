@@ -1,0 +1,58 @@
+/* Final layout polish: equal feature cards, a compact prompt card, and
+   comfortable interaction targets. */
+
+/* Paired path cards read as one row instead of two unrelated heights. */
+.two-paths {
+  align-items: stretch;
+}
+
+.path-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.path-card > .link-arrow {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+/* The prompt card is a compact quote; let the execution chain define the row. */
+.auto-grid {
+  align-items: start;
+}
+
+.auto-card--task .auto-signal {
+  margin-top: 1.2rem;
+}
+
+/* Keep primary controls comfortable on touch screens. */
+.site-header .lang-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.site-header .nav-toggle {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.site-header .header-install {
+  min-height: 44px;
+}
+
+.quick-install__head .copy-btn {
+  min-height: 44px;
+}
+
+.site-footer .footer-col a {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+}
+
+@media (max-width: 960px) {
+  .site-header .nav-link {
+    min-height: 44px;
+  }
+}

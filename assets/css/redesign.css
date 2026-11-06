@@ -2864,7 +2864,7 @@ pre code {
   #session > .container,
   #trace > .container,
   #evidence > .container,
-  #device > .container {
+  body[data-page="tools"] #device > .container {
     display: grid;
     grid-template-columns: minmax(200px, 0.28fr) minmax(0, 1fr);
     column-gap: clamp(2.5rem, 5vw, 5rem);
@@ -2874,7 +2874,7 @@ pre code {
   #session .section-head,
   #trace .section-head,
   #evidence .section-head,
-  #device .section-head {
+  body[data-page="tools"] #device .section-head {
     display: block;
     grid-column: 1;
     grid-row: 1;
@@ -2887,7 +2887,7 @@ pre code {
   #session .section-head .section-title,
   #trace .section-head .section-title,
   #evidence .section-head .section-title,
-  #device .section-head .section-title {
+  body[data-page="tools"] #device .section-head .section-title {
     font-size: clamp(1.7rem, 2.2vw, 2.2rem);
     line-height: 1.08;
   }
@@ -2895,7 +2895,7 @@ pre code {
   #session .section-head .section-intro,
   #trace .section-head .section-intro,
   #evidence .section-head .section-intro,
-  #device .section-head .section-intro {
+  body[data-page="tools"] #device .section-head .section-intro {
     max-width: none;
     margin-top: 0.9rem;
     font-size: 0.9rem;
@@ -2905,7 +2905,7 @@ pre code {
   #session .tool-detail,
   #trace .tool-detail,
   #evidence .tool-detail,
-  #device .tool-detail {
+  body[data-page="tools"] #device .tool-detail {
     grid-column: 2;
     grid-row: 1;
   }
@@ -2939,7 +2939,7 @@ pre code {
   #session .section-head,
   #trace .section-head,
   #evidence .section-head,
-  #device .section-head {
+  body[data-page="tools"] #device .section-head {
     position: static;
     grid-row: 1;
   }
@@ -2947,14 +2947,14 @@ pre code {
   #session > .container > :not(.section-head),
   #trace > .container > :not(.section-head),
   #evidence > .container > :not(.section-head),
-  #device > .container > :not(.section-head) {
+  body[data-page="tools"] #device > .container > :not(.section-head) {
     grid-column: 2;
   }
 
   #session .tool-detail,
   #trace .tool-detail,
   #evidence .tool-detail,
-  #device .tool-detail {
+  body[data-page="tools"] #device .tool-detail {
     grid-row: auto;
   }
 
