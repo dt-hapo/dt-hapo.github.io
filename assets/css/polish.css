@@ -91,3 +91,15 @@
     padding-right: 0.9rem;
   }
 }
+
+/* Give the host-setup note and its following link their own breathing room. */
+#mcp .method-note {
+  margin-top: 1.4rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+#mcp .method-note + p {
+  margin-top: 1rem;
+  padding-left: 0.9rem;
+}
