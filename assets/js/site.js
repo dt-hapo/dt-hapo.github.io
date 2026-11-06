@@ -30,7 +30,7 @@
 
     if (persist) {
       try {
-        localStorage.setItem("diting-lang", normalized);
+        localStorage.setItem("diting-lang-v2", normalized);
       } catch (error) {
         /* Storage may be unavailable in private contexts. */
       }
@@ -64,8 +64,8 @@
     if (queryLanguage === "en" || queryLanguage === "zh") {
       setLanguage(queryLanguage, true);
     } else {
-      const storedLanguage = localStorage.getItem("diting-lang");
-      setLanguage(storedLanguage === "en" ? "en" : "zh", false);
+      const storedLanguage = localStorage.getItem("diting-lang-v2");
+      setLanguage(storedLanguage === "zh" ? "zh" : "en", false);
     }
   } catch (error) {
     setLanguage(currentLanguage(), false);
