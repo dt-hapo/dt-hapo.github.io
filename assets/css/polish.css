@@ -62,3 +62,8 @@
 .tool-detail__row:hover {
   box-shadow: none;
 }
+
+/* The scenario row ends with its cards, not a stray rule. */
+.scenario-grid {
+  border-bottom: 0;
+}
