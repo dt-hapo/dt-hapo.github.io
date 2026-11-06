@@ -161,3 +161,122 @@
     word-break: normal;
   }
 }
+
+/* End-to-end loop: a compact process rail, not another card stack. */
+body[data-page="analysis"] .section--loop {
+  padding-block: clamp(2.6rem, 4.5vw, 4rem);
+  background: #0b1220;
+  color: #f6f9ff;
+}
+
+body[data-page="analysis"] .section--loop .section-title {
+  color: #f6f9ff;
+}
+
+body[data-page="analysis"] .section--loop .section-intro {
+  color: #b9c8dd;
+}
+
+.loop-flow {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.loop-step {
+  display: flex;
+  min-width: 0;
+  min-height: 10.5rem;
+  flex-direction: column;
+  padding: 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.loop-step__num {
+  color: #8fb5e8;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.loop-step strong {
+  display: block;
+  margin-top: 0.65rem;
+  color: #f6f9ff;
+  font-size: 1.03rem;
+  line-height: 1.25;
+}
+
+.loop-step__owner {
+  display: block;
+  margin-top: 0.4rem;
+  color: #a9b8cc;
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.loop-step code {
+  display: block;
+  margin-top: auto;
+  padding-top: 1rem;
+  color: #a9c9f5;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.loop-return {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin: 1.4rem 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  color: #b9c8dd;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.loop-return__icon {
+  color: #8fb5e8;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 1100px) {
+  .loop-flow {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .loop-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .loop-step {
+    min-height: 0;
+  }
+
+  .loop-step code {
+    margin-top: 0.8rem;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .loop-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .loop-step {
+    min-height: 0;
+  }
+}

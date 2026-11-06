@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Analysis — Diting</title>
-  <meta name="description" content="DitingAgent workflow: edit, build, sign, install, launch, trace capture, and evidence-backed analysis across all four scenarios, plus an existing-trace entry point.">
+  <meta name="description" content="DitingAgent end-to-end workflow: edit, build, sign, install, launch, trace capture, analysis, and reporting in one closed loop, plus an existing-trace entry point.">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -19,13 +19,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261106-17">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-17">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-17">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-17">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-17">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-17">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-17">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261106-18">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-18">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-18">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-18">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-18">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-18">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-18">
 </head>
 <body data-page="analysis" data-title-zh="分析 — Diting" data-title-en="Analysis — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -73,13 +73,13 @@
       <div class="container">
         <div class="page-hero__body">
           <h1 id="page-title">
-            <span class="lang-zh" lang="zh-CN">从改代码到性能取证，<br>覆盖四类场景。</span>
-            <span class="lang-en" lang="en">From code change to performance evidence,<br>across four scenarios.</span>
+            <span class="lang-zh" lang="zh-CN">从代码到报告，<br>端到端闭环。</span>
+            <span class="lang-en" lang="en">From code to report,<br>an end-to-end loop.</span>
           </h1>
           <div class="page-hero__aside">
             <p>
               <span class="lang-zh" lang="zh-CN">DitingAgent 的工作流覆盖改代码、构建、签名、安装、启动、抓 Trace 和分析；也可以从已有 HTrace 开始。两条路径最终进入同一套转换、边界、取证、校验和报告流程。</span>
-              <span class="lang-en" lang="en">DitingAgent covers edit, build, sign, install, launch, trace capture, and analysis. An existing HTrace can enter the same conversion, boundary, inspection, validation, and reporting pipeline.</span>
+              <span class="lang-en" lang="en">DitingAgent connects edit, build, sign, install, launch, trace capture, analysis, and reporting into one loop. Start from a code change or an existing HTrace.</span>
             </p>
           </div>
         </div>
@@ -87,12 +87,67 @@
     </section>
 
     <nav class="container page-jump" aria-label="On this page">
+      <a href="#loop"><span class="lang-zh" lang="zh-CN">闭环</span><span class="lang-en" lang="en">Loop</span></a>
       <a href="#entry"><span class="lang-zh" lang="zh-CN">入口</span><span class="lang-en" lang="en">Entry</span></a>
       <a href="#device"><span class="lang-zh" lang="zh-CN">设备</span><span class="lang-en" lang="en">Device</span></a>
       <a href="#pipeline"><span class="lang-zh" lang="zh-CN">流水线</span><span class="lang-en" lang="en">Pipeline</span></a>
       <a href="#scenarios"><span class="lang-zh" lang="zh-CN">四类场景</span><span class="lang-en" lang="en">Scenarios</span></a>
       <a href="#division"><span class="lang-zh" lang="zh-CN">分工</span><span class="lang-en" lang="en">Division</span></a>
     </nav>
+
+    <section class="section section--loop" id="loop" aria-labelledby="loop-title">
+      <div class="container">
+        <div class="section-head section-head--wide">
+          <h2 class="section-title" id="loop-title"><span class="lang-zh" lang="zh-CN">七个阶段，一条闭环。</span><span class="lang-en" lang="en">Seven stages, one loop.</span></h2>
+          <p class="section-intro"><span class="lang-zh" lang="zh-CN">不是一串独立工具：上一阶段的产物直接成为下一阶段的输入，报告结果又回到宿主 Agent，驱动下一次改动。</span><span class="lang-en" lang="en">This is not a row of separate tools: each stage feeds the next, and the report returns to the host agent to drive the next change.</span></p>
+        </div>
+        <ol class="loop-flow">
+          <li class="loop-step">
+            <span class="loop-step__num">01</span>
+            <strong><span class="lang-zh" lang="zh-CN">改代码</span><span class="lang-en" lang="en">Edit code</span></strong>
+            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">宿主 Agent</span><span class="lang-en" lang="en">Host agent</span></span>
+            <code>project</code>
+          </li>
+          <li class="loop-step">
+            <span class="loop-step__num">02</span>
+            <strong><span class="lang-zh" lang="zh-CN">构建</span><span class="lang-en" lang="en">Build</span></strong>
+            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
+            <code>build_app</code>
+          </li>
+          <li class="loop-step">
+            <span class="loop-step__num">03</span>
+            <strong><span class="lang-zh" lang="zh-CN">签名</span><span class="lang-en" lang="en">Sign</span></strong>
+            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
+            <code>sign_app</code>
+          </li>
+          <li class="loop-step">
+            <span class="loop-step__num">04</span>
+            <strong><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></strong>
+            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
+            <code>install_app</code>
+          </li>
+          <li class="loop-step">
+            <span class="loop-step__num">05</span>
+            <strong><span class="lang-zh" lang="zh-CN">启动</span><span class="lang-en" lang="en">Launch</span></strong>
+            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Agent / Diting</span><span class="lang-en" lang="en">Agent / Diting</span></span>
+            <code>act · launch_app</code>
+          </li>
+          <li class="loop-step">
+            <span class="loop-step__num">06</span>
+            <strong><span class="lang-zh" lang="zh-CN">抓 Trace</span><span class="lang-en" lang="en">Capture</span></strong>
+            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
+            <code>capture_trace</code>
+          </li>
+          <li class="loop-step">
+            <span class="loop-step__num">07</span>
+            <strong><span class="lang-zh" lang="zh-CN">分析并报告</span><span class="lang-en" lang="en">Analyze + report</span></strong>
+            <span class="loop-step__owner"><span class="lang-zh" lang="zh-CN">Agent / Diting</span><span class="lang-en" lang="en">Agent / Diting</span></span>
+            <code>open_trace → render_report</code>
+          </li>
+        </ol>
+        <p class="loop-return"><span class="loop-return__icon" aria-hidden="true">↺</span><span><span class="lang-zh" lang="zh-CN">报告结果回到宿主 Agent，决定下一次代码改动。</span><span class="lang-en" lang="en">The report returns to the host agent and drives the next code change.</span></span></p>
+      </div>
+    </section>
 
     <section class="section" id="entry" aria-labelledby="entry-title">
       <div class="container">
