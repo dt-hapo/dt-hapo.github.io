@@ -61,18 +61,6 @@ body[data-page="install"] .page-hero__aside {
   border-top-color: rgba(255, 255, 255, 0.14);
 }
 
-body[data-page="tools"] .section[aria-label="Tool counts"] {
-  border-block-color: rgba(255, 255, 255, 0.14);
-}
-
-body[data-page="tools"] .cap-summary {
-  border-top-color: rgba(255, 255, 255, 0.24);
-}
-
-body[data-page="tools"] .cap-summary__item {
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
 .auto-signal span {
   background: rgba(255, 255, 255, 0.12);
 }
