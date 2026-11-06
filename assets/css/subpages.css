@@ -205,12 +205,3 @@ body[data-page="install"] .install-section:last-child {
     padding-block: 2rem;
   }
 }
-
-/* The tools page uses a single-statement hero. */
-body[data-page="tools"] .page-hero__body {
-  display: block;
-}
-
-body[data-page="tools"] .page-hero h1 {
-  max-width: 14ch;
-}
