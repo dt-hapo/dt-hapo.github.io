@@ -67,3 +67,14 @@
 .scenario-grid {
   border-bottom: 0;
 }
+
+/* No hover/focus rule is allowed to draw a vertical line on reference rows. */
+.tool-detail__row,
+.tool-detail__row:hover,
+.tool-detail__row:focus-within,
+.tool-cap-row,
+.tool-cap-row:hover,
+.tool-cap-row:focus-within {
+  border-left: 0 !important;
+  box-shadow: none !important;
+}
