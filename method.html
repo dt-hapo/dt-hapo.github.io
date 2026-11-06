@@ -19,13 +19,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261106-27">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-27">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-27">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-27">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-27">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-27">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-27">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261106-29">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261106-29">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261106-29">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261106-29">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261106-29">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261106-29">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261106-29">
 </head>
 <body data-page="analysis" data-title-zh="分析 — Diting" data-title-en="Analysis — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -96,26 +96,28 @@
     </nav>
 
     <section class="section section--run" id="workflow" aria-labelledby="workflow-title">
-      <div class="container">
-        <div class="section-head section-head--wide">
+      <div class="container run-layout">
+        <div class="run-aside">
           <h2 class="section-title" id="workflow-title"><span class="lang-zh" lang="zh-CN">执行顺序</span><span class="lang-en" lang="en">Run sequence</span></h2>
           <p class="section-intro"><span class="lang-zh" lang="zh-CN">宿主 Agent 负责判断和修改代码；Diting 执行构建、设备动作和取证。报告回到 Agent 后，下一轮从这里重新开始。</span><span class="lang-en" lang="en">The host agent judges and edits. Diting builds, operates the device, and gathers evidence. The report returns to the agent, and the next run starts here.</span></p>
         </div>
-        <div class="run-table" role="table" aria-label="Workflow steps">
-          <div class="run-head" role="row">
-            <span role="columnheader">Step</span>
-            <span role="columnheader">Action</span>
-            <span role="columnheader">Owner</span>
-            <span role="columnheader">Tool</span>
-          </div>
+        <div class="run-main">
+          <div class="run-table" role="table" aria-label="Workflow steps">
+            <div class="run-head" role="row">
+              <span role="columnheader">Step</span>
+              <span role="columnheader">Action</span>
+              <span role="columnheader">Owner / tool</span>
+            </div>
           <div class="run-row" role="row">
             <span class="run-num" role="cell">01</span>
             <div class="run-action" role="cell">
               <strong><span class="lang-zh" lang="zh-CN">理解问题并改代码</span><span class="lang-en" lang="en">Understand and edit code</span></strong>
               <p><span class="lang-zh" lang="zh-CN">读取代码和现象，修改工程，确定本轮要验证的场景。</span><span class="lang-en" lang="en">Read the code and symptom, edit the project, and choose the scenario to verify.</span></p>
             </div>
-            <span class="run-owner" role="cell"><span class="lang-zh" lang="zh-CN">宿主 Agent</span><span class="lang-en" lang="en">Host agent</span></span>
-            <code class="run-tool" role="cell">project</code>
+            <div class="run-meta" role="cell">
+              <span class="run-owner"><span class="lang-zh" lang="zh-CN">宿主 Agent</span><span class="lang-en" lang="en">Host agent</span></span>
+              <code class="run-tool">project</code>
+            </div>
           </div>
           <div class="run-row" role="row">
             <span class="run-num" role="cell">02</span>
@@ -123,8 +125,10 @@
               <strong><span class="lang-zh" lang="zh-CN">构建</span><span class="lang-en" lang="en">Build</span></strong>
               <p><span class="lang-zh" lang="zh-CN">用 hvigorw 生成 HAP；需要 App Pack 时用 package_app。</span><span class="lang-en" lang="en">Build a HAP with hvigorw; use package_app when an App Pack is needed.</span></p>
             </div>
-            <span class="run-owner" role="cell">Diting</span>
-            <code class="run-tool" role="cell">build_app</code>
+            <div class="run-meta" role="cell">
+              <span class="run-owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
+              <code class="run-tool">build_app</code>
+            </div>
           </div>
           <div class="run-row" role="row">
             <span class="run-num" role="cell">03</span>
@@ -132,8 +136,10 @@
               <strong><span class="lang-zh" lang="zh-CN">签名</span><span class="lang-en" lang="en">Sign</span></strong>
               <p><span class="lang-zh" lang="zh-CN">用 hap-sign-tool 签名并验证；签名材料由用户提供。</span><span class="lang-en" lang="en">Sign and verify with hap-sign-tool; the user supplies signing assets.</span></p>
             </div>
-            <span class="run-owner" role="cell">Diting</span>
-            <code class="run-tool" role="cell">sign_app</code>
+            <div class="run-meta" role="cell">
+              <span class="run-owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
+              <code class="run-tool">sign_app</code>
+            </div>
           </div>
           <div class="run-row" role="row">
             <span class="run-num" role="cell">04</span>
@@ -141,8 +147,10 @@
               <strong><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></strong>
               <p><span class="lang-zh" lang="zh-CN">通过 hdc 安装到目标设备，不绕过设备权限。</span><span class="lang-en" lang="en">Install on the target device over hdc without bypassing device permissions.</span></p>
             </div>
-            <span class="run-owner" role="cell">Diting</span>
-            <code class="run-tool" role="cell">install_app</code>
+            <div class="run-meta" role="cell">
+              <span class="run-owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
+              <code class="run-tool">install_app</code>
+            </div>
           </div>
           <div class="run-row" role="row">
             <span class="run-num" role="cell">05</span>
@@ -150,8 +158,10 @@
               <strong><span class="lang-zh" lang="zh-CN">启动并复现</span><span class="lang-en" lang="en">Launch and reproduce</span></strong>
               <p><span class="lang-zh" lang="zh-CN">通过 act · launch_app 或 capture_trace 的 steps 启动目标应用，复现问题。</span><span class="lang-en" lang="en">Launch the target through act · launch_app or capture_trace steps and reproduce the issue.</span></p>
             </div>
-            <span class="run-owner" role="cell">Diting</span>
-            <code class="run-tool" role="cell">act · launch_app</code>
+            <div class="run-meta" role="cell">
+              <span class="run-owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
+              <code class="run-tool">act · launch_app</code>
+            </div>
           </div>
           <div class="run-row" role="row">
             <span class="run-num" role="cell">06</span>
@@ -159,8 +169,10 @@
               <strong><span class="lang-zh" lang="zh-CN">抓 Trace</span><span class="lang-en" lang="en">Capture trace</span></strong>
               <p><span class="lang-zh" lang="zh-CN">按 ui / startup / memory / io / network / full / perf preset 抓取；可在抓取期间执行 UI steps。</span><span class="lang-en" lang="en">Capture with a ui / startup / memory / io / network / full / perf preset; UI steps can run during capture.</span></p>
             </div>
-            <span class="run-owner" role="cell">Diting</span>
-            <code class="run-tool" role="cell">capture_trace</code>
+            <div class="run-meta" role="cell">
+              <span class="run-owner"><span class="lang-zh" lang="zh-CN">Diting</span><span class="lang-en" lang="en">Diting</span></span>
+              <code class="run-tool">capture_trace</code>
+            </div>
           </div>
           <div class="run-row" role="row">
             <span class="run-num" role="cell">07</span>
@@ -168,11 +180,14 @@
               <strong><span class="lang-zh" lang="zh-CN">分析并报告</span><span class="lang-en" lang="en">Analyze and report</span></strong>
               <p><span class="lang-zh" lang="zh-CN">宿主 Agent 选择场景、边界和工具；Diting 执行有界取证、确定性校验并渲染 HTML 报告。结果回到 Agent，决定下一次改动。</span><span class="lang-en" lang="en">The host agent chooses the scenario, boundary, and tools. Diting gathers bounded evidence, validates deterministically, and renders the HTML report. The result returns to the agent for the next edit.</span></p>
             </div>
-            <span class="run-owner" role="cell"><span class="lang-zh" lang="zh-CN">宿主 Agent + Diting</span><span class="lang-en" lang="en">Host agent + Diting</span></span>
-            <code class="run-tool" role="cell">open_trace → render_report</code>
+            <div class="run-meta" role="cell">
+              <span class="run-owner"><span class="lang-zh" lang="zh-CN">宿主 Agent + Diting</span><span class="lang-en" lang="en">Host agent + Diting</span></span>
+              <code class="run-tool">open_trace → render_report</code>
+            </div>
           </div>
+          </div>
+          <p class="run-note"><span class="lang-zh" lang="zh-CN">报告 → 宿主 Agent → 下一次改动。</span><span class="lang-en" lang="en">Report → host agent → next edit.</span></p>
         </div>
-        <p class="run-note"><span class="lang-zh" lang="zh-CN">报告 → 宿主 Agent → 下一次改动。</span><span class="lang-en" lang="en">Report → host agent → next edit.</span></p>
       </div>
     </section>
 
