@@ -631,3 +631,9 @@ section[aria-label="Scenario details"] {
     z-index: 70;
   }
 }
+
+/* The longer English headline needs a calmer measure and a smaller scale. */
+html[lang="en"] .hero-title {
+  max-width: 22ch;
+  font-size: clamp(1.9rem, 3.8vw, 3.8rem);
+}
