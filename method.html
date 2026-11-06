@@ -29,7 +29,7 @@
 
   <div class="utility-bar">
     <div class="container utility-bar__inner">
-      <span class="utility-bar__label">HarmonyOS Trace MCP</span>
+      <span class="utility-bar__label">HarmonyOS Trace Analysis</span>
       <div class="utility-bar__links">
         <a href="https://www.npmjs.com/package/diting-agents" target="_blank" rel="noopener noreferrer">npm ↗</a>
         <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
@@ -46,7 +46,7 @@
       <nav class="site-nav" id="site-nav" aria-label="Primary">
         <a class="nav-link" href="index.html"><span class="lang-zh" lang="zh-CN">概览</span><span class="lang-en" lang="en">Overview</span></a>
         <a class="nav-link" href="method.html" aria-current="page"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
-        <a class="nav-link" href="tools.html"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+        <a class="nav-link" href="tools.html"><span class="lang-zh" lang="zh-CN">工具</span><span class="lang-en" lang="en">Tools</span></a>
         <a class="nav-link nav-link--mobile-install" href="install.html"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
       </nav>
       <div class="header-actions">
@@ -119,13 +119,13 @@
           </div>
 
           <div class="path-card">
-            <h3><span class="lang-zh" lang="zh-CN">MCP 会话分析</span><span class="lang-en" lang="en">MCP session analysis</span></h3>
+            <h3><span class="lang-zh" lang="zh-CN">Agent 会话分析</span><span class="lang-en" lang="en">agent session analysis</span></h3>
             <p>
-              <span class="lang-zh" lang="zh-CN">把 Trace 交给 MCP 会话；宿主通过 <code>open_trace</code> 打开，再用 <code>begin_analysis</code> 声明场景和边界。转换后按场景选择工具，不需要重新抓取。</span>
-              <span class="lang-en" lang="en">Hand the trace to an MCP session. The host opens it with <code>open_trace</code>, then declares the scenario and boundary with <code>begin_analysis</code>. After conversion, tools are selected by scenario; no re-capture is needed.</span>
+              <span class="lang-zh" lang="zh-CN">把 Trace 交给 Agent 会话；宿主通过 <code>open_trace</code> 打开，再用 <code>begin_analysis</code> 声明场景和边界。转换后按场景选择工具，不需要重新抓取。</span>
+              <span class="lang-en" lang="en">Hand the trace to an agent session. The host opens it with <code>open_trace</code>, then declares the scenario and boundary with <code>begin_analysis</code>. After conversion, tools are selected by scenario; no re-capture is needed.</span>
             </p>
             <div class="code-box">
-              <div class="code-top"><span>MCP tool calls</span><span>host agent</span></div>
+              <div class="code-top"><span>tool calls</span><span>host agent</span></div>
               <pre><code>open_trace("case.htrace")
 
 begin_analysis(
@@ -135,7 +135,7 @@ begin_analysis(
   refresh_rate_hz=120
 )</code></pre>
             </div>
-            <a class="link-arrow" href="tools.html#trace"><span><span class="lang-zh" lang="zh-CN">MCP 工具与流程</span><span class="lang-en" lang="en">MCP tools and workflow</span></span><span aria-hidden="true">→</span></a>
+            <a class="link-arrow" href="tools.html#trace"><span><span class="lang-zh" lang="zh-CN">工具与流程</span><span class="lang-en" lang="en">tools and workflow</span></span><span aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
@@ -515,7 +515,7 @@ begin_analysis(
           </div>
         </div>
         <div class="callout">
-          <p><span class="lang-zh" lang="zh-CN">宿主模型不重新计算线程分布、CPU 状态、唤醒链或 Perf Profile；这些确定性对象由应用层从 Evidence 合并。模型通过 MCP 工具读取 Trace，不能绕过工具访问原始数据库。</span><span class="lang-en" lang="en">The host model does not recompute thread profiles, CPU states, wake-up chains, or Perf profiles; the application merges those objects from evidence. The model reads the trace through MCP tools and cannot access the raw database directly.</span></p>
+          <p><span class="lang-zh" lang="zh-CN">宿主模型不重新计算线程分布、CPU 状态、唤醒链或 Perf Profile；这些确定性对象由应用层从 Evidence 合并。模型通过 工具读取 Trace，不能绕过工具访问原始数据库。</span><span class="lang-en" lang="en">The host model does not recompute thread profiles, CPU states, wake-up chains, or Perf profiles; the application merges those objects from evidence. The model reads the trace through tools and cannot access the raw database directly.</span></p>
         </div>
       </div>
     </section>
@@ -535,11 +535,11 @@ begin_analysis(
       <div class="footer-cta">
         <div class="footer-cta__copy">
           <h2><span class="lang-zh" lang="zh-CN">开始使用<br>DitingAgent</span><span class="lang-en" lang="en">Get started with<br>DitingAgent</span></h2>
-          <p><span class="lang-zh" lang="zh-CN">安装 MCP server，注册到宿主，打开第一份 Trace。</span><span class="lang-en" lang="en">Install the MCP server, connect a host, and open your first trace.</span></p>
+          <p><span class="lang-zh" lang="zh-CN">安装 server，注册到宿主，打开第一份 Trace。</span><span class="lang-en" lang="en">Install the server, connect a host, and open your first trace.</span></p>
         </div>
         <div class="footer-cta__actions">
           <a class="btn btn--primary" href="install.html"><span><span class="lang-zh" lang="zh-CN">安装 DitingAgent</span><span class="lang-en" lang="en">Install DitingAgent</span></span><span class="btn__arrow" aria-hidden="true">→</span></a>
-          <a class="link-arrow" href="tools.html#mcp"><span><span class="lang-zh" lang="zh-CN">MCP 接入</span><span class="lang-en" lang="en">MCP integration</span></span><span aria-hidden="true">→</span></a>
+          <a class="link-arrow" href="tools.html#mcp"><span><span class="lang-zh" lang="zh-CN">宿主接入</span><span class="lang-en" lang="en">Host integration</span></span><span aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="footer-grid">
@@ -548,8 +548,8 @@ begin_analysis(
             <span class="brand-text">Diting</span>
           </a>
           <p class="footer-desc">
-            <span class="lang-zh" lang="zh-CN">HarmonyOS Trace MCP server。连接设备、抓取 Trace，输出带证据的报告。</span>
-            <span class="lang-en" lang="en">A HarmonyOS trace-analysis MCP server. Connect a device, capture a trace, and get an evidence-backed report.</span>
+            <span class="lang-zh" lang="zh-CN">HarmonyOS Trace 分析服务。连接设备、抓取 Trace，输出带证据的报告。</span>
+            <span class="lang-en" lang="en">HarmonyOS trace analysis. Connect a device, capture a trace, and get an evidence-backed report.</span>
           </p>
         </div>
         <div class="footer-links">
@@ -557,7 +557,7 @@ begin_analysis(
             <h3><span class="lang-zh" lang="zh-CN">产品</span><span class="lang-en" lang="en">Product</span></h3>
             <a href="index.html"><span class="lang-zh" lang="zh-CN">概览</span><span class="lang-en" lang="en">Overview</span></a>
             <a href="method.html"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
-            <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+            <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具</span><span class="lang-en" lang="en">Tools</span></a>
             <a href="install.html"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
           </div>
           <div class="footer-col">
@@ -565,7 +565,7 @@ begin_analysis(
             <a href="method.html#device"><span class="lang-zh" lang="zh-CN">设备路径</span><span class="lang-en" lang="en">Device path</span></a>
             <a href="method.html#scenarios"><span class="lang-zh" lang="zh-CN">场景边界</span><span class="lang-en" lang="en">Scenarios</span></a>
             <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具参考</span><span class="lang-en" lang="en">Tool reference</span></a>
-            <a href="tools.html#mcp"><span class="lang-zh" lang="zh-CN">MCP 接入</span><span class="lang-en" lang="en">MCP setup</span></a>
+            <a href="tools.html#mcp"><span class="lang-zh" lang="zh-CN">宿主接入</span><span class="lang-en" lang="en">Host setup</span></a>
           </div>
           <div class="footer-col">
             <h3><span class="lang-zh" lang="zh-CN">资源</span><span class="lang-en" lang="en">Resources</span></h3>
@@ -578,7 +578,7 @@ begin_analysis(
       </div>
       <div class="footer-meta">
         <span>© 2026 DitingAgent</span>
-        <span class="footer-meta__note">HarmonyOS Trace MCP Server</span>
+        <span class="footer-meta__note">HarmonyOS Trace Analysis</span>
         <div class="footer-meta__links">
           <a href="#main"><span class="lang-zh" lang="zh-CN">回到顶部 ↑</span><span class="lang-en" lang="en">Back to top ↑</span></a>
           <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DitingAgent — 端到端鸿蒙应用性能分析</title>
-  <meta name="description" content="DitingAgent 提供端到端鸿蒙应用性能分析：转换 HTrace、有界取证工具、确定性校验和 HTML 报告，并通过 MCP 接入宿主 Agent。">
+  <meta name="description" content="DitingAgent 提供端到端鸿蒙应用性能分析：转换 HTrace、有界取证工具、确定性校验和 HTML 报告，并由宿主 Agent 驱动。">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -29,7 +29,7 @@
 
   <div class="utility-bar">
     <div class="container utility-bar__inner">
-      <span class="utility-bar__label">HarmonyOS Trace MCP</span>
+      <span class="utility-bar__label">HarmonyOS Trace Analysis</span>
       <div class="utility-bar__links">
         <a href="https://www.npmjs.com/package/diting-agents" target="_blank" rel="noopener noreferrer">npm ↗</a>
         <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
@@ -46,7 +46,7 @@
       <nav class="site-nav" id="site-nav" aria-label="Primary">
         <a class="nav-link" href="index.html" aria-current="page"><span class="lang-zh" lang="zh-CN">概览</span><span class="lang-en" lang="en">Overview</span></a>
         <a class="nav-link" href="method.html"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
-        <a class="nav-link" href="tools.html"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+        <a class="nav-link" href="tools.html"><span class="lang-zh" lang="zh-CN">工具</span><span class="lang-en" lang="en">Tools</span></a>
         <a class="nav-link nav-link--mobile-install" href="install.html"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
       </nav>
       <div class="header-actions">
@@ -77,8 +77,8 @@
               <span class="lang-en" lang="en">End-to-end<br>HarmonyOS app<br>performance analysis</span>
             </h1>
             <p class="hero-lede">
-              <span class="lang-zh" lang="zh-CN">宿主 Agent 理解问题并决定下一步；Diting 通过 MCP 在设备上执行操作、抓取 HTrace，完成有界取证、确定性校验和 HTML 报告。</span>
-              <span class="lang-en" lang="en">The host agent understands the problem and decides what to do next. Over MCP, Diting operates the device, captures an HTrace, gathers bounded evidence, validates it, and renders an HTML report.</span>
+              <span class="lang-zh" lang="zh-CN">宿主 Agent 理解问题并决定下一步；Diting 在设备上执行操作、抓取 HTrace，完成有界取证、确定性校验和 HTML 报告。</span>
+              <span class="lang-en" lang="en">The host agent understands the problem and decides what to do next. Diting operates the device, captures an HTrace, gathers bounded evidence, validates it, and renders an HTML report.</span>
             </p>
             <div class="actions">
               <a class="btn btn--primary" href="install.html">
@@ -113,7 +113,7 @@ npx diting-agents@latest setup --client dsh
 npx diting-agents@latest doctor</code></pre>
             </details>
             <div class="quick-install__foot">
-              <span><span class="lang-zh" lang="zh-CN">需要 Node.js 18+、Python 3.12+ 和 MCP 宿主</span><span class="lang-en" lang="en">Requires Node.js 18+, Python 3.12+, and an MCP host</span></span>
+              <span><span class="lang-zh" lang="zh-CN">需要 Node.js 18+、Python 3.12+ 和宿主 Agent</span><span class="lang-en" lang="en">Requires Node.js 18+, Python 3.12+, and a host agent</span></span>
               <a class="link-arrow" href="install.html"><span><span class="lang-zh" lang="zh-CN">完整安装说明</span><span class="lang-en" lang="en">Full setup guide</span></span><span aria-hidden="true">→</span></a>
             </div>
           </aside>
@@ -146,20 +146,20 @@ npx diting-agents@latest doctor</code></pre>
               <div class="device-step"><span class="device-step__num">04</span><strong><span class="lang-zh" lang="zh-CN">抓 Trace</span><span class="lang-en" lang="en">Capture</span></strong><code>capture_trace</code></div>
             </div>
             <p class="device-note">
-              <span class="lang-zh" lang="zh-CN">设备工具默认关闭，需要在 MCP 启动时加 <code>--enable-device</code>；<code>act</code> 会真实操作设备。</span>
+              <span class="lang-zh" lang="zh-CN">设备工具默认关闭，需要在启动时加 <code>--enable-device</code>；<code>act</code> 会真实操作设备。</span>
               <span class="lang-en" lang="en">Device tools are opt-in via <code>--enable-device</code>. <code>act</code> really operates the device.</span>
             </p>
             <a class="link-arrow" href="method.html#device"><span><span class="lang-zh" lang="zh-CN">查看设备工作流</span><span class="lang-en" lang="en">Device workflow</span></span><span aria-hidden="true">→</span></a>
           </div>
 
           <div class="path-card">
-            <h3><span class="lang-zh" lang="zh-CN">已经有一份 HTrace，通过 MCP 会话分析。</span><span class="lang-en" lang="en">Already have an HTrace? Analyse it through an MCP session.</span></h3>
+            <h3><span class="lang-zh" lang="zh-CN">已经有一份 HTrace，通过 Agent 会话分析。</span><span class="lang-en" lang="en">Already have an HTrace? Analyse it through an agent session.</span></h3>
             <p>
               <span class="lang-zh" lang="zh-CN">宿主 Agent 调用 open_trace 转换并打开 Trace，再调用 begin_analysis 声明场景、现象和边界。首次转换结果会写入内容寻址缓存。</span>
               <span class="lang-en" lang="en">The host agent calls open_trace to convert and open the trace, then begin_analysis to declare the scenario, symptom, and boundary. The conversion is cached by content hash.</span>
             </p>
             <div class="code-box">
-              <div class="code-top"><span>MCP tool calls</span><span>host agent</span></div>
+              <div class="code-top"><span>tool calls</span><span>host agent</span></div>
               <pre><code>open_trace("case.htrace")
 
 begin_analysis(
@@ -169,7 +169,7 @@ begin_analysis(
   refresh_rate_hz=120
 )</code></pre>
             </div>
-            <a class="link-arrow" href="tools.html#trace"><span><span class="lang-zh" lang="zh-CN">MCP 工具与流程</span><span class="lang-en" lang="en">MCP tools and workflow</span></span><span aria-hidden="true">→</span></a>
+            <a class="link-arrow" href="tools.html#trace"><span><span class="lang-zh" lang="zh-CN">工具与流程</span><span class="lang-en" lang="en">tools and workflow</span></span><span aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
@@ -230,8 +230,8 @@ begin_analysis(
         <div class="section-head section-head--wide">
           <h2 class="section-title" id="tools-title"><span class="lang-zh" lang="zh-CN">工具能力</span><span class="lang-en" lang="en">Tool capabilities</span></h2>
           <p class="section-intro">
-            <span class="lang-zh" lang="zh-CN">默认 34 个 MCP 工具，开启设备工具后 45 个。这里按主要任务分组。</span>
-            <span class="lang-en" lang="en">34 MCP tools by default, 45 with device tools enabled. They are grouped by task.</span>
+            <span class="lang-zh" lang="zh-CN">默认 34 个 工具，开启设备工具后 45 个。这里按主要任务分组。</span>
+            <span class="lang-en" lang="en">34 tools by default, 45 with device tools enabled. They are grouped by task.</span>
           </p>
         </div>
 
@@ -341,7 +341,7 @@ begin_analysis(
             <div class="auto-signal" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
             <div class="auto-task-foot">
               <span class="auto-route">Agent <b>→</b> Diting</span>
-              <span>MCP / device / trace</span>
+              <span>Agent / device / trace</span>
             </div>
           </div>
 
@@ -379,11 +379,11 @@ begin_analysis(
       <div class="footer-cta">
         <div class="footer-cta__copy">
           <h2><span class="lang-zh" lang="zh-CN">开始使用<br>DitingAgent</span><span class="lang-en" lang="en">Get started with<br>DitingAgent</span></h2>
-          <p><span class="lang-zh" lang="zh-CN">安装 MCP server，注册到宿主，打开第一份 Trace。</span><span class="lang-en" lang="en">Install the MCP server, connect a host, and open your first trace.</span></p>
+          <p><span class="lang-zh" lang="zh-CN">安装 DitingAgent，注册到宿主，打开第一份 Trace。</span><span class="lang-en" lang="en">Install DitingAgent, connect a host, and open your first trace.</span></p>
         </div>
         <div class="footer-cta__actions">
           <a class="btn btn--primary" href="install.html"><span><span class="lang-zh" lang="zh-CN">安装 DitingAgent</span><span class="lang-en" lang="en">Install DitingAgent</span></span><span class="btn__arrow" aria-hidden="true">→</span></a>
-          <a class="link-arrow" href="tools.html#mcp"><span><span class="lang-zh" lang="zh-CN">MCP 接入</span><span class="lang-en" lang="en">MCP integration</span></span><span aria-hidden="true">→</span></a>
+          <a class="link-arrow" href="tools.html#mcp"><span><span class="lang-zh" lang="zh-CN">宿主接入</span><span class="lang-en" lang="en">Host integration</span></span><span aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="footer-grid">
@@ -392,8 +392,8 @@ begin_analysis(
             <span class="brand-text">Diting</span>
           </a>
           <p class="footer-desc">
-            <span class="lang-zh" lang="zh-CN">HarmonyOS Trace MCP server。连接设备、抓取 Trace，输出带证据的报告。</span>
-            <span class="lang-en" lang="en">A HarmonyOS trace-analysis MCP server. Connect a device, capture a trace, and get an evidence-backed report.</span>
+            <span class="lang-zh" lang="zh-CN">HarmonyOS Trace 分析服务。连接设备、抓取 Trace，输出带证据的报告。</span>
+            <span class="lang-en" lang="en">HarmonyOS trace analysis. Connect a device, capture a trace, and get an evidence-backed report.</span>
           </p>
         </div>
         <div class="footer-links">
@@ -401,7 +401,7 @@ begin_analysis(
             <h3><span class="lang-zh" lang="zh-CN">产品</span><span class="lang-en" lang="en">Product</span></h3>
             <a href="index.html"><span class="lang-zh" lang="zh-CN">概览</span><span class="lang-en" lang="en">Overview</span></a>
             <a href="method.html"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
-            <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+            <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具</span><span class="lang-en" lang="en">Tools</span></a>
             <a href="install.html"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
           </div>
           <div class="footer-col">
@@ -409,7 +409,7 @@ begin_analysis(
             <a href="method.html#device"><span class="lang-zh" lang="zh-CN">设备路径</span><span class="lang-en" lang="en">Device path</span></a>
             <a href="method.html#scenarios"><span class="lang-zh" lang="zh-CN">场景边界</span><span class="lang-en" lang="en">Scenarios</span></a>
             <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具参考</span><span class="lang-en" lang="en">Tool reference</span></a>
-            <a href="tools.html#mcp"><span class="lang-zh" lang="zh-CN">MCP 接入</span><span class="lang-en" lang="en">MCP setup</span></a>
+            <a href="tools.html#mcp"><span class="lang-zh" lang="zh-CN">宿主接入</span><span class="lang-en" lang="en">Host setup</span></a>
           </div>
           <div class="footer-col">
             <h3><span class="lang-zh" lang="zh-CN">资源</span><span class="lang-en" lang="en">Resources</span></h3>
@@ -422,7 +422,7 @@ begin_analysis(
       </div>
       <div class="footer-meta">
         <span>© 2026 DitingAgent</span>
-        <span class="footer-meta__note">HarmonyOS Trace MCP Server</span>
+        <span class="footer-meta__note">HarmonyOS Trace Analysis</span>
         <div class="footer-meta__links">
           <a href="#main"><span class="lang-zh" lang="zh-CN">回到顶部 ↑</span><span class="lang-en" lang="en">Back to top ↑</span></a>
           <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a>

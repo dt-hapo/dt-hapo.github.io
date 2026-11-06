@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>工具与 MCP — DitingAgent</title>
-  <meta name="description" content="DitingAgent 的 MCP 工具参考与接入说明：34 个默认工具、证据与 bundle、unknown、handoff、设备工具，以及 stdio 接入、预算和权限边界。">
+  <title>工具能力 — DitingAgent</title>
+  <meta name="description" content="DitingAgent 的工具参考与接入说明：34 个默认工具、证据与 bundle、unknown、handoff、设备工具，以及宿主接入、预算和权限边界。">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -24,12 +24,12 @@
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/chrome.css">
 </head>
-<body data-page="tools" data-title-zh="工具与 MCP — DitingAgent" data-title-en="Tools and MCP — DitingAgent">
+<body data-page="tools" data-title-zh="工具能力 — DitingAgent" data-title-en="Tool capabilities — DitingAgent">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
 
   <div class="utility-bar">
     <div class="container utility-bar__inner">
-      <span class="utility-bar__label">HarmonyOS Trace MCP</span>
+      <span class="utility-bar__label">HarmonyOS Trace Analysis</span>
       <div class="utility-bar__links">
         <a href="https://www.npmjs.com/package/diting-agents" target="_blank" rel="noopener noreferrer">npm ↗</a>
         <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
@@ -46,7 +46,7 @@
       <nav class="site-nav" id="site-nav" aria-label="Primary">
         <a class="nav-link" href="index.html"><span class="lang-zh" lang="zh-CN">概览</span><span class="lang-en" lang="en">Overview</span></a>
         <a class="nav-link" href="method.html"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
-        <a class="nav-link" href="tools.html" aria-current="page"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+        <a class="nav-link" href="tools.html" aria-current="page"><span class="lang-zh" lang="zh-CN">工具</span><span class="lang-en" lang="en">Tools</span></a>
         <a class="nav-link nav-link--mobile-install" href="install.html"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
       </nav>
       <div class="header-actions">
@@ -71,13 +71,13 @@
       <div class="container">
         <div class="page-hero__body">
           <h1 id="page-title">
-            <span class="lang-zh" lang="zh-CN">工具与 MCP</span>
-            <span class="lang-en" lang="en">Tools and MCP</span>
+            <span class="lang-zh" lang="zh-CN">工具能力</span>
+            <span class="lang-en" lang="en">Tool capabilities</span>
           </h1>
           <div class="page-hero__aside">
             <p>
-              <span class="lang-zh" lang="zh-CN">默认 34 个 MCP 工具，开启设备工具后 45 个。DitingAgent 通过 MCP stdio 向宿主提供这些工具。前半部分是每个工具能做什么，后半部分是 MCP 接入、预算与权限。</span>
-              <span class="lang-en" lang="en">34 MCP tools by default, 45 with device tools enabled. DitingAgent exposes these tools to the host over MCP stdio. The first half covers each tool; the second covers MCP setup, budgets, and permissions.</span>
+              <span class="lang-zh" lang="zh-CN">默认 34 个工具，开启设备工具后 45 个。DitingAgent 向宿主提供这些工具。前半部分是每个工具能做什么，后半部分是宿主接入、预算与权限。</span>
+              <span class="lang-en" lang="en">34 tools by default, 45 with device tools enabled. DitingAgent exposes these tools to the host. The first half covers each tool; the second covers host setup, budgets, and permissions.</span>
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@
       <a href="#trace">Trace</a>
       <a href="#evidence"><span class="lang-zh" lang="zh-CN">证据</span><span class="lang-en" lang="en">Evidence</span></a>
       <a href="#device"><span class="lang-zh" lang="zh-CN">设备</span><span class="lang-en" lang="en">Device</span></a>
-      <a href="#mcp">MCP</a>
+      <a href="#mcp">接入</a>
       <a href="#mcp-budget"><span class="lang-zh" lang="zh-CN">预算</span><span class="lang-en" lang="en">Budget</span></a>
       <a href="#mcp-boundaries"><span class="lang-zh" lang="zh-CN">边界</span><span class="lang-en" lang="en">Boundaries</span></a>
     </nav>
@@ -192,7 +192,7 @@
       <div class="container">
         <div class="section-head section-head--wide">
           <h2 class="section-title" id="device-title"><span class="lang-zh" lang="zh-CN">设备与环境工具（opt-in）</span><span class="lang-en" lang="en">Device and environment tools (opt-in)</span></h2>
-          <p class="section-intro"><span class="lang-zh" lang="zh-CN">这 11 个工具只在启动 MCP 时带 <code>--enable-device</code> 才会出现。设备、抓取和环境工具会真实操作设备；应用包与 native 库工具读取本地文件。它们不在 Trace evidence 预算内。</span><span class="lang-en" lang="en">These eleven tools appear only when MCP starts with <code>--enable-device</code>. Device, capture, and environment tools operate the device; app-package and native-library tools read local files. They sit outside the trace-evidence budget.</span></p>
+          <p class="section-intro"><span class="lang-zh" lang="zh-CN">这 11 个工具只在启动 server 时带 <code>--enable-device</code> 才会出现。设备、抓取和环境工具会真实操作设备；应用包与 native 库工具读取本地文件。它们不在 Trace evidence 预算内。</span><span class="lang-en" lang="en">These eleven tools appear only when the server starts with <code>--enable-device</code>. Device, capture, and environment tools operate the device; app-package and native-library tools read local files. They sit outside the trace-evidence budget.</span></p>
         </div>
         <div class="tool-detail">
           <div class="tool-detail__row"><div class="tool-detail__name">inspect_device</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">读取 HarmonyOS 设备、系统版本、API、ABI、已安装 Bundle 和可用 hitrace 类别。</span><span class="lang-en" lang="en">Read the HarmonyOS device, system version, API, ABI, installed bundles, and available hitrace categories.</span></div></div>
@@ -208,7 +208,7 @@
           <div class="tool-detail__row"><div class="tool-detail__name">inspect_native_library</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">解析 ELF .so 的架构、依赖、build-id 和符号；完整反编译和调用图交给 REA。</span><span class="lang-en" lang="en">Inspect ELF .so architecture, dependencies, build-id, and symbols; full decompilation and call graphs go to REA.</span></div></div>
         </div>
         <div class="callout">
-          <p><span class="lang-zh" lang="zh-CN">设备工具需要 hdc 和可用设备。开启前先看 <a href="install.html#device">安装页的设备工具步骤</a>；完整参数和错误码见 <a href="#mcp-boundaries">MCP 边界</a>。</span><span class="lang-en" lang="en">Device tools need hdc and a reachable device. See the <a href="install.html#device">device setup steps</a> before enabling them; See <a href="#mcp-boundaries">MCP boundaries</a> for configuration and error codes.</span></p>
+          <p><span class="lang-zh" lang="zh-CN">设备工具需要 hdc 和可用设备。开启前先看 <a href="install.html#device">安装页的设备工具步骤</a>；完整参数和错误码见 <a href="#mcp-boundaries">权限边界</a>。</span><span class="lang-en" lang="en">Device tools need hdc and a reachable device. See the <a href="install.html#device">device setup steps</a> before enabling them; See <a href="#mcp-boundaries">integration boundaries</a> for configuration and error codes.</span></p>
         </div>
       </div>
     </section>
@@ -237,8 +237,8 @@
         <div class="split">
           <div class="sticky-head">
             <h2 id="start-title">
-              <span class="lang-zh" lang="zh-CN">启动 MCP server</span>
-              <span class="lang-en" lang="en">Start the MCP server</span>
+              <span class="lang-zh" lang="zh-CN">接入宿主</span>
+              <span class="lang-en" lang="en">Connect a host</span>
             </h2>
             <p>
               <span class="lang-zh" lang="zh-CN">需要 Node.js 18+ 和 Python 3.12+；<code>npx</code> 首次运行会准备环境。先检测宿主，再写入配置并运行健康检查。</span>
@@ -281,7 +281,7 @@ npx diting-agents@latest mcp \
               <div class="stack-row">
                 <span class="stack-row__num">02</span>
                 <span class="stack-row__name">Claude Code</span>
-                <span class="stack-row__copy"><span class="lang-zh" lang="zh-CN">通过 MCP 配置直接发现工具。</span><span class="lang-en" lang="en">Discover tools directly through MCP config.</span></span>
+                <span class="stack-row__copy"><span class="lang-zh" lang="zh-CN">通过宿主配置直接发现工具。</span><span class="lang-en" lang="en">Discover tools directly through host config.</span></span>
               </div>
               <div class="stack-row">
                 <span class="stack-row__num">03</span>
@@ -290,7 +290,7 @@ npx diting-agents@latest mcp \
               </div>
               <div class="stack-row">
                 <span class="stack-row__num">04</span>
-                <span class="stack-row__name"><span class="lang-zh" lang="zh-CN">其他 MCP 宿主</span><span class="lang-en" lang="en">Other MCP hosts</span></span>
+                <span class="stack-row__name"><span class="lang-zh" lang="zh-CN">其他 宿主</span><span class="lang-en" lang="en">Other hosts</span></span>
                 <span class="stack-row__copy"><span class="lang-zh" lang="zh-CN">通过通用 JSON 接入。</span><span class="lang-en" lang="en">Connect through the generic JSON config.</span></span>
               </div>
             </div>
@@ -401,8 +401,8 @@ npx diting-agents@latest mcp \
               <span class="lang-en" lang="en">Device tools and permissions</span>
             </h2>
             <p>
-              <span class="lang-zh" lang="zh-CN">MCP server 继承启动用户的文件权限，没有额外沙箱。设备工具默认关闭；一旦开启，它们会真实操作设备。</span>
-              <span class="lang-en" lang="en">The MCP server inherits the launching user’s file permissions and has no extra sandbox. Device tools are off by default; once enabled, they really operate the device.</span>
+              <span class="lang-zh" lang="zh-CN">DitingAgent 继承启动用户的文件权限，没有额外沙箱。设备工具默认关闭；一旦开启，它们会真实操作设备。</span>
+              <span class="lang-en" lang="en">DitingAgent inherits the launching user’s file permissions and has no extra sandbox. Device tools are off by default; once enabled, they really operate the device.</span>
             </p>
           </div>
           <div class="stack">
@@ -444,11 +444,11 @@ npx diting-agents@latest mcp \
       <div class="footer-cta">
         <div class="footer-cta__copy">
           <h2><span class="lang-zh" lang="zh-CN">开始使用<br>DitingAgent</span><span class="lang-en" lang="en">Get started with<br>DitingAgent</span></h2>
-          <p><span class="lang-zh" lang="zh-CN">安装 MCP server，注册到宿主，打开第一份 Trace。</span><span class="lang-en" lang="en">Install the MCP server, connect a host, and open your first trace.</span></p>
+          <p><span class="lang-zh" lang="zh-CN">安装 server，注册到宿主，打开第一份 Trace。</span><span class="lang-en" lang="en">Install the server, connect a host, and open your first trace.</span></p>
         </div>
         <div class="footer-cta__actions">
           <a class="btn btn--primary" href="install.html"><span><span class="lang-zh" lang="zh-CN">安装 DitingAgent</span><span class="lang-en" lang="en">Install DitingAgent</span></span><span class="btn__arrow" aria-hidden="true">→</span></a>
-          <a class="link-arrow" href="tools.html#mcp"><span><span class="lang-zh" lang="zh-CN">MCP 接入</span><span class="lang-en" lang="en">MCP integration</span></span><span aria-hidden="true">→</span></a>
+          <a class="link-arrow" href="tools.html#mcp"><span><span class="lang-zh" lang="zh-CN">宿主接入</span><span class="lang-en" lang="en">Host integration</span></span><span aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="footer-grid">
@@ -457,8 +457,8 @@ npx diting-agents@latest mcp \
             <span class="brand-text">Diting</span>
           </a>
           <p class="footer-desc">
-            <span class="lang-zh" lang="zh-CN">HarmonyOS Trace MCP server。连接设备、抓取 Trace，输出带证据的报告。</span>
-            <span class="lang-en" lang="en">A HarmonyOS trace-analysis MCP server. Connect a device, capture a trace, and get an evidence-backed report.</span>
+            <span class="lang-zh" lang="zh-CN">HarmonyOS Trace 分析服务。连接设备、抓取 Trace，输出带证据的报告。</span>
+            <span class="lang-en" lang="en">HarmonyOS trace analysis. Connect a device, capture a trace, and get an evidence-backed report.</span>
           </p>
         </div>
         <div class="footer-links">
@@ -466,7 +466,7 @@ npx diting-agents@latest mcp \
             <h3><span class="lang-zh" lang="zh-CN">产品</span><span class="lang-en" lang="en">Product</span></h3>
             <a href="index.html"><span class="lang-zh" lang="zh-CN">概览</span><span class="lang-en" lang="en">Overview</span></a>
             <a href="method.html"><span class="lang-zh" lang="zh-CN">分析</span><span class="lang-en" lang="en">Analysis</span></a>
-            <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具与 MCP</span><span class="lang-en" lang="en">Tools &amp; MCP</span></a>
+            <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具</span><span class="lang-en" lang="en">Tools</span></a>
             <a href="install.html"><span class="lang-zh" lang="zh-CN">安装</span><span class="lang-en" lang="en">Install</span></a>
           </div>
           <div class="footer-col">
@@ -474,7 +474,7 @@ npx diting-agents@latest mcp \
             <a href="method.html#device"><span class="lang-zh" lang="zh-CN">设备路径</span><span class="lang-en" lang="en">Device path</span></a>
             <a href="method.html#scenarios"><span class="lang-zh" lang="zh-CN">场景边界</span><span class="lang-en" lang="en">Scenarios</span></a>
             <a href="tools.html"><span class="lang-zh" lang="zh-CN">工具参考</span><span class="lang-en" lang="en">Tool reference</span></a>
-            <a href="tools.html#mcp"><span class="lang-zh" lang="zh-CN">MCP 接入</span><span class="lang-en" lang="en">MCP setup</span></a>
+            <a href="tools.html#mcp"><span class="lang-zh" lang="zh-CN">宿主接入</span><span class="lang-en" lang="en">Host setup</span></a>
           </div>
           <div class="footer-col">
             <h3><span class="lang-zh" lang="zh-CN">资源</span><span class="lang-en" lang="en">Resources</span></h3>
@@ -487,7 +487,7 @@ npx diting-agents@latest mcp \
       </div>
       <div class="footer-meta">
         <span>© 2026 DitingAgent</span>
-        <span class="footer-meta__note">HarmonyOS Trace MCP Server</span>
+        <span class="footer-meta__note">HarmonyOS Trace Analysis</span>
         <div class="footer-meta__links">
           <a href="#main"><span class="lang-zh" lang="zh-CN">回到顶部 ↑</span><span class="lang-en" lang="en">Back to top ↑</span></a>
           <a href="https://github.com/dt-hapo/dt-hapo.github.io" target="_blank" rel="noopener noreferrer">Source ↗</a>
