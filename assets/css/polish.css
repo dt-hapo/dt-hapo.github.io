@@ -284,3 +284,88 @@ body[data-page="analysis"] .section--loop .section-intro {
 .loop-step code {
   font-size: 0.75rem;
 }
+
+/* Budget/evidence demo: use the same light code surface as the rest of the site. */
+#mcp-budget .terminal {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+#mcp-budget .terminal-top {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0.95rem;
+  border-bottom: 1px solid var(--line);
+  background: #f7faff;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+#mcp-budget .terminal-body {
+  padding: 1.15rem 1.1rem;
+  background: #f7faff;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  line-height: 1.75;
+}
+
+#mcp-budget .terminal-body .key {
+  color: var(--signal);
+}
+
+#mcp-budget .terminal-body .prompt {
+  color: var(--muted);
+}
+
+#mcp-budget .terminal-body .comment {
+  color: var(--muted);
+}
+
+#mcp-budget .terminal-stats {
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+
+#mcp-budget .terminal-stat {
+  padding: 0.9rem 1rem;
+}
+
+#mcp-budget .terminal-stat + .terminal-stat {
+  border-left: 1px solid var(--line);
+}
+
+#mcp-budget .terminal-stat b {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+#mcp-budget .terminal-stat span {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+/* No section marker line above split headings. */
+.sticky-head h2::before {
+  display: none !important;
+  content: none !important;
+}
+
+#mcp-budget .terminal-top {
+  font-size: 0.75rem;
+}
