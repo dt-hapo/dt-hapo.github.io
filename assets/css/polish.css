@@ -1036,19 +1036,6 @@ body[data-page="analysis"] .section--run {
   box-shadow: 0 18px 48px rgba(14, 31, 54, 0.14);
 }
 
-.intro-video__caption {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 0;
-  padding: 0.8rem 0 0;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  line-height: 1.5;
-}
-
 .intro-video__fallback {
   margin: 1rem;
   color: var(--ink);
@@ -1059,10 +1046,5 @@ body[data-page="analysis"] .section--run {
 @media (max-width: 720px) {
   .section--video {
     padding-block: 2.5rem;
-  }
-
-  .intro-video__caption {
-    flex-direction: column;
-    gap: 0.25rem;
   }
 }
