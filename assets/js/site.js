@@ -71,6 +71,13 @@
     setLanguage(currentLanguage(), false);
   }
 
+  document.addEventListener("langchange", function (event) {
+    const language = event.detail && event.detail.language;
+    document.querySelectorAll("video[data-lang]").forEach(function (video) {
+      if (video.getAttribute("data-lang") !== language) video.pause();
+    });
+  });
+
   /* -----------------------------------------------------------------------
      Mobile navigation
      ----------------------------------------------------------------------- */

@@ -135,13 +135,18 @@ npx diting-agents@latest doctor</code></pre>
           <h2 class="section-title" id="video-title"><span class="lang-zh" lang="zh-CN">60 秒，了解 Diting。</span><span class="lang-en" lang="en">Diting in 60 seconds.</span></h2>
         </div>
         <figure class="intro-video">
-          <video class="intro-video__media" controls playsinline preload="metadata" width="1920" height="1080" poster="assets/img/diting-chinese-poster.webp" aria-label="Diting 60-second product introduction, Chinese narration">
-            <source src="assets/video/diting-chinese.mp4" type="video/mp4">
-            <p class="intro-video__fallback">
-              <span class="lang-zh" lang="zh-CN">浏览器无法播放此视频。<a href="assets/video/diting-chinese.mp4">下载视频</a>。</span>
-              <span class="lang-en" lang="en">Your browser cannot play this video. <a href="assets/video/diting-chinese.mp4">Download it</a>.</span>
-            </p>
-          </video>
+          <div class="intro-video__player lang-en" lang="en">
+            <video class="intro-video__media" data-lang="en" controls playsinline preload="metadata" width="1920" height="1080" poster="assets/img/diting-english-poster.webp?v=20261111" aria-label="Diting 60-second product introduction, English narration">
+              <source src="assets/video/diting-english.mp4?v=20261111" type="video/mp4">
+              <p class="intro-video__fallback">Your browser cannot play this video. <a href="assets/video/diting-english.mp4">Download it</a>.</p>
+            </video>
+          </div>
+          <div class="intro-video__player lang-zh" lang="zh-CN">
+            <video class="intro-video__media" data-lang="zh" controls playsinline preload="metadata" width="1920" height="1080" poster="assets/img/diting-chinese-poster.webp?v=20261111" aria-label="Diting 60 秒产品介绍，中文旁白">
+              <source src="assets/video/diting-chinese.mp4?v=20261111" type="video/mp4">
+              <p class="intro-video__fallback">浏览器无法播放此视频。<a href="assets/video/diting-chinese.mp4">下载视频</a>。</p>
+            </video>
+          </div>
         </figure>
       </div>
     </section>
@@ -456,6 +461,6 @@ begin_analysis(
     </div>
   </footer>
 
-  <script src="assets/js/site.js?v=20261106-11" defer></script>
+  <script src="assets/js/site.js?v=20261111-1" defer></script>
 </body>
 </html>
