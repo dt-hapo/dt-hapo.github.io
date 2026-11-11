@@ -975,3 +975,43 @@ body[data-page="analysis"] .section--run {
     gap: 0.25rem;
   }
 }
+
+/* Provided Diting mark: larger lockup; white badge on the dark footer. */
+.brand-logo {
+  width: 36px;
+  height: 36px;
+}
+
+.site-footer .brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+@media (max-width: 720px) {
+  .brand-logo,
+  .site-footer .brand-logo {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Give the supplied creature mark enough room to read in the lockup. */
+.brand-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.site-footer .brand-logo {
+  width: 36px;
+  height: 36px;
+}
+
+@media (max-width: 720px) {
+  .brand-logo,
+  .site-footer .brand-logo {
+    width: 34px;
+    height: 34px;
+  }
+}
