@@ -1048,3 +1048,72 @@ body[data-page="analysis"] .section--run {
     padding-block: 2.5rem;
   }
 }
+
+/* Footer friendly links: HarmonyOS squad mark and ecosystem sites. */
+.footer-friends {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding: 1.35rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.footer-friends__mark {
+  flex: 0 0 auto;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.footer-friends__mark img {
+  display: block;
+  width: 156px;
+  height: auto;
+}
+
+.footer-friends__links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.65rem 1.25rem;
+}
+
+.footer-friends__label {
+  color: #8fa3ba;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.footer-friends__links a {
+  color: #cbd8e8;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.footer-friends__links a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+@media (max-width: 720px) {
+  .footer-friends {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .footer-friends__mark img {
+    width: 140px;
+  }
+
+  .footer-friends__links {
+    justify-content: flex-start;
+    gap: 0.55rem 1rem;
+  }
+}
