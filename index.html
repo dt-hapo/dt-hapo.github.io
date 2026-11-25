@@ -263,8 +263,8 @@ begin_analysis(
         <div class="section-head section-head--wide">
           <h2 class="section-title" id="tools-title"><span class="lang-zh" lang="zh-CN">工具能力</span><span class="lang-en" lang="en">Tool capabilities</span></h2>
           <p class="section-intro">
-            <span class="lang-zh" lang="zh-CN">默认 41 个工具，开启设备与构建工具后 61 个。这里按主要任务分组。</span>
-            <span class="lang-en" lang="en">41 tools by default, 61 with device and build tools enabled. They are grouped by task.</span>
+            <span class="lang-zh" lang="zh-CN">默认 44 个工具，开启设备与构建工具后 65 个。这里按主要任务分组。</span>
+            <span class="lang-en" lang="en">44 tools by default, 65 with device and build tools enabled. They are grouped by task.</span>
           </p>
         </div>
 
@@ -280,30 +280,30 @@ begin_analysis(
           </a>
 
           <a class="tool-cap-row" href="tools.html#project">
-            <span class="tool-cap-row__count">02</span>
+            <span class="tool-cap-row__count">03</span>
             <div class="tool-cap-row__body">
-              <h3><span class="lang-zh" lang="zh-CN">项目与批量分析</span><span class="lang-en" lang="en">Project &amp; batch analysis</span></h3>
-              <p><span class="lang-zh" lang="zh-CN">静态审计鸿蒙工程启动路径；批量聚类多份 Tag-Based 完成时延结果，输出用例、热点和分位数。</span><span class="lang-en" lang="en">Statically audit a HarmonyOS startup path; cluster batch Tag-Based completion-latency results into cases, hotspots, and percentiles.</span></p>
-              <code>audit_startup_code · cluster_tag_latency</code>
+              <h3><span class="lang-zh" lang="zh-CN">项目与文件分析</span><span class="lang-en" lang="en">Project &amp; file analysis</span></h3>
+              <p><span class="lang-zh" lang="zh-CN">静态审计启动路径；批量聚类 Tag-Based 完成时延；找出仍带符号的本地 native 库。</span><span class="lang-en" lang="en">Statically audit a startup path, cluster batch Tag-Based completion latency, and find local native libraries that still carry symbols.</span></p>
+              <code>audit_startup_code · cluster_tag_latency · find_unstripped_libraries</code>
             </div>
             <span class="tool-cap-row__arrow" aria-hidden="true">→</span>
           </a>
 
           <a class="tool-cap-row" href="tools.html#heap">
-            <span class="tool-cap-row__count">02</span>
+            <span class="tool-cap-row__count">04</span>
             <div class="tool-cap-row__body">
-              <h3><span class="lang-zh" lang="zh-CN">堆内存分析</span><span class="lang-en" lang="en">Heap memory analysis</span></h3>
-              <p><span class="lang-zh" lang="zh-CN">解析单个 Ark heap snapshot 的类型、保留大小、对象和构造器；比较操作前后 retained 与 constructor 的增长。</span><span class="lang-en" lang="en">Analyse a single Ark heap snapshot by type, retained size, objects, and constructors; compare retained and constructor growth before and after an operation.</span></p>
-              <code>analyze_heap_snapshot · compare_heap_snapshots</code>
+              <h3><span class="lang-zh" lang="zh-CN">内存分析</span><span class="lang-en" lang="en">Memory analysis</span></h3>
+              <p><span class="lang-zh" lang="zh-CN">分析或比较 Ark heap snapshot；保存 native_hook baseline，并比较多轮 Trace 的 native 内存分配、释放和增长调用链。</span><span class="lang-en" lang="en">Analyse or compare Ark heap snapshots; save a native_hook baseline and compare native allocation, free, and growth call paths across trace rounds.</span></p>
+              <code>analyze_heap_snapshot · compare_heap_snapshots · save_baseline · compare_native_memory</code>
             </div>
             <span class="tool-cap-row__arrow" aria-hidden="true">→</span>
           </a>
 
           <a class="tool-cap-row" href="tools.html#device">
-            <span class="tool-cap-row__count">20</span>
+            <span class="tool-cap-row__count">21</span>
             <div class="tool-cap-row__body">
               <h3><span class="lang-zh" lang="zh-CN">设备、构建与环境</span><span class="lang-en" lang="en">Device, build &amp; environment</span></h3>
-              <p><span class="lang-zh" lang="zh-CN">构建、打包、签名、安装与卸载应用；查看设备和屏幕、执行 UI 操作、抓取 Trace、检查进程内存与 Ark heap snapshot、检查应用包与 native 库、拉取文件、检查和安装运行环境。需显式开启。</span><span class="lang-en" lang="en">Build, package, sign, install, and uninstall apps; inspect devices and screens, operate the UI, capture traces, inspect process memory and Ark heap snapshots, inspect app packages and native libraries, pull files, and check or install the environment. Explicitly opt-in.</span></p>
+              <p><span class="lang-zh" lang="zh-CN">构建、打包、签名、安装与卸载应用；查看设备和屏幕、执行 UI 操作、抓取 Trace、检查进程内存与 Ark heap snapshot、运行多轮 native-memory testcase、检查应用包与 native 库、拉取文件、检查和安装运行环境。需显式开启。</span><span class="lang-en" lang="en">Build, package, sign, install, and uninstall apps; inspect devices and screens, operate the UI, capture traces, inspect process memory and Ark heap snapshots, run native-memory testcase rounds, inspect app packages and native libraries, pull files, and check or install the environment. Explicitly opt-in.</span></p>
               <code>build_app · sign_app · install_app · capture_trace</code>
             </div>
             <span class="tool-cap-row__arrow" aria-hidden="true">→</span>
@@ -349,7 +349,7 @@ begin_analysis(
           </a>
         </div>
 
-        <div class="section-foot"><a class="link-arrow" href="tools.html"><span><span class="lang-zh" lang="zh-CN">查看全部 61 个工具</span><span class="lang-en" lang="en">See all 61 tools</span></span><span aria-hidden="true">→</span></a></div>
+        <div class="section-foot"><a class="link-arrow" href="tools.html"><span><span class="lang-zh" lang="zh-CN">查看全部 65 个工具</span><span class="lang-en" lang="en">See all 65 tools</span></span><span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
