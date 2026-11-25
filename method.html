@@ -20,13 +20,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261125-2">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261125-2">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261125-2">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261125-2">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261125-2">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261125-2">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261125-2">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125-4">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261125-4">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261125-4">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261125-4">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261125-4">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261125-4">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261125-4">
 </head>
 <body data-page="analysis" data-title-zh="分析 — Diting" data-title-en="Analysis — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -594,7 +594,7 @@ begin_analysis(
     </section>
 
 
-    <section class="section section--tint" id="memory" aria-labelledby="memory-title">
+    <section class="section" id="memory" aria-labelledby="memory-title">
       <div class="container">
         <div class="section-head section-head--wide">
           <h2 class="section-title" id="memory-title"><span class="lang-zh" lang="zh-CN">内存分析</span><span class="lang-en" lang="en">Memory analysis</span></h2>
@@ -604,29 +604,64 @@ begin_analysis(
           </p>
         </div>
 
-        <div class="memory-grid">
-          <article class="memory-track">
-            <p class="memory-track__kicker">ARK HEAP</p>
-            <h3><span class="lang-zh" lang="zh-CN">哪些 JS 对象被保留？</span><span class="lang-en" lang="en">Which JS objects are retained?</span></h3>
-            <p><span class="lang-zh" lang="zh-CN">分析单个 heap snapshot 的类型、self size、dominator retained、对象和构造器；再比较操作前后快照的 retained 与 constructor 增长。</span><span class="lang-en" lang="en">Analyse one snapshot by type, self size, dominator retained size, objects, and constructors; compare retained and constructor growth between snapshots.</span></p>
-            <div class="memory-track__tools"><code>capture_heap_snapshot</code><code>analyze_heap_snapshot</code><code>compare_heap_snapshots</code></div>
-            <p class="memory-track__guard"><span class="lang-zh" lang="zh-CN">同一 app/build 才可比；self size 不是 retained；snapshot 不是 Trace 会话。</span><span class="lang-en" lang="en">Compare only the same app/build; self size is not retained; a snapshot is not a trace session.</span></p>
+        <div class="memory-map">
+          <div class="memory-map__head">
+            <span><span class="lang-zh" lang="zh-CN">内存证据</span><span class="lang-en" lang="en">Memory evidence</span></span>
+            <span>CAPTURE → ANALYZE → COMPARE</span>
+          </div>
+
+          <article class="memory-lane">
+            <div class="memory-lane__intro">
+              <span class="memory-lane__num">01</span>
+              <div>
+                <h3><span class="lang-zh" lang="zh-CN">Ark heap</span><span class="lang-en" lang="en">Ark heap</span></h3>
+                <p><span class="lang-zh" lang="zh-CN">哪些 JS 对象被保留？</span><span class="lang-en" lang="en">Which JS objects are retained?</span></p>
+              </div>
+            </div>
+            <div class="memory-lane__flow">
+              <code class="memory-node">capture_heap_snapshot</code>
+              <span class="memory-arrow" aria-hidden="true">→</span>
+              <code class="memory-node">analyze_heap_snapshot</code>
+              <span class="memory-arrow" aria-hidden="true">→</span>
+              <code class="memory-node">compare_heap_snapshots</code>
+            </div>
+            <p class="memory-lane__guard"><span class="lang-zh" lang="zh-CN">同一 app/build 才可比；self size 不是 retained；snapshot 不是 Trace 会话。</span><span class="lang-en" lang="en">Same app/build only; self size is not retained; a snapshot is not a trace session.</span></p>
           </article>
 
-          <article class="memory-track">
-            <p class="memory-track__kicker">NATIVE_HOOK</p>
-            <h3><span class="lang-zh" lang="zh-CN">malloc/free 在哪里增长？</span><span class="lang-en" lang="en">Where do malloc/free grow?</span></h3>
-            <p><span class="lang-zh" lang="zh-CN">保存 native_hook 摘要与 testcase/device/build 指纹作为 baseline；按轮次抓 Trace，比较 alloc/free/net 增量、增长函数和调用链。</span><span class="lang-en" lang="en">Save a native_hook baseline with testcase/device/build fingerprints; capture trace rounds and compare alloc/free/net deltas, growing functions, and call paths.</span></p>
-            <div class="memory-track__tools"><code>run_testcase</code><code>capture_trace</code><code>save_baseline</code><code>compare_native_memory</code></div>
-            <p class="memory-track__guard"><span class="lang-zh" lang="zh-CN">比较要求 testcase/device/build 可比；native_hook 只覆盖 malloc/free，不含 GPU 或 JS heap。</span><span class="lang-en" lang="en">Comparison requires comparable testcase/device/build; native_hook covers malloc/free, not GPU or JS heap.</span></p>
+          <article class="memory-lane">
+            <div class="memory-lane__intro">
+              <span class="memory-lane__num">02</span>
+              <div>
+                <h3><span class="lang-zh" lang="zh-CN">Native memory</span><span class="lang-en" lang="en">Native memory</span></h3>
+                <p><span class="lang-zh" lang="zh-CN">malloc/free 在哪里增长？</span><span class="lang-en" lang="en">Where do malloc/free grow?</span></p>
+              </div>
+            </div>
+            <div class="memory-lane__flow">
+              <code class="memory-node">run_testcase</code>
+              <span class="memory-arrow" aria-hidden="true">→</span>
+              <code class="memory-node">capture_trace</code>
+              <span class="memory-arrow" aria-hidden="true">→</span>
+              <code class="memory-node">save_baseline</code>
+              <span class="memory-arrow" aria-hidden="true">→</span>
+              <code class="memory-node">compare_native_memory</code>
+            </div>
+            <p class="memory-lane__guard"><span class="lang-zh" lang="zh-CN">testcase/device/build 必须可比；native_hook 只覆盖 malloc/free，不含 GPU 或 JS heap。</span><span class="lang-en" lang="en">Testcase/device/build must match; native_hook covers malloc/free, not GPU or JS heap.</span></p>
           </article>
 
-          <article class="memory-track">
-            <p class="memory-track__kicker">PROCESS</p>
-            <h3><span class="lang-zh" lang="zh-CN">进程占用为什么上升？</span><span class="lang-en" lang="en">Why does process footprint grow?</span></h3>
-            <p><span class="lang-zh" lang="zh-CN">读取进程 status、statm、smaps_rollup、io、maps、cgroup 和系统 meminfo/pressure；可两次采样看 RSS/PSS/IO 增量。</span><span class="lang-en" lang="en">Read process status, statm, smaps_rollup, io, maps, cgroup, and system meminfo/pressure; take two samples to see RSS/PSS/IO deltas.</span></p>
-            <div class="memory-track__tools"><code>inspect_process_memory</code></div>
-            <p class="memory-track__guard"><span class="lang-zh" lang="zh-CN">PSS/RSS 是进程占用，不是 JS heap；GPU 内存要单独看。</span><span class="lang-en" lang="en">PSS/RSS is process footprint, not JS heap; GPU memory is separate.</span></p>
+          <article class="memory-lane">
+            <div class="memory-lane__intro">
+              <span class="memory-lane__num">03</span>
+              <div>
+                <h3><span class="lang-zh" lang="zh-CN">Process footprint</span><span class="lang-en" lang="en">Process footprint</span></h3>
+                <p><span class="lang-zh" lang="zh-CN">进程占用为什么上升？</span><span class="lang-en" lang="en">Why does process footprint grow?</span></p>
+              </div>
+            </div>
+            <div class="memory-lane__flow">
+              <code class="memory-node">inspect_process_memory</code>
+              <span class="memory-arrow" aria-hidden="true">→</span>
+              <span class="memory-node memory-node--plain">PSS · RSS · IO</span>
+            </div>
+            <p class="memory-lane__guard"><span class="lang-zh" lang="zh-CN">PSS/RSS 是进程占用，不是 JS heap；GPU 内存单独看。</span><span class="lang-en" lang="en">PSS/RSS is process footprint, not JS heap; GPU memory is separate.</span></p>
           </article>
         </div>
 
