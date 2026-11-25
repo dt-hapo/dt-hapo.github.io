@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Analysis — Diting</title>
   <link rel="icon" href="assets/img/favicon.png" type="image/png">
-  <meta name="description" content="DitingAgent end-to-end workflow: edit, build, sign, install, launch, trace capture, analysis, and reporting in one closed loop, plus an existing-trace entry point.">
+  <meta name="description" content="DitingAgent end-to-end workflow: edit, build, sign, install, launch, trace capture, four latency and jank scenarios, heap and native memory analysis, and evidence-backed reporting.">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -20,13 +20,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261118-7">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261118-7">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261118-7">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261118-7">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261118-7">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261118-7">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261118-7">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125-2">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261125-2">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261125-2">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261125-2">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261125-2">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261125-2">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261125-2">
 </head>
 <body data-page="analysis" data-title-zh="分析 — Diting" data-title-en="Analysis — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -94,6 +94,7 @@
       <a href="#device"><span class="lang-zh" lang="zh-CN">设备</span><span class="lang-en" lang="en">Device</span></a>
       <a href="#pipeline"><span class="lang-zh" lang="zh-CN">流水线</span><span class="lang-en" lang="en">Pipeline</span></a>
       <a href="#scenarios"><span class="lang-zh" lang="zh-CN">四类场景</span><span class="lang-en" lang="en">Scenarios</span></a>
+      <a href="#memory"><span class="lang-zh" lang="zh-CN">内存</span><span class="lang-en" lang="en">Memory</span></a>
       <a href="#division"><span class="lang-zh" lang="zh-CN">分工</span><span class="lang-en" lang="en">Division</span></a>
     </nav>
 
@@ -592,6 +593,52 @@ begin_analysis(
       </div>
     </section>
 
+
+    <section class="section section--tint" id="memory" aria-labelledby="memory-title">
+      <div class="container">
+        <div class="section-head section-head--wide">
+          <h2 class="section-title" id="memory-title"><span class="lang-zh" lang="zh-CN">内存分析</span><span class="lang-en" lang="en">Memory analysis</span></h2>
+          <p class="section-intro">
+            <span class="lang-zh" lang="zh-CN">内存问题不一定对应一个时间边界。先分清 Ark heap、native malloc/free 和进程占用，再选工具；不要把 PSS、self size 和 native_hook 混成一个数字。</span>
+            <span class="lang-en" lang="en">A memory problem does not always have a time boundary. Separate Ark heap, native malloc/free, and process footprint before choosing tools; do not mix PSS, self size, and native_hook into one number.</span>
+          </p>
+        </div>
+
+        <div class="memory-grid">
+          <article class="memory-track">
+            <p class="memory-track__kicker">ARK HEAP</p>
+            <h3><span class="lang-zh" lang="zh-CN">哪些 JS 对象被保留？</span><span class="lang-en" lang="en">Which JS objects are retained?</span></h3>
+            <p><span class="lang-zh" lang="zh-CN">分析单个 heap snapshot 的类型、self size、dominator retained、对象和构造器；再比较操作前后快照的 retained 与 constructor 增长。</span><span class="lang-en" lang="en">Analyse one snapshot by type, self size, dominator retained size, objects, and constructors; compare retained and constructor growth between snapshots.</span></p>
+            <div class="memory-track__tools"><code>capture_heap_snapshot</code><code>analyze_heap_snapshot</code><code>compare_heap_snapshots</code></div>
+            <p class="memory-track__guard"><span class="lang-zh" lang="zh-CN">同一 app/build 才可比；self size 不是 retained；snapshot 不是 Trace 会话。</span><span class="lang-en" lang="en">Compare only the same app/build; self size is not retained; a snapshot is not a trace session.</span></p>
+          </article>
+
+          <article class="memory-track">
+            <p class="memory-track__kicker">NATIVE_HOOK</p>
+            <h3><span class="lang-zh" lang="zh-CN">malloc/free 在哪里增长？</span><span class="lang-en" lang="en">Where do malloc/free grow?</span></h3>
+            <p><span class="lang-zh" lang="zh-CN">保存 native_hook 摘要与 testcase/device/build 指纹作为 baseline；按轮次抓 Trace，比较 alloc/free/net 增量、增长函数和调用链。</span><span class="lang-en" lang="en">Save a native_hook baseline with testcase/device/build fingerprints; capture trace rounds and compare alloc/free/net deltas, growing functions, and call paths.</span></p>
+            <div class="memory-track__tools"><code>run_testcase</code><code>capture_trace</code><code>save_baseline</code><code>compare_native_memory</code></div>
+            <p class="memory-track__guard"><span class="lang-zh" lang="zh-CN">比较要求 testcase/device/build 可比；native_hook 只覆盖 malloc/free，不含 GPU 或 JS heap。</span><span class="lang-en" lang="en">Comparison requires comparable testcase/device/build; native_hook covers malloc/free, not GPU or JS heap.</span></p>
+          </article>
+
+          <article class="memory-track">
+            <p class="memory-track__kicker">PROCESS</p>
+            <h3><span class="lang-zh" lang="zh-CN">进程占用为什么上升？</span><span class="lang-en" lang="en">Why does process footprint grow?</span></h3>
+            <p><span class="lang-zh" lang="zh-CN">读取进程 status、statm、smaps_rollup、io、maps、cgroup 和系统 meminfo/pressure；可两次采样看 RSS/PSS/IO 增量。</span><span class="lang-en" lang="en">Read process status, statm, smaps_rollup, io, maps, cgroup, and system meminfo/pressure; take two samples to see RSS/PSS/IO deltas.</span></p>
+            <div class="memory-track__tools"><code>inspect_process_memory</code></div>
+            <p class="memory-track__guard"><span class="lang-zh" lang="zh-CN">PSS/RSS 是进程占用，不是 JS heap；GPU 内存要单独看。</span><span class="lang-en" lang="en">PSS/RSS is process footprint, not JS heap; GPU memory is separate.</span></p>
+          </article>
+        </div>
+
+        <div class="callout" style="margin-top:1.8rem;">
+          <p>
+            <span class="lang-zh" lang="zh-CN">Heap snapshot 分析读取本地文件，不打开 Trace 会话。<code>capture_heap_snapshot</code>、<code>inspect_process_memory</code> 和 <code>run_testcase</code> 需要 <code>--enable-device</code>；比较前先确认 testcase、device 和 build 一致。</span>
+            <span class="lang-en" lang="en">Heap snapshot analysis reads local files and does not open a trace session. <code>capture_heap_snapshot</code>, <code>inspect_process_memory</code>, and <code>run_testcase</code> require <code>--enable-device</code>; confirm testcase, device, and build match before comparing.</span>
+          </p>
+        </div>
+        <div class="section-foot" style="margin-top:1.5rem;"><a class="link-arrow" href="tools.html#heap"><span><span class="lang-zh" lang="zh-CN">查看内存工具</span><span class="lang-en" lang="en">See memory tools</span></span><span aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
 
     <section class="section" id="division" aria-labelledby="division-title">
       <div class="container">

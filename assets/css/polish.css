@@ -1142,3 +1142,88 @@ body[data-page="analysis"] .section--run {
     grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr);
   }
 }
+
+/* Memory analysis tracks on the method page. */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 2rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.memory-track {
+  padding: 1.4rem 1.4rem 1.4rem 0;
+  border-left: 1px solid var(--line);
+}
+
+.memory-track:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.memory-track__kicker {
+  margin: 0 0 0.55rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.memory-track h3 {
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.memory-track > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.memory-track__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.85rem 0;
+}
+
+.memory-track__tools code {
+  display: inline-block;
+  padding: 0.2rem 0.42rem;
+  border: 1px solid #e0e8f3;
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.memory-track__guard {
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem !important;
+}
+
+@media (max-width: 900px) {
+  .memory-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .memory-track {
+    padding: 1.2rem 0;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .memory-track:first-child {
+    border-top: 0;
+  }
+}
+
+.memory-grid ~ .callout code {
+  white-space: nowrap;
+}
