@@ -1260,3 +1260,35 @@ body[data-page="analysis"] .section--run {
 .memory-map ~ .callout code {
   white-space: nowrap;
 }
+
+/* Growth vs leak distinction under the memory evidence map. */
+.memory-growth {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 1.4rem;
+}
+
+.memory-growth__label {
+  margin: 0;
+  color: var(--signal);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+}
+
+.memory-growth > p:last-child {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 720px) {
+  .memory-growth {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}

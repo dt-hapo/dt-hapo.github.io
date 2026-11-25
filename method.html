@@ -20,13 +20,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261125-4">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261125-4">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261125-4">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261125-4">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261125-4">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261125-4">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261125-4">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125-7">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261125-7">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261125-7">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261125-7">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261125-7">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261125-7">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261125-7">
 </head>
 <body data-page="analysis" data-title-zh="分析 — Diting" data-title-en="Analysis — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -663,6 +663,14 @@ begin_analysis(
             </div>
             <p class="memory-lane__guard"><span class="lang-zh" lang="zh-CN">PSS/RSS 是进程占用，不是 JS heap；GPU 内存单独看。</span><span class="lang-en" lang="en">PSS/RSS is process footprint, not JS heap; GPU memory is separate.</span></p>
           </article>
+        </div>
+
+        <div class="memory-growth">
+          <p class="memory-growth__label"><span class="lang-zh" lang="zh-CN">增长与泄漏</span><span class="lang-en" lang="en">Growth &amp; leaks</span></p>
+          <p>
+            <span class="lang-zh" lang="zh-CN">增长不等于泄漏。用同一 testcase / device / build 连续采样；只有 retained、PSS 或 native allocation 持续上升且不回落，才进入泄漏判断。先排除缓存、预热和延迟释放。</span>
+            <span class="lang-en" lang="en">Growth is not a leak. Sample the same testcase / device / build repeatedly; treat it as a leak only when retained, PSS, or native allocation keeps growing without returning. Rule out caches, warm-up, and deferred frees first.</span>
+          </p>
         </div>
 
         <div class="callout" style="margin-top:1.8rem;">
