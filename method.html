@@ -20,13 +20,13 @@
       } catch (error) {}
     })();
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=20261125-7">
-  <link rel="stylesheet" href="assets/css/redesign.css?v=20261125-7">
-  <link rel="stylesheet" href="assets/css/theme.css?v=20261125-7">
-  <link rel="stylesheet" href="assets/css/chrome.css?v=20261125-7">
-  <link rel="stylesheet" href="assets/css/subpages.css?v=20261125-7">
-  <link rel="stylesheet" href="assets/css/clean.css?v=20261125-7">
-  <link rel="stylesheet" href="assets/css/polish.css?v=20261125-7">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125-8">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20261125-8">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261125-8">
+  <link rel="stylesheet" href="assets/css/chrome.css?v=20261125-8">
+  <link rel="stylesheet" href="assets/css/subpages.css?v=20261125-8">
+  <link rel="stylesheet" href="assets/css/clean.css?v=20261125-8">
+  <link rel="stylesheet" href="assets/css/polish.css?v=20261125-8">
 </head>
 <body data-page="analysis" data-title-zh="分析 — Diting" data-title-en="Analysis — Diting">
   <a class="skip-link" href="#main"><span class="lang-zh" lang="zh-CN">跳到主要内容</span><span class="lang-en" lang="en">Skip to content</span></a>
@@ -597,7 +597,10 @@ begin_analysis(
     <section class="section" id="memory" aria-labelledby="memory-title">
       <div class="container">
         <div class="section-head section-head--wide">
-          <h2 class="section-title" id="memory-title"><span class="lang-zh" lang="zh-CN">内存分析</span><span class="lang-en" lang="en">Memory analysis</span></h2>
+          <h2 class="section-title memory-title" id="memory-title">
+            <span class="lang-zh" lang="zh-CN"><span class="memory-title__lead">内存分析：</span><span class="memory-title__accent">增长与泄漏</span></span>
+            <span class="lang-en" lang="en"><span class="memory-title__lead">Memory analysis:</span><span class="memory-title__accent">Growth &amp; leaks</span></span>
+          </h2>
           <p class="section-intro">
             <span class="lang-zh" lang="zh-CN">内存问题不一定对应一个时间边界。先分清 Ark heap、native malloc/free 和进程占用，再选工具；不要把 PSS、self size 和 native_hook 混成一个数字。</span>
             <span class="lang-en" lang="en">A memory problem does not always have a time boundary. Separate Ark heap, native malloc/free, and process footprint before choosing tools; do not mix PSS, self size, and native_hook into one number.</span>
@@ -665,16 +668,12 @@ begin_analysis(
           </article>
         </div>
 
-        <div class="memory-growth">
-          <p class="memory-growth__label"><span class="lang-zh" lang="zh-CN">增长与泄漏</span><span class="lang-en" lang="en">Growth &amp; leaks</span></p>
-          <p>
-            <span class="lang-zh" lang="zh-CN">增长不等于泄漏。用同一 testcase / device / build 连续采样；只有 retained、PSS 或 native allocation 持续上升且不回落，才进入泄漏判断。先排除缓存、预热和延迟释放。</span>
-            <span class="lang-en" lang="en">Growth is not a leak. Sample the same testcase / device / build repeatedly; treat it as a leak only when retained, PSS, or native allocation keeps growing without returning. Rule out caches, warm-up, and deferred frees first.</span>
-          </p>
-        </div>
-
         <div class="callout" style="margin-top:1.8rem;">
           <p>
+            <span class="lang-zh" lang="zh-CN"><strong>增长不等于泄漏。</strong>用同一 testcase / device / build 连续采样；只有 retained、PSS 或 native allocation 持续上升且不回落，才进入泄漏判断。先排除缓存、预热和延迟释放。</span>
+            <span class="lang-en" lang="en"><strong>Growth is not a leak.</strong> Sample the same testcase / device / build repeatedly; treat it as a leak only when retained, PSS, or native allocation keeps growing without returning. Rule out caches, warm-up, and deferred frees first.</span>
+          </p>
+          <p style="margin-top:0.7rem;">
             <span class="lang-zh" lang="zh-CN">Heap snapshot 分析读取本地文件，不打开 Trace 会话。<code>capture_heap_snapshot</code>、<code>inspect_process_memory</code> 和 <code>run_testcase</code> 需要 <code>--enable-device</code>；比较前先确认 testcase、device 和 build 一致。</span>
             <span class="lang-en" lang="en">Heap snapshot analysis reads local files and does not open a trace session. <code>capture_heap_snapshot</code>, <code>inspect_process_memory</code>, and <code>run_testcase</code> require <code>--enable-device</code>; confirm testcase, device, and build match before comparing.</span>
           </p>
