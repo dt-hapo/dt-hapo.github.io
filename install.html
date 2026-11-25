@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Install and host setup — Diting</title>
   <link rel="icon" href="assets/img/favicon.png" type="image/png">
-  <meta name="description" content="Install DitingAgent with npx: Node.js 18+, Python 3.12+, host registration, health checks, and 18 optional HarmonyOS device and build tools.">
+  <meta name="description" content="Install DitingAgent with npx: Node.js 18+, Python 3.12+, host registration, health checks, and 20 optional HarmonyOS device and build tools.">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -198,7 +198,7 @@ npx diting-agents@latest doctor --hdc /path/to/hdc</code></pre>
             <section class="install-section" id="device" aria-labelledby="device-title">
               <h2 id="device-title"><span class="lang-zh" lang="zh-CN">设备与构建工具</span><span class="lang-en" lang="en">Device and build tools</span></h2>
               <p>
-                <span class="lang-zh" lang="zh-CN">设备与构建工具默认关闭，需要 <code>--enable-device</code>；共 18 个工具。先检查或安装 <a href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>，再注册带 hdc 的设备配置。开启后 Agent 可以构建、签名、安装并启动应用，再抓 Trace；<code>act</code> 和 <code>install_app</code> 会真实修改设备。</span>
+                <span class="lang-zh" lang="zh-CN">设备与构建工具默认关闭，需要 <code>--enable-device</code>；共 20 个工具。先检查或安装 <a href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>，再注册带 hdc 的设备配置。开启后 Agent 可以构建、签名、安装并启动应用，再抓 Trace；<code>act</code> 和 <code>install_app</code> 会真实修改设备。</span>
                 <span class="lang-en" lang="en">Device and build tools are off by default and require <code>--enable-device</code>. Check or install <a href="https://developer.huawei.com/consumer/en/doc/harmonyos-guides/ide-commandline-get" target="_blank" rel="noopener noreferrer">Command Line Tools ↗</a>, then register a device-enabled config. Once enabled, the agent can build, sign, install, and launch the app before capturing a trace; <code>act</code> and <code>install_app</code> really change the device.</span>
               </p>
               <div class="code-box">
@@ -222,8 +222,10 @@ npx diting-agents@latest mcp \
               <div class="tool-table">
                 <div class="tool-table__row"><code>inspect_device</code><span><span class="lang-zh" lang="zh-CN">读取设备、API、Bundle 与 hitrace 能力</span><span class="lang-en" lang="en">Read device, API, bundle, and hitrace capabilities</span></span></div>
                 <div class="tool-table__row"><code>inspect_screen</code><span><span class="lang-zh" lang="zh-CN">截图并解析当前控件树</span><span class="lang-en" lang="en">Screenshot and parse the current control tree</span></span></div>
+                <div class="tool-table__row"><code>inspect_process_memory</code><span><span class="lang-zh" lang="zh-CN">读取进程内存、IO、maps 与系统内存压力</span><span class="lang-en" lang="en">Read process memory, IO, maps, and system memory pressure</span></span></div>
                 <div class="tool-table__row"><code>act</code><span><span class="lang-zh" lang="zh-CN">执行 tap / swipe / key / text / wait</span><span class="lang-en" lang="en">Run tap / swipe / key / text / wait</span></span></div>
                 <div class="tool-table__row"><code>capture_trace</code><span><span class="lang-zh" lang="zh-CN">用 hiprofiler 抓 Trace，可在抓取期间执行 UI 步骤</span><span class="lang-en" lang="en">Capture with hiprofiler; UI steps can run during capture</span></span></div>
+                <div class="tool-table__row"><code>capture_heap_snapshot</code><span><span class="lang-zh" lang="zh-CN">抓取 Ark heap snapshot 并拉回</span><span class="lang-en" lang="en">Capture and pull an Ark heap snapshot</span></span></div>
                 <div class="tool-table__row"><code>pull_artifact</code><span><span class="lang-zh" lang="zh-CN">从 /data/local/tmp/ 拉取文件</span><span class="lang-en" lang="en">Pull files from /data/local/tmp/</span></span></div>
                 <div class="tool-table__row"><code>inspect_environment</code><span><span class="lang-zh" lang="zh-CN">只读检查 hdc、Command Line Tools 和工具链</span><span class="lang-en" lang="en">Read-only check of hdc, Command Line Tools, and the toolchain</span></span></div>
                 <div class="tool-table__row"><code>install_environment</code><span><span class="lang-zh" lang="zh-CN">在 confirm=true 时安装托管 Command Line Tools</span><span class="lang-en" lang="en">Install managed Command Line Tools with confirm=true</span></span></div>

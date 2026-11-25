@@ -263,8 +263,8 @@ begin_analysis(
         <div class="section-head section-head--wide">
           <h2 class="section-title" id="tools-title"><span class="lang-zh" lang="zh-CN">工具能力</span><span class="lang-en" lang="en">Tool capabilities</span></h2>
           <p class="section-intro">
-            <span class="lang-zh" lang="zh-CN">默认 37 个工具，开启设备与构建工具后 55 个。这里按主要任务分组。</span>
-            <span class="lang-en" lang="en">37 tools by default, 55 with device and build tools enabled. They are grouped by task.</span>
+            <span class="lang-zh" lang="zh-CN">默认 39 个工具，开启设备与构建工具后 59 个。这里按主要任务分组。</span>
+            <span class="lang-en" lang="en">39 tools by default, 59 with device and build tools enabled. They are grouped by task.</span>
           </p>
         </div>
 
@@ -279,11 +279,21 @@ begin_analysis(
             <span class="tool-cap-row__arrow" aria-hidden="true">→</span>
           </a>
 
+          <a class="tool-cap-row" href="tools.html#project">
+            <span class="tool-cap-row__count">02</span>
+            <div class="tool-cap-row__body">
+              <h3><span class="lang-zh" lang="zh-CN">项目与批量分析</span><span class="lang-en" lang="en">Project &amp; batch analysis</span></h3>
+              <p><span class="lang-zh" lang="zh-CN">静态审计鸿蒙工程启动路径；批量聚类多份 Tag-Based 完成时延结果，输出用例、热点和分位数。</span><span class="lang-en" lang="en">Statically audit a HarmonyOS startup path; cluster batch Tag-Based completion-latency results into cases, hotspots, and percentiles.</span></p>
+              <code>audit_startup_code · cluster_tag_latency</code>
+            </div>
+            <span class="tool-cap-row__arrow" aria-hidden="true">→</span>
+          </a>
+
           <a class="tool-cap-row" href="tools.html#device">
-            <span class="tool-cap-row__count">18</span>
+            <span class="tool-cap-row__count">20</span>
             <div class="tool-cap-row__body">
               <h3><span class="lang-zh" lang="zh-CN">设备、构建与环境</span><span class="lang-en" lang="en">Device, build &amp; environment</span></h3>
-              <p><span class="lang-zh" lang="zh-CN">构建、打包、签名、安装与卸载应用；查看设备和屏幕、执行 UI 操作、抓取 Trace、检查应用包与 native 库、拉取文件、检查和安装运行环境。需显式开启。</span><span class="lang-en" lang="en">Build, package, sign, install, and uninstall apps; inspect devices and screens, operate the UI, capture traces, inspect app packages and native libraries, pull files, and check or install the environment. Explicitly opt-in.</span></p>
+              <p><span class="lang-zh" lang="zh-CN">构建、打包、签名、安装与卸载应用；查看设备和屏幕、执行 UI 操作、抓取 Trace、检查进程内存与 Ark heap snapshot、检查应用包与 native 库、拉取文件、检查和安装运行环境。需显式开启。</span><span class="lang-en" lang="en">Build, package, sign, install, and uninstall apps; inspect devices and screens, operate the UI, capture traces, inspect process memory and Ark heap snapshots, inspect app packages and native libraries, pull files, and check or install the environment. Explicitly opt-in.</span></p>
               <code>build_app · sign_app · install_app · capture_trace</code>
             </div>
             <span class="tool-cap-row__arrow" aria-hidden="true">→</span>
@@ -329,7 +339,7 @@ begin_analysis(
           </a>
         </div>
 
-        <div class="section-foot"><a class="link-arrow" href="tools.html"><span><span class="lang-zh" lang="zh-CN">查看全部 55 个工具</span><span class="lang-en" lang="en">See all 55 tools</span></span><span aria-hidden="true">→</span></a></div>
+        <div class="section-foot"><a class="link-arrow" href="tools.html"><span><span class="lang-zh" lang="zh-CN">查看全部 59 个工具</span><span class="lang-en" lang="en">See all 59 tools</span></span><span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tool capabilities — Diting</title>
   <link rel="icon" href="assets/img/favicon.png" type="image/png">
-  <meta name="description" content="DitingAgent tool reference: 37 default and 55 device-enabled tools, long operations, build/sign/install, trace evidence, host setup, budgets, and permission boundaries.">
+  <meta name="description" content="DitingAgent tool reference: 39 default and 59 device-enabled tools, long operations, build/sign/install, trace evidence, host setup, budgets, and permission boundaries.">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -80,8 +80,8 @@
           </h1>
           <div class="page-hero__aside">
             <p>
-              <span class="lang-zh" lang="zh-CN">默认 37 个工具，开启设备与构建工具后 55 个。DitingAgent 向宿主提供这些工具。前半部分是每个工具能做什么，后半部分是宿主接入、预算与权限。</span>
-              <span class="lang-en" lang="en">37 tools by default, 55 with device and build tools enabled. DitingAgent exposes these tools to the host. The first half covers each tool; the second covers host setup, budgets, and permissions.</span>
+              <span class="lang-zh" lang="zh-CN">默认 39 个工具，开启设备与构建工具后 59 个。DitingAgent 向宿主提供这些工具。前半部分是每个工具能做什么，后半部分是宿主接入、预算与权限。</span>
+              <span class="lang-en" lang="en">39 tools by default, 59 with device and build tools enabled. DitingAgent exposes these tools to the host. The first half covers each tool; the second covers host setup, budgets, and permissions.</span>
             </p>
           </div>
         </div>
@@ -92,6 +92,7 @@
       <a href="#session"><span class="lang-zh" lang="zh-CN">会话</span><span class="lang-en" lang="en">Session</span></a>
       <a href="#operations"><span class="lang-zh" lang="zh-CN">长操作</span><span class="lang-en" lang="en">Operations</span></a>
       <a href="#trace">Trace</a>
+      <a href="#project"><span class="lang-zh" lang="zh-CN">项目</span><span class="lang-en" lang="en">Project</span></a>
       <a href="#evidence"><span class="lang-zh" lang="zh-CN">证据</span><span class="lang-en" lang="en">Evidence</span></a>
       <a href="#device"><span class="lang-zh" lang="zh-CN">设备</span><span class="lang-en" lang="en">Device</span></a>
       <a href="#mcp">接入</a>
@@ -180,6 +181,19 @@
       </div>
     </section>
 
+    <section class="section" id="project" aria-labelledby="project-title">
+      <div class="container">
+        <div class="section-head section-head--wide">
+          <h2 class="section-title" id="project-title"><span class="lang-zh" lang="zh-CN">项目与批量分析</span><span class="lang-en" lang="en">Project and batch analysis</span></h2>
+          <p class="section-intro"><span class="lang-zh" lang="zh-CN">2 个工具在打开 Trace 之前工作：静态审计源码启动路径，或批量聚类多份 Tag-Based 完成时延结果。</span><span class="lang-en" lang="en">Two tools work before a trace is opened: statically audit a project's startup path, or cluster batch Tag-Based completion-latency results.</span></p>
+        </div>
+        <div class="tool-detail">
+          <div class="tool-detail__row"><div class="tool-detail__name">audit_startup_code</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">静态扫描 HarmonyOS 工程启动路径：重 import、<code>export *</code>、顶层求值、同步 IO、启动初始化和网络时机，输出 AP、收益、成本与优先级的候选。</span><span class="lang-en" lang="en">Statically scan a HarmonyOS project's startup path for heavy imports, <code>export *</code>, top-level evaluation, sync IO, startup initialization, and network timing; return candidates with AP, benefit, cost, and priority.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">cluster_tag_latency</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">递归聚类 <code>result-completion-latency.csv</code> 的线程热点，输出用例、聚类、热点和 P50/P95/max；可写 JSON/CSV/HTML。</span><span class="lang-en" lang="en">Recursively cluster thread hotspots in <code>result-completion-latency.csv</code> and report cases, clusters, hotspots, and P50/P95/max; optionally write JSON/CSV/HTML.</span></div></div>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="evidence" aria-labelledby="evidence-title">
       <div class="container">
         <div class="section-head section-head--wide">
@@ -200,14 +214,16 @@
       <div class="container">
         <div class="section-head section-head--wide">
           <h2 class="section-title" id="device-title"><span class="lang-zh" lang="zh-CN">设备、构建<br>与环境（opt-in）</span><span class="lang-en" lang="en">Device, build<br>and environment (opt-in)</span></h2>
-          <p class="section-intro"><span class="lang-zh" lang="zh-CN">这 18 个工具只在启动 server 时带 <code>--enable-device</code> 才会出现。构建、签名和安装工具完成代码到设备的闭环；设备与抓取工具会真实操作设备；应用包与 native 库工具读取本地文件。它们不在 Trace evidence 预算内。</span><span class="lang-en" lang="en">These eighteen tools appear only when the server starts with <code>--enable-device</code>. Build, signing, and install tools close the loop from code to device; device and capture tools operate the device; app-package and native-library tools read local files. They sit outside the trace-evidence budget.</span></p>
+          <p class="section-intro"><span class="lang-zh" lang="zh-CN">这 20 个工具只在启动 server 时带 <code>--enable-device</code> 才会出现。构建、签名和安装工具完成代码到设备的闭环；设备、内存与抓取工具会真实操作设备；应用包与 native 库工具读取本地文件。它们不在 Trace evidence 预算内。</span><span class="lang-en" lang="en">These twenty tools appear only when the server starts with <code>--enable-device</code>. Build, signing, and install tools close the loop from code to device; device, memory, and capture tools operate the device; app-package and native-library tools read local files. They sit outside the trace-evidence budget.</span></p>
         </div>
         <div class="tool-detail">
           <div class="tool-detail__row"><div class="tool-detail__name">inspect_device</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">读取 HarmonyOS 设备、系统版本、API、ABI、已安装 Bundle 和可用 hitrace 类别。</span><span class="lang-en" lang="en">Read the HarmonyOS device, system version, API, ABI, installed bundles, and available hitrace categories.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">inspect_screen</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">抓取截图并解析 <code>uitest dumpLayout</code> 控件树，返回文本、类型、bounds 和 center。</span><span class="lang-en" lang="en">Capture a screenshot and parse the <code>uitest dumpLayout</code> control tree, returning text, type, bounds, and center.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">inspect_process_memory</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">读取 <code>/proc/&lt;pid&gt;</code> 的 status、statm、smaps_rollup、io、maps 和 cgroup，以及系统 meminfo/pressure；可附带 hidumper --mem 分类和二次采样增量。</span><span class="lang-en" lang="en">Read <code>/proc/&lt;pid&gt;</code> status, statm, smaps_rollup, io, maps, and cgroup, plus system meminfo/pressure; optionally include hidumper --mem categories and a second-sample delta.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">act</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">按元素选择器或坐标执行 tap、swipe、key、text、wait；会真实点击、滑动和输入。</span><span class="lang-en" lang="en">Run tap, swipe, key, text, and wait by element selector or coordinates; really taps, swipes, and types on the device.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">pull_artifact</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">通过 hdc 从 <code>/data/local/tmp/</code> 拉取 Trace、截图或日志，返回本地路径、大小和 SHA-256。</span><span class="lang-en" lang="en">Pull traces, screenshots, or logs from <code>/data/local/tmp/</code> over hdc, returning the local path, size, and SHA-256.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">capture_trace</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">用 hiprofiler_cmd 抓 Trace，支持 ui / startup / memory / io / network / full / perf preset；可在抓取期间执行 UI steps，默认抓完自动打开 Trace。</span><span class="lang-en" lang="en">Capture with hiprofiler_cmd using ui / startup / memory / io / network / full / perf presets. UI steps can run during capture, and the trace opens automatically by default.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">capture_heap_snapshot</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">通过 <code>hidumper --mem-jsheap</code> 抓取 Ark heap snapshot，自动定位 <code>jsheap-*</code> 文件并通过 hdc 拉回。</span><span class="lang-en" lang="en">Capture an Ark heap snapshot through <code>hidumper --mem-jsheap</code>, locate the <code>jsheap-*</code> file, and pull it back over hdc.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">inspect_environment</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">只读检查 hdc、Command Line Tools、ohpm / hvigor / Java / Node 和官方下载页；不安装、不修改环境。</span><span class="lang-en" lang="en">Read-only check of hdc, Command Line Tools, ohpm / hvigor / Java / Node, and the official download page; installs and modifies nothing.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">install_environment</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">在 <code>confirm=true</code> 时把 Command Line Tools 安装到 <code>~/.diting/tools</code> 并注册 hdc；URL 安装必须提供 SHA-256。</span><span class="lang-en" lang="en">With <code>confirm=true</code>, install Command Line Tools into <code>~/.diting/tools</code> and register hdc. URL installs require a SHA-256.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">inspect_app_package</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">读取应用的 codePath、nativeLibraryPath、HAP 路径和可读性；用户版本安装目录通常不可读，不绕过权限。</span><span class="lang-en" lang="en">Read the app's codePath, nativeLibraryPath, HAP paths, and readability. User-build install directories are often unreadable; permissions are not bypassed.</span></div></div>
