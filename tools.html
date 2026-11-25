@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tool capabilities — Diting</title>
   <link rel="icon" href="assets/img/favicon.png" type="image/png">
-  <meta name="description" content="DitingAgent tool reference: 39 default and 59 device-enabled tools, long operations, build/sign/install, trace evidence, host setup, budgets, and permission boundaries.">
+  <meta name="description" content="DitingAgent tool reference: 41 default and 61 device-enabled tools, startup audit, batch latency, heap snapshot analysis, long operations, build/sign/install, trace evidence, host setup, budgets, and permission boundaries.">
   <meta name="theme-color" content="#ffffff">
   <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script>
@@ -80,8 +80,8 @@
           </h1>
           <div class="page-hero__aside">
             <p>
-              <span class="lang-zh" lang="zh-CN">默认 39 个工具，开启设备与构建工具后 59 个。DitingAgent 向宿主提供这些工具。前半部分是每个工具能做什么，后半部分是宿主接入、预算与权限。</span>
-              <span class="lang-en" lang="en">39 tools by default, 59 with device and build tools enabled. DitingAgent exposes these tools to the host. The first half covers each tool; the second covers host setup, budgets, and permissions.</span>
+              <span class="lang-zh" lang="zh-CN">默认 41 个工具，开启设备与构建工具后 61 个。DitingAgent 向宿主提供这些工具。前半部分是每个工具能做什么，后半部分是宿主接入、预算与权限。</span>
+              <span class="lang-en" lang="en">41 tools by default, 61 with device and build tools enabled. DitingAgent exposes these tools to the host. The first half covers each tool; the second covers host setup, budgets, and permissions.</span>
             </p>
           </div>
         </div>
@@ -93,6 +93,7 @@
       <a href="#operations"><span class="lang-zh" lang="zh-CN">长操作</span><span class="lang-en" lang="en">Operations</span></a>
       <a href="#trace">Trace</a>
       <a href="#project"><span class="lang-zh" lang="zh-CN">项目</span><span class="lang-en" lang="en">Project</span></a>
+      <a href="#heap"><span class="lang-zh" lang="zh-CN">内存</span><span class="lang-en" lang="en">Memory</span></a>
       <a href="#evidence"><span class="lang-zh" lang="zh-CN">证据</span><span class="lang-en" lang="en">Evidence</span></a>
       <a href="#device"><span class="lang-zh" lang="zh-CN">设备</span><span class="lang-en" lang="en">Device</span></a>
       <a href="#mcp">接入</a>
@@ -190,6 +191,19 @@
         <div class="tool-detail">
           <div class="tool-detail__row"><div class="tool-detail__name">audit_startup_code</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">静态扫描 HarmonyOS 工程启动路径：重 import、<code>export *</code>、顶层求值、同步 IO、启动初始化和网络时机，输出 AP、收益、成本与优先级的候选。</span><span class="lang-en" lang="en">Statically scan a HarmonyOS project's startup path for heavy imports, <code>export *</code>, top-level evaluation, sync IO, startup initialization, and network timing; return candidates with AP, benefit, cost, and priority.</span></div></div>
           <div class="tool-detail__row"><div class="tool-detail__name">cluster_tag_latency</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">递归聚类 <code>result-completion-latency.csv</code> 的线程热点，输出用例、聚类、热点和 P50/P95/max；可写 JSON/CSV/HTML。</span><span class="lang-en" lang="en">Recursively cluster thread hotspots in <code>result-completion-latency.csv</code> and report cases, clusters, hotspots, and P50/P95/max; optionally write JSON/CSV/HTML.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="heap" aria-labelledby="heap-title">
+      <div class="container">
+        <div class="section-head section-head--wide">
+          <h2 class="section-title" id="heap-title"><span class="lang-zh" lang="zh-CN">堆内存分析</span><span class="lang-en" lang="en">Heap memory analysis</span></h2>
+          <p class="section-intro"><span class="lang-zh" lang="zh-CN">2 个工具读取本地 <code>.heapsnapshot</code>：分析单个快照的类型、self size、dominator retained 和对象/构造器；比较操作前后的 retained 与 constructor 增长。</span><span class="lang-en" lang="en">Two tools read local <code>.heapsnapshot</code> files: analyse one snapshot by type, self size, dominator retained size, objects, and constructors; compare retained and constructor growth before and after an operation.</span></p>
+        </div>
+        <div class="tool-detail">
+          <div class="tool-detail__row"><div class="tool-detail__name">analyze_heap_snapshot</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">解析 Ark heap snapshot 的类型/self size、dominator retained、top 对象与构造器、native/NAPI 和业务代码对象；<code>app_hint</code> 可按业务路径聚焦。</span><span class="lang-en" lang="en">Parse an Ark heap snapshot for type/self size, dominator retained size, top objects and constructors, native/NAPI, and app-code objects; <code>app_hint</code> focuses on a business path.</span></div></div>
+          <div class="tool-detail__row"><div class="tool-detail__name">compare_heap_snapshots</div><div class="tool-detail__desc"><span class="lang-zh" lang="zh-CN">比较两个 heap snapshot 的 shallow/root retained 增量，以及 constructor 的增长、新增和减少。</span><span class="lang-en" lang="en">Compare shallow/root retained deltas across two heap snapshots, plus constructor growth, additions, and removals.</span></div></div>
         </div>
       </div>
     </section>
